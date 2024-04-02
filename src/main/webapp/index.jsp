@@ -6,6 +6,6 @@
     <style></style>
 </head>
 <body>
-<h1 class="title">Hello world from PTITHCMS1L6</h1>
+<h1 class="title">Hello from PTITHCMS1L6</h1>
 </body>
 </html>
