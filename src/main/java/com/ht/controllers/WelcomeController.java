@@ -6,11 +6,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@Controller("/home/")
+@Controller
+@RequestMapping("/home")
 public class WelcomeController {
     @Autowired
     JavaMailSender mailSender;
-    @RequestMapping(value = "test", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String test() {
         return "home/test";
     }

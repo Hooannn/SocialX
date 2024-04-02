@@ -2,11 +2,11 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Index Page - PTITHCMS1L6</title>
+    <title>Home Page - Test Url</title>
     <base href="${pageContext.request.contextPath}/" />
     <style></style>
 </head>
 <body>
-<h1 class="title">Hello world from PTITHCMS1L6</h1>
+<h1 class="title">Hello world from Home Page</h1>
 </body>
 </html>
