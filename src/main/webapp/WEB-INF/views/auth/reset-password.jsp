@@ -15,7 +15,7 @@
     <base href="${pageContext.request.contextPath}/" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>SocialX | Đăng nhập</title>
+    <title>SocialX | Đặt lại mật khẩu</title>
 
     <link rel="shortcut icon" href="images/favicon.ico" />
     <link rel="stylesheet" href="css/libs.min.css">
@@ -72,35 +72,33 @@
                 </div>
                 <div class="col-md-6 bg-white pt-5 pt-5 pb-lg-0 pb-5">
                     <div class="sign-in-from">
-                        <h1 class="mb-0">Đăng nhập</h1>
-                        <p>Nhập email và mật khẩu của bạn để tiếp tục truy cập SocialX</p>
-                        <form:form modelAttribute="signInDto" class="mt-4" action="auth/sign-in" method="post">
+                        <h1 class="mb-0">Đặt lại mật khẩu</h1>
+                        <p>Cài lại mật khẩu của bạn để tiếp tục truy cập vào SocialX</p>
+                        <form:form class="mt-4" modelAttribute="resetPasswordDto" action="auth/reset-password" method="post">
                             <c:if test="${not empty errorMessage}">
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     <strong>Lỗi!</strong> <span>${errorMessage}</span>
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
                             </c:if>
-                            <div class="form-group">
-                                <label class="form-label" for="exampleInputEmail1">Email</label>
-                                <form:input path="email" type="email" class="form-control mb-0" id="exampleInputEmail1" placeholder="Nhập email"/>
-                                <form:errors path="email" cssClass="text-danger text-sm-center" />
-                            </div>
+                            <form:hidden path="token"/>
                             <div class="form-group">
                                 <label class="form-label" for="exampleInputPassword1">Mật khẩu</label>
-                                <a href="auth/forgot-password" class="float-end">Quên mật khẩu?</a>
                                 <form:input path="password" type="password" class="form-control mb-0" id="exampleInputPassword1" placeholder="Nhập mật khẩu"/>
                                 <form:errors path="password" cssClass="text-danger text-sm-center" />
                             </div>
+                            <div class="form-group">
+                                <label class="form-label" for="exampleInputCfPassword1">Nhập lại mật khẩu</label>
+                                <form:input path="confirmPassword" type="password" class="form-control mb-0" id="exampleInputCfPassword1" placeholder="Nhập lại mật khẩu"/>
+                                <form:errors path="confirmPassword" cssClass="text-danger text-sm-center" />
+                            </div>
                             <div class="d-inline-block w-100">
                                 <div class="form-check d-inline-block mt-2 pt-1">
-                                    <input type="checkbox" class="form-check-input" id="customCheck11">
-                                    <label class="form-check-label" for="customCheck11">Ghi nhớ</label>
                                 </div>
-                                <button type="submit" class="btn btn-primary float-end">Đăng nhập</button>
+                                <button type="submit" class="btn btn-primary float-end">Xác nhận</button>
                             </div>
                             <div class="sign-info">
-                                <span class="dark-color d-inline-block line-height-2">Chưa có tài khoản? <a href="auth/sign-up">Đăng ký</a></span>
+                                <span class="dark-color d-inline-block line-height-2">Đã có tài khoản ? <a href="auth/sign-in">Đăng nhập</a></span>
                                 <ul class="iq-social-media">
                                     <li><a href="#"><i class="ri-facebook-box-line"></i></a></li>
                                     <li><a href="#"><i class="ri-twitter-line"></i></a></li>
@@ -128,7 +126,7 @@
 <!-- app JavaScript -->
 <script src="scripts/charts/weather-chart.js"></script>
 <script src="scripts/app.js"></script>
-<script src="vendor/vanillajs-datepicker/dist/js/datepicker.min.js"></script>
+<script src="vendor/vanillajs-datepicker/distscripts/datepicker.min.js"></script>
 <script src="scripts/lottie.js"></script>
 
 </body>
