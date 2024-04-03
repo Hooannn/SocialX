@@ -6,6 +6,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jstl/fmt_rt" prefix="f" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -50,18 +53,18 @@
                             <ul  class="swiper-wrapper list-inline m-0 p-0 ">
                                 <li class="swiper-slide">
                                     <img src="images/login/1.png" class="img-fluid mb-4" alt="logo">
-                                    <h4 class="mb-1 text-white">Find new friends</h4>
-                                    <p>It is a long established fact that a reader will be distracted by the readable content.</p>
+                                    <h4 class="mb-1 text-white">Tìm bạn mới</h4>
+                                    <p>Khám phá và kết bạn với những người mới trên nền tảng của chúng tôi.</p>
                                 </li>
                                 <li class="swiper-slide">
                                     <img src="images/login/2.png" class="img-fluid mb-4" alt="logo">
-                                    <h4 class="mb-1 text-white">Connect with the world</h4>
-                                    <p>It is a long established fact that a reader will be distracted by the readable content.</p>
+                                    <h4 class="mb-1 text-white">Kết nối với thế giới</h4>
+                                    <p>Truy cập vào mạng lưới xã hội để kết nối với những người ở khắp nơi trên thế giới.</p>
                                 </li>
                                 <li class="swiper-slide">
                                     <img src="images/login/3.png" class="img-fluid mb-4" alt="logo">
-                                    <h4 class="mb-1 text-white">Create new events</h4>
-                                    <p>It is a long established fact that a reader will be distracted by the readable content.</p>
+                                    <h4 class="mb-1 text-white">Tạo sự kiện mới</h4>
+                                    <p>Sáng tạo và tổ chức các sự kiện độc đáo, thu hút sự quan tâm của cộng đồng.</p>
                                 </li>
                             </ul>
                         </div>
@@ -69,34 +72,42 @@
                 </div>
                 <div class="col-md-6 bg-white pt-5 pt-5 pb-lg-0 pb-5">
                     <div class="sign-in-from">
-                        <h1 class="mb-0">Sign in</h1>
-                        <p>Enter your email address and password to access admin panel.</p>
-                        <form class="mt-4">
+                        <h1 class="mb-0">Đăng nhập</h1>
+                        <p>Nhập email và mật khẩu của bạn để tiếp tục truy cập SocialX</p>
+                        <form:form modelAttribute="signInDto" class="mt-4" action="auth/sign-in" method="post">
+                            <c:if test="${not empty errorMessage}">
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Lỗi!</strong> <span>${errorMessage}</span>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            </c:if>
                             <div class="form-group">
-                                <label class="form-label" for="exampleInputEmail1">Email address</label>
-                                <input type="email" class="form-control mb-0" id="exampleInputEmail1" placeholder="Enter email">
+                                <label class="form-label" for="exampleInputEmail1">Email</label>
+                                <form:input path="email" type="email" class="form-control mb-0" id="exampleInputEmail1" placeholder="Nhập email"/>
+                                <form:errors path="email" cssClass="text-danger text-sm-center" />
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="exampleInputPassword1">Password</label>
-                                <a href="#" class="float-end">Forgot password?</a>
-                                <input type="password" class="form-control mb-0" id="exampleInputPassword1" placeholder="Password">
+                                <label class="form-label" for="exampleInputPassword1">Mật khẩu</label>
+                                <a href="#" class="float-end">Quên mật khẩu?</a>
+                                <form:input path="password" type="password" class="form-control mb-0" id="exampleInputPassword1" placeholder="Nhập mật khẩu"/>
+                                <form:errors path="password" cssClass="text-danger text-sm-center" />
                             </div>
                             <div class="d-inline-block w-100">
                                 <div class="form-check d-inline-block mt-2 pt-1">
                                     <input type="checkbox" class="form-check-input" id="customCheck11">
-                                    <label class="form-check-label" for="customCheck11">Remember Me</label>
+                                    <label class="form-check-label" for="customCheck11">Ghi nhớ</label>
                                 </div>
-                                <button type="submit" class="btn btn-primary float-end">Sign in</button>
+                                <button type="submit" class="btn btn-primary float-end">Đăng nhập</button>
                             </div>
                             <div class="sign-info">
-                                <span class="dark-color d-inline-block line-height-2">Don't have an account? <a href="auth/sign-up">Sign up</a></span>
+                                <span class="dark-color d-inline-block line-height-2">Chưa có tài khoản? <a href="auth/sign-up">Đăng ký</a></span>
                                 <ul class="iq-social-media">
                                     <li><a href="#"><i class="ri-facebook-box-line"></i></a></li>
                                     <li><a href="#"><i class="ri-twitter-line"></i></a></li>
                                     <li><a href="#"><i class="ri-instagram-line"></i></a></li>
                                 </ul>
                             </div>
-                        </form>
+                        </form:form>
                     </div>
                 </div>
             </div>
