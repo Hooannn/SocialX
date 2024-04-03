@@ -69,11 +69,31 @@
         </property>
     </bean>
 
+    <bean id="appConfig" class="com.ht.configs.AppConfig">
+        <property name="accessSecretKey" value="gD6RS3KOvd7gHVi9/Bm6jududzvX7WjXtor0C9Q+G60t1rqm8GFb74h2+MpkZkwW"/>
+        <property name="passwordSecretKey" value="5zvX7WjXtor0C9Q+G60t1rqm8GFb74h2+MpkZkwWgD6RS3KOvd7gHVi9/Bm6jududz"/>
+        <property name="jwtExpiration" value="86400000"/>
+        <property name="resetPasswordExpiration" value="600000"/>
+    </bean>
+
     <tx:annotation-driven transaction-manager="transactionManager" />
     <bean id="transactionManager"
           class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/css/**"/>
+            <mvc:exclude-mapping path="/images/**"/>
+            <mvc:exclude-mapping path="/scripts/**"/>
+            <mvc:exclude-mapping path="/fonts/**"/>
+            <mvc:exclude-mapping path="/vendor/**"/>
+            <mvc:exclude-mapping path="/auth/**"/>
+            <bean class="com.ht.configs.AuthInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
     <!-- Beans for environment variables -->
 </beans>

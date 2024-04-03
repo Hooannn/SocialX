@@ -13,9 +13,8 @@ import java.util.UUID;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(generator = "uuid-hibernate-generator")
-    @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "email", unique = true)
     private String email;
@@ -38,6 +37,15 @@ public class User {
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
+    @Column(name = "date_of_birth")
+    private Date dateOfBirth;
+
+    @Column(name = "sex")
+    private boolean sex; // 0 is male, 1 is female
+
+    @Column(name = "address", columnDefinition = "TEXT")
+    private String address;
+
     @Column(name = "disabled", nullable = false)
     private boolean disabled;
 
@@ -48,7 +56,7 @@ public class User {
     public User() {
     }
 
-    public User(UUID id, String email, String password, String firstName, String lastName, String avatar, String resetPasswordToken, Date createdAt, boolean disabled, UserRole role) {
+    public User(Long id, String email, String password, String firstName, String lastName, String avatar, String resetPasswordToken, Date createdAt, Date dateOfBirth, boolean sex, String address, boolean disabled, UserRole role) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -57,15 +65,18 @@ public class User {
         this.avatar = avatar;
         this.resetPasswordToken = resetPasswordToken;
         this.createdAt = createdAt;
+        this.dateOfBirth = dateOfBirth;
+        this.sex = sex;
+        this.address = address;
         this.disabled = disabled;
         this.role = role;
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -139,6 +150,30 @@ public class User {
 
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public boolean isSex() {
+        return sex;
+    }
+
+    public void setSex(boolean sex) {
+        this.sex = sex;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     @PrePersist

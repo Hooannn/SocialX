@@ -10,9 +10,8 @@ import java.util.UUID;
 @Table(name = "notifications")
 public class Notification {
     @Id
-    @GeneratedValue(generator = "uuid-hibernate-generator")
-    @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -35,7 +34,7 @@ public class Notification {
     public Notification() {
     }
 
-    public Notification(UUID id, User user, String content, boolean status, Date createdAt) {
+    public Notification(Long id, User user, String content, boolean status, Date createdAt) {
         this.id = id;
         this.user = user;
         this.content = content;
@@ -43,11 +42,11 @@ public class Notification {
         this.createdAt = createdAt;
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
