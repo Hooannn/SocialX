@@ -11,9 +11,8 @@ import java.util.UUID;
 @Table(name = "posts")
 public class Post {
     @Id
-    @GeneratedValue(generator = "uuid-hibernate-generator")
-    @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
@@ -42,7 +41,7 @@ public class Post {
     public Post() {
     }
 
-    public Post(UUID id, String content, String title, User user, boolean status, Date createdAt, List<PostFile> files) {
+    public Post(Long id, String content, String title, User user, boolean status, Date createdAt, List<PostFile> files) {
         this.id = id;
         this.content = content;
         this.title = title;
@@ -52,11 +51,11 @@ public class Post {
         this.files = files;
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

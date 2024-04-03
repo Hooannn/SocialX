@@ -10,9 +10,8 @@ import java.util.UUID;
 @Table(name = "comments")
 public class Comment {
     @Id
-    @GeneratedValue(generator = "uuid-hibernate-generator")
-    @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -36,7 +35,7 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(UUID id, User user, Post post, String content, Date createdAt) {
+    public Comment(Long id, User user, Post post, String content, Date createdAt) {
         this.id = id;
         this.user = user;
         this.post = post;
@@ -44,11 +43,11 @@ public class Comment {
         this.createdAt = createdAt;
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

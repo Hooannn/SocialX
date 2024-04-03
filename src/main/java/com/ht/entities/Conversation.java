@@ -12,9 +12,8 @@ import java.util.UUID;
 })
 public class Conversation {
     @Id
-    @GeneratedValue(generator = "uuid-hibernate-generator")
-    @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "uid_1", nullable = false)
@@ -30,18 +29,18 @@ public class Conversation {
     public Conversation() {
     }
 
-    public Conversation(UUID id, User user1, User user2, Date createdAt) {
+    public Conversation(Long id, User user1, User user2, Date createdAt) {
         this.id = id;
         this.user1 = user1;
         this.user2 = user2;
         this.createdAt = createdAt;
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
