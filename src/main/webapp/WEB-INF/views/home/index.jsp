@@ -33,7 +33,7 @@
 <!-- loader END -->
 <!-- Wrapper Start -->
 <div class="wrapper">
-    <div class="iq-sidebar  sidebar-default ">
+    <div class="iq-sidebar sidebar-default ">
         <div id="sidebar-scrollbar">
             <nav class="iq-sidebar-menu">
                 <ul id="iq-sidebar-toggle" class="iq-menu">

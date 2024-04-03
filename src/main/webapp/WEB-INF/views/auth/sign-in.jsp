@@ -20,6 +20,7 @@
     <link rel="shortcut icon" href="images/favicon.ico" />
     <link rel="stylesheet" href="css/libs.min.css">
     <link rel="stylesheet" href="css/socialv.css?v=4.0.0">
+    <link rel="stylesheet" href="css/overwrite/auth-page.css">
     <link rel="stylesheet" href="vendor/@fortawesome/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="vendor/remixicon/fonts/remixicon.css">
     <link rel="stylesheet" href="vendor/vanillajs-datepicker/dist/css/datepicker.min.css">

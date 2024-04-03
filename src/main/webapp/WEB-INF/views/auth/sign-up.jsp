@@ -12,14 +12,15 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <base href="${pageContext.request.contextPath}/" />
+    <base href="${pageContext.request.contextPath}/"/>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>SocialX | Đăng ký</title>
 
-    <link rel="shortcut icon" href="images/favicon.ico" />
+    <link rel="shortcut icon" href="images/favicon.ico"/>
     <link rel="stylesheet" href="css/libs.min.css">
     <link rel="stylesheet" href="css/socialv.css?v=4.0.0">
+    <link rel="stylesheet" href="css/overwrite/auth-page.css">
     <link rel="stylesheet" href="vendor/@fortawesome/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="vendor/remixicon/fonts/remixicon.css">
     <link rel="stylesheet" href="vendor/vanillajs-datepicker/dist/css/datepicker.min.css">
@@ -48,9 +49,10 @@
             <div class="row no-gutters">
                 <div class="col-md-6 text-center pt-5">
                     <div class="sign-in-detail text-white">
-                        <a class="sign-in-logo mb-5" href="#"><img src="images/logo-full.png" class="img-fluid" alt="logo"></a>
+                        <a class="sign-in-logo mb-5" href="#"><img src="images/logo-full.png" class="img-fluid"
+                                                                   alt="logo"></a>
                         <div class="sign-slider overflow-hidden ">
-                            <ul  class="swiper-wrapper list-inline m-0 p-0 ">
+                            <ul class="swiper-wrapper list-inline m-0 p-0 ">
                                 <li class="swiper-slide">
                                     <img src="images/login/1.png" class="img-fluid mb-4" alt="logo">
                                     <h4 class="mb-1 text-white">Tìm bạn mới</h4>
@@ -59,7 +61,8 @@
                                 <li class="swiper-slide">
                                     <img src="images/login/2.png" class="img-fluid mb-4" alt="logo">
                                     <h4 class="mb-1 text-white">Kết nối với thế giới</h4>
-                                    <p>Truy cập vào mạng lưới xã hội để kết nối với những người ở khắp nơi trên thế giới.</p>
+                                    <p>Truy cập vào mạng lưới xã hội để kết nối với những người ở khắp nơi trên thế
+                                        giới.</p>
                                 </li>
                                 <li class="swiper-slide">
                                     <img src="images/login/3.png" class="img-fluid mb-4" alt="logo">
@@ -78,45 +81,55 @@
                             <c:if test="${not empty errorMessage}">
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     <strong>Lỗi!</strong> <span>${errorMessage}</span>
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
                                 </div>
                             </c:if>
                             <div class="d-flex gap-md-1">
                                 <div class="form-group col-6">
                                     <label class="form-label" for="lastNameInput">Họ</label>
-                                    <form:input path="lastName" type="text" class="form-control mb-0" id="lastNameInput" placeholder="Nhập họ"/>
-                                    <form:errors path="lastName" cssClass="text-danger text-sm-center" />
+                                    <form:input path="lastName" type="text" class="form-control mb-0" id="lastNameInput"
+                                                placeholder="Nhập họ"/>
+                                    <form:errors path="lastName" cssClass="text-danger text-sm-center"/>
                                 </div>
                                 <div class="form-group col-6">
                                     <label class="form-label" for="firstNameInput">Tên</label>
-                                    <form:input path="firstName" type="text" class="form-control mb-0" id="firstNameInput" placeholder="Nhập tên"/>
-                                    <form:errors path="firstName" cssClass="text-danger text-sm-center" />
+                                    <form:input path="firstName" type="text" class="form-control mb-0"
+                                                id="firstNameInput" placeholder="Nhập tên"/>
+                                    <form:errors path="firstName" cssClass="text-danger text-sm-center"/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="exampleInputEmail2">Email</label>
-                                <form:input path="email" type="email" class="form-control mb-0" id="exampleInputEmail2" placeholder="Nhập email"/>
-                                <form:errors path="email" cssClass="text-danger text-sm-center" />
+                                <form:input path="email" type="email" class="form-control mb-0" id="exampleInputEmail2"
+                                            placeholder="Nhập email"/>
+                                <form:errors path="email" cssClass="text-danger text-sm-center"/>
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="exampleInputPassword1">Mật khẩu</label>
-                                <form:input path="password" type="password" class="form-control mb-0" id="exampleInputPassword1" placeholder="Nhập mật khẩu"/>
-                                <form:errors path="password" cssClass="text-danger text-sm-center" />
+                                <form:input path="password" type="password" class="form-control mb-0"
+                                            id="exampleInputPassword1" placeholder="Nhập mật khẩu"/>
+                                <form:errors path="password" cssClass="text-danger text-sm-center"/>
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="exampleInputCfPassword1">Nhập lại mật khẩu</label>
-                                <form:input path="confirmPassword" type="password" class="form-control mb-0" id="exampleInputCfPassword1" placeholder="Nhập lại mật khẩu"/>
-                                <form:errors path="confirmPassword" cssClass="text-danger text-sm-center" />
+                                <form:input path="confirmPassword" type="password" class="form-control mb-0"
+                                            id="exampleInputCfPassword1" placeholder="Nhập lại mật khẩu"/>
+                                <form:errors path="confirmPassword" cssClass="text-danger text-sm-center"/>
                             </div>
                             <div class="d-inline-block w-100">
                                 <div class="form-check d-inline-block mt-2 pt-1">
-                                    <input type="checkbox" class="form-check-input" id="customCheck1">
-                                    <label class="form-check-label" for="customCheck1">Tôi đồng ý  <a href="#">Điều khoản và điều kiện sử dụng</a></label>
+                                    <input type="checkbox" class="form-check-input" id="agreeCheckbox" onchange="toggleSubmit()">
+                                    <label class="form-check-label" for="agreeCheckbox">Tôi đồng ý <a href="#">Điều
+                                        khoản và điều kiện sử dụng</a></label>
                                 </div>
-                                <button type="submit" class="btn btn-primary float-end">Đăng ký</button>
+                                <button type="submit" id="signUpBtn" class="btn btn-primary float-end" disabled>Đăng
+                                    ký
+                                </button>
                             </div>
                             <div class="sign-info">
-                                <span class="dark-color d-inline-block line-height-2">Đã có tài khoản ? <a href="auth/sign-in">Đăng nhập</a></span>
+                                <span class="dark-color d-inline-block line-height-2">Đã có tài khoản ? <a
+                                        href="auth/sign-in">Đăng nhập</a></span>
                                 <ul class="iq-social-media">
                                     <li><a href="#"><i class="ri-facebook-box-line"></i></a></li>
                                     <li><a href="#"><i class="ri-twitter-line"></i></a></li>
@@ -146,6 +159,13 @@
 <script src="scripts/app.js"></script>
 <script src="vendor/vanillajs-datepicker/distscripts/datepicker.min.js"></script>
 <script src="scripts/lottie.js"></script>
-
+<%-- disable sign up btn if not accept terms --%>
+<script>
+    function toggleSubmit() {
+        const checkBox = document.getElementById("agreeCheckbox");
+        const submitButton = document.getElementById("signUpBtn");
+        submitButton.disabled = !checkBox.checked;
+    }
+</script>
 </body>
 </html>
