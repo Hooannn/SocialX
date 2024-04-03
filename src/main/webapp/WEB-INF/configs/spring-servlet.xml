@@ -18,11 +18,13 @@
 >
     <!-- Beans for resources configurations -->
     <mvc:annotation-driven />
-    <context:component-scan base-package="com.ht.controllers" />
+    <context:component-scan base-package="com.ht.controllers, com.ht.services, com.ht.beans" />
 
     <mvc:resources mapping="/css/**" location="/resources/css/" />
-    <mvc:resources mapping="/image/**" location="/resources/images/" />
-    <mvc:resources mapping="/script/**" location="/resources/scripts/" />
+    <mvc:resources mapping="/images/**" location="/resources/images/" />
+    <mvc:resources mapping="/scripts/**" location="/resources/scripts/" />
+    <mvc:resources mapping="/fonts/**" location="/resources/fonts/" />
+    <mvc:resources mapping="/vendor/**" location="/resources/vendor/" />
 
     <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
         <property name="defaultLocale" value="vi_VN" />
@@ -37,8 +39,8 @@
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="smtp.gmail.com" />
         <property name="port" value="587" />
-        <property name="username" value="a@gmail.com" />
-        <property name="password" value="123" />
+        <property name="username" value="n21dccn038@student.ptithcm.edu.vn" />
+        <property name="password" value="ptwylbcauywmolrq" />
         <property name="javaMailProperties">
             <props>
                 <prop key="mail.smtp.auth">true</prop>
@@ -47,11 +49,12 @@
         </property>
     </bean>
 
+    <!-- From filess.io -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/PTITHCMS1L6"/>
-        <property name="username" value="root"/>
-        <property name="password" value=""/>
+        <property name="url" value="jdbc:mysql://iic.h.filess.io:3306/socialx_mouthleaf"/>
+        <property name="username" value="socialx_mouthleaf"/>
+        <property name="password" value="9372fa6e40dcd6a65b3a7cb1d18c1d8cb2538697"/>
     </bean>
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
@@ -60,6 +63,7 @@
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <prop key="hibernate.show_sql">true</prop>
             </props>
         </property>
