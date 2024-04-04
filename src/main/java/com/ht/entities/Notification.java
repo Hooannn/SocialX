@@ -20,8 +20,14 @@ public class Notification {
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
 
+    @Column(name = "title", nullable = false)
+    private String title;
+
     @Column(name = "image_url")
     private String imageUrl;
+
+    @Column(name = "action_url")
+    private String actionUrl;
 
     @Column(name = "status", nullable = false)
     private boolean status; // 0: unread, 1: read
@@ -37,11 +43,13 @@ public class Notification {
     public Notification() {
     }
 
-    public Notification(Long id, User user, String content, String imageUrl, boolean status, Date createdAt) {
+    public Notification(Long id, User user, String content, String title, String imageUrl, String actionUrl, boolean status, Date createdAt) {
         this.id = id;
         this.user = user;
         this.content = content;
+        this.title = title;
         this.imageUrl = imageUrl;
+        this.actionUrl = actionUrl;
         this.status = status;
         this.createdAt = createdAt;
     }
@@ -94,13 +102,31 @@ public class Notification {
         this.imageUrl = imageUrl;
     }
 
+    public String getActionUrl() {
+        return actionUrl;
+    }
+
+    public void setActionUrl(String actionUrl) {
+        this.actionUrl = actionUrl;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     @Override
     public String toString() {
         return "Notification{" +
                 "id=" + id +
                 ", user=" + user +
                 ", content='" + content + '\'' +
+                ", title='" + title + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
+                ", actionUrl='" + actionUrl + '\'' +
                 ", status=" + status +
                 ", createdAt=" + createdAt +
                 '}';

@@ -7,6 +7,7 @@ import com.ht.services.PostService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,27 +30,16 @@ public class HomeController {
     }
 
     @GetMapping
-    public String index(@RequestAttribute("user") User authUser) {
+    public String index(@RequestAttribute("user") User authUser, ModelMap model) {
         var friends = friendService.findAllByUserId(authUser.getId());
         var posts = postService.findAllByUserFriends(authUser.getId());
         var notifications = notificationService.findAllByUserId(authUser.getId());
         var friendRequests = friendService.findAllRequestByUserId(authUser.getId());
 
-        friends.forEach(friend -> {
-            System.out.println(friend);
-        });
-
-        posts.forEach(post -> {
-            System.out.println(post);
-        });
-
-        notifications.forEach(notification -> {
-            System.out.println(notification);
-        });
-
-        friendRequests.forEach(friendRequest -> {
-            System.out.println(friendRequest);
-        });
+        model.addAttribute("friends", friends);
+        model.addAttribute("posts", posts);
+        model.addAttribute("notifications", notifications);
+        model.addAttribute("friendRequests", friendRequests);
 
         return "home/index";
     }
