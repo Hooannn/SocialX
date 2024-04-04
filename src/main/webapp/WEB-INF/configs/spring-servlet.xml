@@ -52,9 +52,9 @@
     <!-- From filess.io -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://iic.h.filess.io:3306/socialx_mouthleaf"/>
-        <property name="username" value="socialx_mouthleaf"/>
-        <property name="password" value="9372fa6e40dcd6a65b3a7cb1d18c1d8cb2538697"/>
+        <property name="url" value="jdbc:mysql://sql6.freesqldatabase.com:3306/sql6696750"/>
+        <property name="username" value="sql6696750"/>
+        <property name="password" value="jSLzhj5dPl"/>
     </bean>
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">

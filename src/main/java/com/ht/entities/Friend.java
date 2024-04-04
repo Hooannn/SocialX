@@ -70,6 +70,16 @@ public class Friend {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
+
+    @Override
+    public String toString() {
+        return "Friend{" +
+                "fromUser=" + fromUser +
+                ", toUser=" + toUser +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }
 
 class FriendId implements Serializable {

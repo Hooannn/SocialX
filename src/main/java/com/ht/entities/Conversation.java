@@ -72,4 +72,14 @@ public class Conversation {
     public void prePersist() {
         if (createdAt == null) createdAt = new Date();
     }
+
+    @Override
+    public String toString() {
+        return "Conversation{" +
+                "id=" + id +
+                ", user1=" + user1 +
+                ", user2=" + user2 +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }

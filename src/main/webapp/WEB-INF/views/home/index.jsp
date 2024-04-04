@@ -12,7 +12,7 @@
     <base href="${pageContext.request.contextPath}/" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>SocialV | Responsive Bootstrap 5 Admin Dashboard Template</title>
+    <title>SocialX | Trang chủ</title>
 
     <link rel="shortcut icon" href="images/favicon.ico" />
     <link rel="stylesheet" href="css/libs.min.css">
@@ -43,7 +43,7 @@
                         </a>
                     </li>
                     <li class="">
-                        <a href="../app/profile.html" class=" ">
+                        <a href="profile" class=" ">
                             <i class="las la-user"></i><span>Profile</span>
                         </a>
                     </li>
@@ -81,7 +81,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav  ms-auto navbar-list">
                         <li>
-                            <a href="../dashboard/index.html" class="  d-flex align-items-center">
+                            <a href="home" class="  d-flex align-items-center">
                                 <i class="ri-home-line"></i>
                             </a>
                         </li>
@@ -486,7 +486,7 @@
                     <div id="post-modal-data" class="card card-block card-stretch card-height">
                         <div class="card-header d-flex justify-content-between">
                             <div class="header-title">
-                                <h4 class="card-title">Create Post</h4>
+                                <h4 class="card-title">Tạo bài đăng mới</h4>
                             </div>
                         </div>
                         <div class="card-body">
@@ -494,44 +494,16 @@
                                 <div class="user-img">
                                     <img src="images/user/1.jpg" alt="userimg" class="avatar-60 rounded-circle">
                                 </div>
-                                <form class="post-text ms-3 w-100 "  data-bs-toggle="modal" data-bs-target="#post-modal" action="javascript:void();">
-                                    <input type="text" class="form-control rounded" placeholder="Write something here..." style="border:none;">
+                                <form class="post-text ms-3 w-100 " action="post/create">
+                                    <input id="postInput" type="text" class="form-control rounded" placeholder="Bạn đang nghĩ gì..." style="border:none;">
                                 </form>
                             </div>
                             <hr>
                             <ul class=" post-opt-block d-flex list-inline m-0 p-0 flex-wrap">
                                 <li class="me-3 mb-md-0 mb-2">
-                                    <a href="#" class="btn btn-soft-primary">
-                                        <img src="images/small/07.png" alt="icon" class="img-fluid me-2"> Photo/Video
+                                    <a href="post/create" class="btn btn-soft-primary">
+                                        <img src="images/small/07.png" alt="icon" class="img-fluid me-2"> Ảnh/Video
                                     </a>
-                                </li>
-                                <li class="me-3 mb-md-0 mb-2">
-                                    <a href="#" class="btn btn-soft-primary">
-                                        <img src="images/small/08.png" alt="icon" class="img-fluid me-2"> Tag Friend
-                                    </a>
-                                </li>
-                                <li class="me-3">
-                                    <a href="#" class="btn btn-soft-primary">
-                                        <img src="images/small/09.png" alt="icon" class="img-fluid me-2"> Feeling/Activity
-                                    </a>
-                                </li>
-                                <li>
-                                    <button class="btn btn-soft-primary">
-                                        <div class="card-header-toolbar d-flex align-items-center">
-                                            <div class="dropdown">
-                                                <div class="dropdown-toggle" id="post-option"   data-bs-toggle="dropdown">
-                                                    <i class="ri-more-fill"></i>
-                                                </div>
-                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="post-option" style="">
-                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#post-modal">Check in</a>
-                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#post-modal">Live Video</a>
-                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#post-modal">Gif</a>
-                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#post-modal">Watch Party</a>
-                                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#post-modal">Play with Friend</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </button>
                                 </li>
                             </ul>
                         </div>
@@ -539,7 +511,7 @@
                             <div class="modal-dialog   modal-fullscreen-sm-down">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="post-modalLabel">Create Post</h5>
+                                        <h5 class="modal-title" id="post-modalLabel">Tạo bài đăng mới</h5>
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="ri-close-fill"></i></button>
                                     </div>
                                     <div class="modal-body">
@@ -548,7 +520,7 @@
                                                 <img src="images/user/1.jpg" alt="userimg" class="avatar-60 rounded-circle img-fluid">
                                             </div>
                                             <form class="post-text ms-3 w-100" action="javascript:void();">
-                                                <input type="text" class="form-control rounded" placeholder="Write something here..." style="border:none;">
+                                                <input type="text" class="form-control rounded" placeholder="Bạn đang nghĩ gì..." style="border:none;">
                                             </form>
                                         </div>
                                         <hr>
@@ -1730,7 +1702,11 @@
 <script src="scripts/app.js"></script>
 <script src="vendor/vanillajs-datepicker/dist/scripts/datepicker.min.js"></script>
 <script src="scripts/lottie.js"></script>
-
+<script>
+    document.getElementById("postInput").addEventListener("click", function() {
+        window.location.href = "post/create";
+    });
+</script>
 
 <!-- offcanvas start -->
 

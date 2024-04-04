@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -30,8 +31,14 @@ public class Post {
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private List<PostFile> files;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<PostFile> files;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Comment> comments;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Like> likes;
 
     @PrePersist
     public void prePersist() {
@@ -41,7 +48,7 @@ public class Post {
     public Post() {
     }
 
-    public Post(Long id, String content, String title, User user, boolean status, Date createdAt, List<PostFile> files) {
+    public Post(Long id, String content, String title, User user, boolean status, Date createdAt, Set<PostFile> files, Set<Comment> comments, Set<Like> likes) {
         this.id = id;
         this.content = content;
         this.title = title;
@@ -49,6 +56,8 @@ public class Post {
         this.status = status;
         this.createdAt = createdAt;
         this.files = files;
+        this.comments = comments;
+        this.likes = likes;
     }
 
     public Long getId() {
@@ -99,11 +108,42 @@ public class Post {
         this.createdAt = createdAt;
     }
 
-    public List<PostFile> getFiles() {
+    public Set<PostFile> getFiles() {
         return files;
     }
 
-    public void setFiles(List<PostFile> files) {
+    public void setFiles(Set<PostFile> files) {
         this.files = files;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public Set<Like> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Set<Like> likes) {
+        this.likes = likes;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", content='" + content + '\'' +
+                ", title='" + title + '\'' +
+                ", user=" + user +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                ", files=" + files +
+                ", comments=" + comments +
+                ", likes=" + likes +
+                '}';
     }
 }

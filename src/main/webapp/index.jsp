@@ -9,6 +9,6 @@
     <style></style>
 </head>
 <body>
-<h1 class="title">Hello from SocialX</h1>
+<h1 class="title">Landing page should be here</h1>
 </body>
 </html>

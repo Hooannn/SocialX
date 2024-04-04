@@ -182,4 +182,23 @@ public class User {
         if (createdAt == null) createdAt = new Date();
         if (avatar == null) avatar = "https://cdn-icons-png.flaticon.com/512/6596/6596121.png";
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", resetPasswordToken='" + resetPasswordToken + '\'' +
+                ", createdAt=" + createdAt +
+                ", dateOfBirth=" + dateOfBirth +
+                ", sex=" + sex +
+                ", address='" + address + '\'' +
+                ", disabled=" + disabled +
+                ", role=" + role +
+                '}';
+    }
 }

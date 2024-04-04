@@ -82,4 +82,16 @@ public class PostFile {
     public void setPost(Post post) {
         this.post = post;
     }
+
+    @Override
+    public String toString() {
+        return "PostFile{" +
+                "id='" + id + '\'' +
+                ", fileName='" + fileName + '\'' +
+                ", mimeType='" + mimeType + '\'' +
+                ", fileSize=" + fileSize +
+                ", fileUrl='" + fileUrl + '\'' +
+                ", post=" + post +
+                '}';
+    }
 }
