@@ -18,6 +18,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // Logic to check cookies before handling the request
         System.out.println("AuthInterceptor.preHandle called");
+        String contextPath = request.getContextPath() + "/";
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -26,7 +27,7 @@ public class AuthInterceptor implements HandlerInterceptor {
                         String accessToken = cookie.getValue();
                         boolean isTokenValid = jwtService.isTokenValid(accessToken);
                         if (!isTokenValid) {
-                            response.sendRedirect("auth/sign-in");
+                            response.sendRedirect(contextPath + "auth/sign-in");
                             return false; // Stop processing the request
                         }
                         User user = jwtService.extractUser(accessToken);
@@ -34,13 +35,13 @@ public class AuthInterceptor implements HandlerInterceptor {
                         return true; // Continue processing the request
                     } catch (Exception e) {
                         System.out.println("AuthInterceptor.preHandle: " + e.toString());
-                        response.sendRedirect("auth/sign-in");
+                        response.sendRedirect(contextPath + "auth/sign-in");
                         return false; // Stop processing the request
                     }
                 }
             }
         }
-        response.sendRedirect("auth/sign-in");
+        response.sendRedirect(contextPath + "auth/sign-in");
         return false; // Stop processing the request
     }
 }
