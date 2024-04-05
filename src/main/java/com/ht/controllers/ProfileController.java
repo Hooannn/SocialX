@@ -32,6 +32,7 @@ public class ProfileController {
     ) {
         User targetUser = userService.getUserById(userId);
         if (targetUser == null) {
+            // TODO: show error message USER NOT FOUND
             return "redirect:/home";
         }
 
