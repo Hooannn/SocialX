@@ -140,7 +140,7 @@
 
     <build>
         <finalName>SocialX</finalName>
-        <!-- Uncomment the following code to enable asynchronous featuresEg: sleep 5s when upload a file, etc.) -->
+        <!-- Uncomment the following code to enable asynchronous features (Eg: sleep 5s when upload a file, etc.) -->
         <!--<plugins>-->
         <!--    <plugin>-->
         <!--        <groupId>org.apache.maven.plugins</groupId>-->
