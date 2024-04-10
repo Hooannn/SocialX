@@ -176,6 +176,10 @@ public class User {
         this.address = address;
     }
 
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
     @PrePersist
     public void prePersist() {
         if (role == null) role = UserRole.USER;

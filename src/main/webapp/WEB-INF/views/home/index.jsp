@@ -114,9 +114,9 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="d-flex align-items-center">
-                                                                    <a href="javascript:void();"
+                                                                    <a href="friend/accept/${user.id}?redirect=/home"
                                                                        class="me-3 btn btn-primary rounded">Đồng ý</a>
-                                                                    <a href="javascript:void();"
+                                                                    <a href="friend/decline/${user.id}?redirect=/home"
                                                                        class="me-3 btn btn-secondary rounded">Xoá</a>
                                                                 </div>
                                                             </div>
@@ -435,7 +435,7 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="user-img">
-                                        <img src="images/user/1.jpg" alt="userimg" class="avatar-60 rounded-circle">
+                                        <img src="${requestScope["user"]["avatar"]}" alt="userimg" class="avatar-60 rounded-circle">
                                     </div>
                                     <form class="post-text ms-3 w-100 " action="post/create">
                                         <input id="postInput" type="text" class="form-control rounded"
