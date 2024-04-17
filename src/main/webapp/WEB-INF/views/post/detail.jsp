@@ -6,15 +6,17 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jstl/fmt_rt" prefix="f" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!doctype html>
 <html lang="en">
 <head>
     <base href="${pageContext.request.contextPath}/"/>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>SocialX | Trang chủ</title>
+    <title>SocialX | Tạo bài đăng</title>
 
     <link rel="shortcut icon" href="images/favicon.ico"/>
     <link rel="stylesheet" href="css/libs.min.css">
@@ -95,9 +97,7 @@
                                 </div>
                             </c:if>
                             <a href="#" class="dropdown-toggle" id="group-drop" data-bs-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false">
-                                <i class="ri-group-line"></i>
-                            </a>
+                               aria-haspopup="true" aria-expanded="false"><i class="ri-group-line"></i></a>
                             <div class="sub-drop sub-drop-large dropdown-menu" aria-labelledby="group-drop">
                                 <div class="card shadow-none m-0">
                                     <div class="card-header d-flex justify-content-between bg-primary">
@@ -255,237 +255,145 @@
         </div>
     </div>
 
-    <div id="content-page" class="content-page">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 row m-0 p-0">
-                    <div class="col-sm-12">
-                        <div id="post-modal-data" class="card card-block card-stretch card-height">
-                            <div class="card-header d-flex justify-content-between">
-                                <div class="header-title">
-                                    <h4 class="card-title">Tạo bài đăng mới</h4>
-                                </div>
+    <div class="container">
+        <div class="col-sm-12 my-4">
+            <div class="card card-block card-stretch card-height">
+                <div class="card-body">
+                    <div class="user-post-data">
+                        <div class="d-flex justify-content-between">
+                            <div class="me-3">
+                                <img class="rounded-circle img-fluid"
+                                     src=${post.user.avatar} alt="">
                             </div>
-                            <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="user-img">
-                                        <img src="${requestScope["user"]["avatar"]}" alt="userimg"
-                                             class="avatar-60 rounded-circle">
+                            <div class="w-100">
+                                <div class="d-flex justify-content-between">
+                                    <div class="">
+                                        <h5 class="mb-0 d-inline-block">
+                                            <a class="text-black-50"
+                                               href="profile/${post.user.id}">${post.user.firstName} ${post.user.lastName}</a>
+                                        </h5>
+                                        <span class="mb-0 d-inline-block"></span>
+                                        <p class="mb-0 text-primary">${post.createdAt}</p>
                                     </div>
-                                    <form class="post-text ms-3 w-100 " action="post/create">
-                                        <input id="postInput" type="text" class="form-control rounded"
-                                               placeholder="Bạn đang nghĩ gì..." style="border:none;">
-                                    </form>
+                                    <div class="card-post-toolbar">
+                                    </div>
                                 </div>
-                                <hr>
-                                <ul class=" post-opt-block d-flex list-inline m-0 p-0 flex-wrap">
-                                    <li class="me-3 mb-md-0 mb-2">
-                                        <a href="post/create" class="btn btn-soft-primary">
-                                            <img src="images/small/07.png" alt="icon" class="img-fluid me-2"> Ảnh/Video
-                                        </a>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                     </div>
-                    <c:choose>
-                        <c:when test="${not empty posts}">
-                            <c:forEach var="post" items="${posts}">
-                                <c:if test="${not empty post}">
-                                    <div class="col-sm-12">
-                                        <div class="card card-block card-stretch card-height">
-                                            <div class="card-body">
-                                                <div class="user-post-data">
-                                                    <div class="d-flex justify-content-between">
-                                                        <div class="me-3">
-                                                            <img class="rounded-circle img-fluid"
-                                                                 src=${post.user.avatar} alt="">
+                    <div>
+                        <h5 class="my-2">${post.title}</h5>
+                        <p>${post.content}</p>
+                    </div>
+                    <div class="user-post">
+                        <!--
+                        <div class="d-grid grid-rows-2 grid-flow-col gap-3">
+                            <div class="row-span-2 row-span-md-1">
+                                <img src="images/page-img/p2.jpg" alt="post-image" class="img-fluid rounded w-100">
+                            </div>
+                            <div class="row-span-1">
+                                <img src="images/page-img/p1.jpg" alt="post-image" class="img-fluid rounded w-100">
+                            </div>
+                            <div class="row-span-1 ">
+                                <img src="images/page-img/p3.jpg" alt="post-image" class="img-fluid rounded w-100">
+                            </div>
+                        </div>
+                        -->
+                    </div>
+                    <div class="comment-area mt-3">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                            <div class="like-block position-relative d-flex align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <div class="like-data">
+                                        <c:choose>
+                                            <c:when test="${not empty post.likes}">
+                                                <c:forEach var="like" items="${post.likes}">
+                                                    <c:if test="${like.user.id eq requestScope['user']['id']}">
+                                                        <div class="like-button">
+                                                            <a href="post/${post.id}/unlike?redirect=/post/${post.id}">
+                                                                <button type="button"
+                                                                        class="btn btn-link text-primary">
+                                                                    <i class="far fa-thumbs-up"></i>
+                                                                </button>
+                                                            </a>
                                                         </div>
-                                                        <div class="w-100">
-                                                            <div class="d-flex justify-content-between">
-                                                                <div class="">
-                                                                    <h5 class="mb-0 d-inline-block">
-                                                                        <a class="text-black-50"
-                                                                           href="profile/${post.user.id}">${post.user.firstName} ${post.user.lastName}</a>
-                                                                    </h5>
-                                                                    <span class="mb-0 d-inline-block"></span>
-                                                                    <p class="mb-0 text-primary">${post.createdAt}</p>
-                                                                </div>
-                                                                <div class="card-post-toolbar">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    </c:if>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="like-button">
+                                                    <a href="post/${post.id}/like?redirect=/post/${post.id}">
+                                                        <button type="button"
+                                                                class="btn btn-link text-secondary">
+                                                            <i class="far fa-thumbs-up"></i>
+                                                        </button>
+                                                    </a>
                                                 </div>
-                                                <div>
-                                                    <h5 class="my-2">${post.title}</h5>
-                                                    <p>${post.content}</p>
-                                                </div>
-                                                <div class="user-post">
-                                                    <!--
-                                                    <div class="d-grid grid-rows-2 grid-flow-col gap-3">
-                                                        <div class="row-span-2 row-span-md-1">
-                                                            <img src="images/page-img/p2.jpg" alt="post-image" class="img-fluid rounded w-100">
-                                                        </div>
-                                                        <div class="row-span-1">
-                                                            <img src="images/page-img/p1.jpg" alt="post-image" class="img-fluid rounded w-100">
-                                                        </div>
-                                                        <div class="row-span-1 ">
-                                                            <img src="images/page-img/p3.jpg" alt="post-image" class="img-fluid rounded w-100">
-                                                        </div>
-                                                    </div>
-                                                    -->
-                                                </div>
-                                                <div class="comment-area mt-3">
-                                                    <div class="d-flex justify-content-between align-items-center flex-wrap">
-                                                        <div class="like-block position-relative d-flex align-items-center">
-                                                            <div class="d-flex align-items-center">
-                                                                <div class="like-data">
-                                                                    <c:choose>
-                                                                        <c:when test="${not empty post.likes}">
-                                                                            <c:forEach var="like" items="${post.likes}">
-                                                                                <c:if test="${like.user.id eq requestScope['user']['id']}">
-                                                                                    <div class="like-button">
-                                                                                        <a href="post/${post.id}/unlike?redirect=/home">
-                                                                                            <button type="button"
-                                                                                                    class="btn btn-link text-primary">
-                                                                                                <i class="far fa-thumbs-up"></i>
-                                                                                            </button>
-                                                                                        </a>
-                                                                                    </div>
-                                                                                </c:if>
-                                                                            </c:forEach>
-                                                                        </c:when>
-                                                                        <c:otherwise>
-                                                                            <div class="like-button">
-                                                                                <a href="post/${post.id}/like?redirect=/home">
-                                                                                    <button type="button"
-                                                                                            class="btn btn-link text-secondary">
-                                                                                        <i class="far fa-thumbs-up"></i>
-                                                                                    </button>
-                                                                                </a>
-                                                                            </div>
-                                                                        </c:otherwise>
-                                                                    </c:choose>
-                                                                </div>
-                                                                <div class="total-like-block ms-1 me-3">
-                                                                    <div class="dropdown">
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                    <div class="total-like-block ms-1 me-3">
+                                        <div class="dropdown">
                                                                     <span class="dropdown-toggle"
                                                                           data-bs-toggle="dropdown" aria-haspopup="true"
                                                                           aria-expanded="false" role="button">
                                                                     ${fn:length(post.likes)} lượt thích
                                                                     </span>
-                                                                        <c:if test="${not empty post.likes}">
-                                                                            <div class="dropdown-menu">
-                                                                                <c:forEach var="like"
-                                                                                           items="${post.likes}">
-                                                                                    <c:if test="${not empty like}">
-                                                                                        <a class="dropdown-item"
-                                                                                           href="profile/${like.user.id}">${like.user.firstName} ${like.user.lastName}</a>
-                                                                                    </c:if>
-                                                                                </c:forEach>
-                                                                            </div>
-                                                                        </c:if>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="total-comment-block">
-                                                                <a href="post/${post.id}" class="w-100 text-black-50">
-                                                                        ${fn:length(post.comments)} lượt bình luận
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="share-block d-flex align-items-center feather-icon mt-2 mt-md-0">
-                                                            <a href="javascript:void();" data-bs-toggle="offcanvas"
-                                                               data-bs-target="#share-btn" aria-controls="share-btn"><i
-                                                                    class="ri-share-line"></i>
-                                                                <span class="ms-1">Chia sẻ</span></a>
-                                                        </div>
-                                                    </div>
-                                                    <hr>
-                                                    <ul class="post-comments list-inline p-0 m-0">
-                                                        <c:forEach var="comment" items="${post.comments}">
-                                                            <c:if test="${not empty comment}">
-                                                                <li class="mb-2">
-                                                                    <div class="d-flex">
-                                                                        <div class="user-img">
-                                                                            <img src="${comment.user.avatar}"
-                                                                                 alt="userimg"
-                                                                                 class="avatar-35 rounded-circle img-fluid">
-                                                                        </div>
-                                                                        <div class="comment-data-block ms-3">
-                                                                            <div class="d-flex gap-md-1">
-                                                                                <div class="fw-bold">${comment.user.firstName} ${comment.user.lastName}</div>
-                                                                                <div class="d-flex flex-wrap align-items-center comment-activity fs-6">
-                                                                                    <small>${comment.createdAt}</small>
-                                                                                </div>
-                                                                            </div>
-                                                                            <p class="mb-0">${comment.content}</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-                                                            </c:if>
-                                                        </c:forEach>
-                                                    </ul>
-                                                    <form class="comment-text d-flex align-items-center mt-3">
-                                                        <a href="post/${post.id}" class="w-100">
-                                                            <input type="text"
-                                                                   class="form-control rounded"
-                                                                   placeholder="Bình luận về bài viết này...">
-                                                        </a>
-                                                    </form>
+                                            <c:if test="${not empty post.likes}">
+                                                <div class="dropdown-menu">
+                                                    <c:forEach var="like"
+                                                               items="${post.likes}">
+                                                        <c:if test="${not empty like}">
+                                                            <a class="dropdown-item"
+                                                               href="profile/${like.user.id}">${like.user.firstName} ${like.user.lastName}</a>
+                                                        </c:if>
+                                                    </c:forEach>
                                                 </div>
-                                            </div>
+                                            </c:if>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="total-comment-block">
+                                    ${fn:length(post.comments)} lượt bình luận
+                                </div>
+                            </div>
+                            <div class="share-block d-flex align-items-center feather-icon mt-2 mt-md-0">
+                                <a href="javascript:void();" data-bs-toggle="offcanvas"
+                                   data-bs-target="#share-btn" aria-controls="share-btn"><i
+                                        class="ri-share-line"></i>
+                                    <span class="ms-1">Chia sẻ</span></a>
+                            </div>
+                        </div>
+                        <hr>
+                        <ul class="post-comments list-inline p-0 m-0">
+                            <c:forEach var="comment" items="${post.comments}">
+                                <c:if test="${not empty comment}">
+                                    <li class="mb-2">
+                                        <div class="d-flex">
+                                            <div class="user-img">
+                                                <img src="${comment.user.avatar}"
+                                                     alt="userimg"
+                                                     class="avatar-35 rounded-circle img-fluid">
+                                            </div>
+                                            <div class="comment-data-block ms-3">
+                                                <div class="d-flex gap-md-1">
+                                                    <div class="fw-bold">${comment.user.firstName} ${comment.user.lastName}</div>
+                                                    <div class="d-flex flex-wrap align-items-center comment-activity fs-6">
+                                                        <small>${comment.createdAt}</small>
+                                                    </div>
+                                                </div>
+                                                <p class="mb-0">${comment.content}</p>
+                                            </div>
+                                        </div>
+                                    </li>
                                 </c:if>
                             </c:forEach>
-                        </c:when>
-                        <c:otherwise>
-                            <div class="text-sm-center mx-auto">
-                                Bảng tin của bạn hiện tại không có bài đăng nào.
-                            </div>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-                <div class="col-lg-4">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between">
-                            <div class="header-title">
-                                <h4 class="card-title">Bạn bè vừa thêm gần đây</h4>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <c:choose>
-                                <c:when test="${not empty friends}">
-                                    <ul class="media-story list-inline m-0 p-0">
-                                        <c:forEach var="friend" items="${friends}">
-                                            <c:if test="${not empty friend}">
-                                                <a href="profile/${friend.id}" class="w-100">
-                                                    <li class="d-flex mb-3 align-items-center active">
-                                                        <img src="${friend.avatar}" alt="story-img"
-                                                             class="rounded-circle img-fluid">
-                                                        <div class="stories-data ms-3">
-                                                            <h5>${friend.firstName} ${friend.lastName}</h5>
-                                                            <p class="mb-0">${friend.sex ? "Nam" : "Nữ"}</p>
-                                                        </div>
-                                                    </li>
-                                                </a>
-                                            </c:if>
-                                        </c:forEach>
-                                    </ul>
-                                    <a href="profile/${requestScope["user"]["id"]}"
-                                       class="btn btn-primary d-block mt-3">Xem tất cả bạn bè</a>
-                                </c:when>
-                                <c:otherwise>
-                                    <div class="text-sm-center mx-auto">
-                                        Bạn chưa có người bạn nào.
-                                    </div>
-                                    <a href="explore/people" class="btn btn-outline-primary d-block mt-3">Tìm kiếm mọi
-                                        người</a>
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
+                        </ul>
+                        <form class="comment-text d-flex align-items-center mt-3">
+                            <input type="text"
+                                   class="form-control rounded"
+                                   placeholder="Bình luận về bài viết này...">
+                        </form>
                     </div>
                 </div>
             </div>
@@ -523,13 +431,7 @@
 <script src="vendor/vanillajs-datepicker/dist/scripts/datepicker.min.js"></script>
 <script src="scripts/lottie.js"></script>
 <script>
-    document.getElementById("postInput").addEventListener("click", function () {
-        window.location.href = "post/create";
-    });
 </script>
-
-<!-- offcanvas start -->
-
 <div class="offcanvas offcanvas-bottom share-offcanvas" tabindex="-1" id="share-btn" aria-labelledby="shareBottomLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="shareBottomLabel">Share</h5>

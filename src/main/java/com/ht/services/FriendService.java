@@ -1,7 +1,6 @@
 package com.ht.services;
 
 import com.ht.entities.Friend;
-import com.ht.entities.Notification;
 import com.ht.entities.User;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -33,6 +31,18 @@ public class FriendService {
             or id in (select fromUser.id from Friend where toUser.id = :userId and status = 1)
         """);
         query.setParameter("userId", userId);
+        return query.list();
+    }
+
+    public List<User> findLatestByUserId(Long userId, int limit) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("""
+            from User where id in (select toUser.id from Friend where fromUser.id = :userId and status = 1)
+            or id in (select fromUser.id from Friend where toUser.id = :userId and status = 1)
+            order by createdAt desc
+        """);
+        query.setParameter("userId", userId);
+        query.setMaxResults(limit);
         return query.list();
     }
 

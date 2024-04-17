@@ -20,27 +20,20 @@ import java.net.URL;
 public class HomeController {
     private final FriendService friendService;
     private final PostService postService;
-    private final NotificationService notificationService;
 
     @Autowired
-    public HomeController(FriendService friendService, PostService postService, NotificationService notificationService) {
+    public HomeController(FriendService friendService, PostService postService) {
         this.friendService = friendService;
         this.postService = postService;
-        this.notificationService = notificationService;
     }
 
     @GetMapping
     public String index(@RequestAttribute("user") User authUser, ModelMap model) {
-        var friends = friendService.findAllByUserId(authUser.getId());
+        var friends = friendService.findLatestByUserId(authUser.getId(), 5);
         var posts = postService.findAllByUserFriends(authUser.getId());
-        var notifications = notificationService.findAllByUserId(authUser.getId());
-        var friendRequests = friendService.findAllRequestByUserId(authUser.getId());
 
         model.addAttribute("friends", friends);
         model.addAttribute("posts", posts);
-        model.addAttribute("notifications", notifications);
-        model.addAttribute("friendRequests", friendRequests);
-
         return "home/index";
     }
 }

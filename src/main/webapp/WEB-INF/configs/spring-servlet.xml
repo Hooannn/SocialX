@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans
-    xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:context="http://www.springframework.org/schema/context"
-    xmlns:mvc="http://www.springframework.org/schema/mvc"
-    xmlns:tx="http://www.springframework.org/schema/tx"
-    xsi:schemaLocation="
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:mvc="http://www.springframework.org/schema/mvc"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns="http://www.springframework.org/schema/beans"
+        xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
@@ -17,30 +17,31 @@
     "
 >
     <!-- Beans for resources configurations -->
-    <mvc:annotation-driven />
-    <context:component-scan base-package="com.ht.controllers, com.ht.services, com.ht.beans, com.ht.dtos, com.ht.configs, com.ht.utils" />
+    <mvc:annotation-driven/>
+    <context:component-scan
+            base-package="com.ht.controllers, com.ht.services, com.ht.beans, com.ht.dtos, com.ht.configs, com.ht.utils"/>
 
-    <mvc:resources mapping="/css/**" location="/resources/css/" />
-    <mvc:resources mapping="/images/**" location="/resources/images/" />
-    <mvc:resources mapping="/scripts/**" location="/resources/scripts/" />
-    <mvc:resources mapping="/fonts/**" location="/resources/fonts/" />
-    <mvc:resources mapping="/vendor/**" location="/resources/vendor/" />
+    <mvc:resources mapping="/css/**" location="/resources/css/"/>
+    <mvc:resources mapping="/images/**" location="/resources/images/"/>
+    <mvc:resources mapping="/scripts/**" location="/resources/scripts/"/>
+    <mvc:resources mapping="/fonts/**" location="/resources/fonts/"/>
+    <mvc:resources mapping="/vendor/**" location="/resources/vendor/"/>
 
     <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
-        <property name="defaultLocale" value="vi_VN" />
+        <property name="defaultLocale" value="vi_VN"/>
     </bean>
 
     <bean name="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/views/" />
-        <property name="suffix" value=".jsp" />
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".jsp"/>
     </bean>
 
     <!-- Beans for libraries configurations -->
     <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host" value="smtp.gmail.com" />
-        <property name="port" value="587" />
-        <property name="username" value="n21dccn038@student.ptithcm.edu.vn" />
-        <property name="password" value="ptwylbcauywmolrq" />
+        <property name="host" value="smtp.gmail.com"/>
+        <property name="port" value="587"/>
+        <property name="username" value="n21dccn038@student.ptithcm.edu.vn"/>
+        <property name="password" value="ptwylbcauywmolrq"/>
         <property name="javaMailProperties">
             <props>
                 <prop key="mail.smtp.auth">true</prop>
@@ -58,8 +59,8 @@
     </bean>
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-        <property name="packagesToScan" value="com.ht.entities" />
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan" value="com.ht.entities"/>
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
@@ -76,10 +77,10 @@
         <property name="resetPasswordExpiration" value="600000"/>
     </bean>
 
-    <tx:annotation-driven transaction-manager="transactionManager" />
+    <tx:annotation-driven transaction-manager="transactionManager"/>
     <bean id="transactionManager"
           class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory" />
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
     <mvc:interceptors>
@@ -92,6 +93,18 @@
             <mvc:exclude-mapping path="/vendor/**"/>
             <mvc:exclude-mapping path="/auth/**"/>
             <bean class="com.ht.configs.AuthInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/profile/edit"/>
+            <mvc:mapping path="/post/**"/>
+            <mvc:mapping path="/home"/>
+            <mvc:exclude-mapping path="/css/**"/>
+            <mvc:exclude-mapping path="/images/**"/>
+            <mvc:exclude-mapping path="/scripts/**"/>
+            <mvc:exclude-mapping path="/fonts/**"/>
+            <mvc:exclude-mapping path="/vendor/**"/>
+            <mvc:exclude-mapping path="/auth/**"/>
+            <bean class="com.ht.configs.PrepareModelInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 

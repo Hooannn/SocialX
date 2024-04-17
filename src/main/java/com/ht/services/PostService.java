@@ -68,4 +68,9 @@ public class PostService {
         query.setParameter("postId", postId);
         query.executeUpdate();
     }
+
+    public Post getPost(Long id) {
+        Session session = sessionFactory.getCurrentSession();
+        return (Post) session.get(Post.class, id);
+    }
 }
