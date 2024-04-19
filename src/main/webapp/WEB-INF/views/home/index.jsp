@@ -46,7 +46,7 @@
                     </li>
                     <li class="">
                         <a href="profile" class=" ">
-                            <i class="las la-user"></i><span>Hồ sơ</span>
+                            <i class="las la-user"></i><span>Trang cá nhân</span>
                         </a>
                     </li>
                 </ul>
@@ -125,7 +125,7 @@
                                                                     <a href="friend/accept/${user.id}?redirect=/home"
                                                                        class="me-3 btn btn-primary rounded">Đồng ý</a>
                                                                     <a href="friend/decline/${user.id}?redirect=/home"
-                                                                       class="me-3 btn btn-secondary rounded">Xoá</a>
+                                                                       class="btn btn-secondary rounded">Xoá</a>
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -33,6 +33,15 @@ public class PostService {
         return query.list();
     }
 
+    public List<Post> findAllByUserId(Long userId) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("""
+            from Post where user.id = :userId
+        """);
+        query.setParameter("userId", userId);
+        return query.list();
+    }
+
     public void like(Long userId, Long postId) throws Exception {
         Session session = sessionFactory.getCurrentSession();
 
