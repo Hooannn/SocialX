@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jstl/fmt_rt" prefix="f" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -291,14 +292,29 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <form:form modelAttribute="user" action="profile/edit/information" method="post">
+                                    <c:if test="${not empty errorMessage}">
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            <span>${errorMessage}</span>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                    </c:if>
+                                    <form action="profile/edit/information"
+                                          enctype="multipart/form-data"
+                                          method="post">
                                         <div class="form-group row align-items-center">
                                             <div class="col-md-12">
                                                 <div class="profile-img-edit">
-                                                    <img class="profile-pic" src="${user.avatar}" alt="profile-pic">
+                                                    <img id="avatar-pic"
+                                                         style="width: 100%;display:block;border-radius:50%;aspect-ratio: 1/1;object-fit: cover"
+                                                         class="e-profile-pic" src="${user.avatar}" alt="profile-pic">
                                                     <div class="p-image">
-                                                        <i class="ri-pencil-line upload-button text-white"></i>
-                                                        <input class="file-upload" type="file" accept="image/*"/>
+                                                        <i class="ri-pencil-line e-upload-button text-white"></i>
+                                                        <input id="avatar-file-upload" style="visibility: hidden"
+                                                               class="e-file-upload" type="file"
+                                                               accept="image/*"
+                                                               name="file"
+                                                        />
                                                     </div>
                                                 </div>
                                             </div>
@@ -306,43 +322,50 @@
                                         <div class=" row align-items-center">
                                             <div class="form-group col-sm-6">
                                                 <label class="form-label" for="fname">Tên:</label>
-                                                <form:input path="firstName" type="text" class="form-control"
-                                                            id="fname"/>
-                                                <form:errors path="firstName" cssClass="text-danger text-sm-center"/>
+                                                <input value="${user.firstName}" name="firstName" type="text"
+                                                       class="form-control"
+                                                       id="fname"/>
+                                                <!-- error message -->
                                             </div>
                                             <div class="form-group col-sm-6">
                                                 <label class="form-label" for="lname">Họ:</label>
-                                                <form:input path="lastName" type="text" class="form-control"
-                                                            id="lname"/>
-                                                <form:errors path="lastName" cssClass="text-danger text-sm-center"/>
+                                                <input value="${user.lastName}" name="lastName" type="text"
+                                                       class="form-control"
+                                                       id="lname"/>
+                                                <!-- error message -->
                                             </div>
                                             <div class="form-group col-sm-6">
                                                 <label class="form-label d-block">Giới tính:</label>
                                                 <div class="form-check form-check-inline">
-                                                    <form:radiobutton id="inlineRadio10" cssClass="form-check-input"
-                                                                      path="sex" value="${true}"/>
+                                                    <input type="radio" id="inlineRadio10" class="form-check-input"
+                                                           name="sex" value="${true}" ${user.sex ? 'checked' : ''}/>
                                                     <label class="form-check-label" for="inlineRadio10">Nam</label>
                                                 </div>
                                                 <div class="form-check form-check-inline">
-                                                    <form:radiobutton id="inlineRadio11" cssClass="form-check-input"
-                                                                      path="sex" value="${false}"/>
+                                                    <input type="radio" id="inlineRadio11" class="form-check-input"
+                                                           name="sex" value="${false}" ${!user.sex ? 'checked' : ''}/>
                                                     <label class="form-check-label" for="inlineRadio11">Nữ</label>
                                                 </div>
                                             </div>
                                             <div class="form-group col-sm-6">
                                                 <label for="dob" class="form-label">Ngày sinh:</label>
-                                                <form:input path="dateOfBirth" class="form-control" id="dob"/>
-                                                <form:errors path="dateOfBirth" cssClass="text-danger text-sm-center"/>
+                                                <fmt:formatDate value="${user.dateOfBirth}" pattern="yyyy-MM-dd"
+                                                                var="formattedDate"/>
+                                                <input value="<c:out value='${formattedDate}' />" name="dateOfBirth"
+                                                       type="date"
+                                                       class="form-control"
+                                                       id="dob"/>
+                                                <!-- error message -->
                                             </div>
                                             <div class="form-group col-sm-12">
-                                                <label class="form-label">Ngày sinh:</label>
-                                                <form:textarea path="address" cssClass="form-control" name="address"
-                                                               rows="5" cssStyle="line-height: 22px;"/>
+                                                <label class="form-label" for="address">Địa chỉ:</label>
+                                                <textarea class="form-control" name="address" id="address"
+                                                          rows="5" style="line-height: 22px;">${user.address}</textarea>
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary me-2">Cập nhật</button>
                                         <button type="reset" class="btn bg-soft-danger">Huỷ bỏ thay đổi</button>
-                                    </form:form>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -418,6 +441,27 @@
 <script src="vendor/vanillajs-datepicker/dist/scripts/datepicker.min.js"></script>
 <script src="scripts/lottie.js"></script>
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var fileInput = document.getElementById('avatar-file-upload');
+        var preview = document.getElementById('avatar-pic');
+
+        fileInput.addEventListener('change', function (event) {
+            var file = fileInput.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function (event) {
+                preview.src = event.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        var uploadButton = document.querySelector('.e-upload-button');
+
+        uploadButton.addEventListener('click', function () {
+            fileInput.click();
+        });
+    });
 </script>
 
 </body>

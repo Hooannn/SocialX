@@ -27,6 +27,41 @@
     <link rel="stylesheet" href="vendor/font-awesome-line-awesome/css/all.min.css">
     <link rel="stylesheet" href="vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
 
+    <style>
+        #files-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .file-preview-item {
+            margin-right: 10px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .file-preview-item img {
+            max-width: 200px;
+            max-height: 200px;
+        }
+
+        .file-preview-item button {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: grey;
+            color: whitesmoke !important;
+            width: 12px;
+            height: 12px;
+            opacity: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: xx-small;
+        }
+    </style>
 </head>
 <body class="  ">
 <!-- loader Start -->
@@ -261,26 +296,36 @@
                 <h5 class="modal-title mb-2" id="post-modalLabel">Tạo bài đăng mới</h5>
             </div>
             <div>
+                <c:if test="${not empty errorMessage}">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <span>${errorMessage}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                    </div>
+                </c:if>
                 <div class="d-flex align-items-start">
                     <div class="user-img">
                         <img src="${requestScope["user"]["avatar"]}" alt="userimg" class="avatar-60 rounded-circle">
                     </div>
-                    <form:form modelAttribute="createPostDto" cssClass="post-text ms-3 w-100" action="post/create"
-                               method="post">
+                    <form id="uploadForm" class="post-text ms-3 w-100" action="post/create"
+                          enctype="multipart/form-data"
+                          method="post">
                         <div class="d-flex flex-column gap-2">
-                            <form:input path="title" type="text" class="form-control rounded py-2" id="title"
-                                        placeholder="Nhập tiêu đề bài viết..."/>
-                            <form:errors path="title" cssClass="text-danger" cssStyle="margin-top: -8px"/>
-                            <form:textarea path="content" type="text" class="form-control rounded" rows="5" id="content"
-                                           placeholder="Nhập nội dung bài viết..."/>
-                            <form:errors path="content" cssClass="text-danger" cssStyle="margin-top: -8px"/>
-                            <span href="post/create" class="btn btn-soft-primary w-25">
+                            <input name="title" type="text" class="form-control rounded py-2" id="title"
+                                   placeholder="Nhập tiêu đề bài viết..."/>
+                            <textarea name="content" type="text" class="form-control rounded" rows="5" id="content"
+                                      placeholder="Nhập nội dung bài viết..."></textarea>
+                            <input type="file" id="fileInput" name="files" multiple
+                                   style="visibility: hidden; position: absolute"
+                                   accept="image/*,video/*">
+                            <div id="files-container"></div>
+                            <span href="post/create" class="btn btn-soft-primary w-25" id="uploadButton">
                                     <img src="images/small/07.png" alt="icon" class="img-fluid me-2"> Ảnh/Video
-                                </span>
+                            </span>
                         </div>
                         <hr>
                         <button type="submit" class="btn btn-primary py-2 d-block w-25 ms-auto">Đăng</button>
-                    </form:form>
+                    </form>
                 </div>
             </div>
         </div>
@@ -317,6 +362,61 @@
 <script src="vendor/vanillajs-datepicker/dist/scripts/datepicker.min.js"></script>
 <script src="scripts/lottie.js"></script>
 <script>
+    var uploadedFiles = [];
+    document.addEventListener('DOMContentLoaded', function () {
+        var fileInput = document.getElementById('fileInput');
+        var preview = document.getElementById('files-container');
+
+        fileInput.addEventListener('change', function (e) {
+            var files = e.target.files;
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                uploadedFiles.push(file); // Add the file to the array of uploaded files
+
+                var reader = new FileReader();
+
+                reader.onload = function (event) {
+                    var filePreview = document.createElement("div");
+                    filePreview.classList.add("file-preview-item");
+
+                    var img = document.createElement("img");
+                    img.src = event.target.result;
+
+                    var button = document.createElement("button");
+                    button.classList.add("btn-close");
+                    button.onclick = function () {
+                        // Remove the file from the array of uploaded files and the file preview when the delete button is clicked
+                        var index = uploadedFiles.indexOf(file);
+                        if (index !== -1) {
+                            uploadedFiles.splice(index, 1);
+                        }
+                        filePreview.remove();
+                        updateCurrentFiles(fileInput);
+                    };
+
+                    filePreview.appendChild(img);
+                    filePreview.appendChild(button);
+                    preview.appendChild(filePreview);
+                };
+
+                reader.readAsDataURL(file);
+            }
+            updateCurrentFiles(fileInput);
+        });
+
+        var uploadButton = document.getElementById('uploadButton');
+        uploadButton.addEventListener('click', function () {
+            fileInput.click();
+        });
+    });
+
+    function updateCurrentFiles(fileInput) {
+        let list = new DataTransfer();
+        uploadedFiles.forEach(file => {
+            list.items.add(file);
+        });
+        fileInput.files = list.files;
+    }
 </script>
 <div class="offcanvas offcanvas-bottom share-offcanvas" tabindex="-1" id="share-btn" aria-labelledby="shareBottomLabel">
     <div class="offcanvas-header">

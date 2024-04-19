@@ -1,5 +1,7 @@
 package com.ht.controllers;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.ht.dtos.ChangePasswordDto;
 import com.ht.entities.User;
 import com.ht.services.UserService;
@@ -9,26 +11,30 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
 import java.util.Objects;
 
 @Controller
 @RequestMapping("/profile")
 public class ProfileController {
     private final UserService userService;
+    private final Cloudinary cloudinary;
 
     @Autowired
-    public ProfileController(UserService userService) {
+    public ProfileController(UserService userService, Cloudinary cloudinary) {
         this.userService = userService;
+        this.cloudinary = cloudinary;
     }
 
     @GetMapping()
-    public String myProfile (@RequestAttribute("user") User authUser) {
+    public String myProfile(@RequestAttribute("user") User authUser) {
         return "redirect:/profile/" + authUser.getId();
     }
 
     @GetMapping("/{userId}")
-    public String userProfilePage (
+    public String userProfilePage(
             ModelMap model,
             @RequestAttribute("user") User authUser,
             @PathVariable("userId") Long userId
@@ -48,22 +54,40 @@ public class ProfileController {
     }
 
     @GetMapping("/edit")
-    public String editProfilePage (
+    public String editProfilePage(
             ModelMap model,
             @RequestAttribute("user") User authUser
     ) {
         ChangePasswordDto changePasswordDto = new ChangePasswordDto();
+
         model.addAttribute("user", authUser);
         model.addAttribute("changePasswordDto", changePasswordDto);
         return "profile/edit";
     }
 
     @PostMapping("/edit/information")
-    public String editProfileInformation (
-            @ModelAttribute("user") User user, BindingResult result,
+    public String editProfileInformation(
+            @RequestParam(name = "file", required = false) MultipartFile file,
+            @RequestParam(name = "firstName", required = false) String firstName,
+            @RequestParam(name = "lastName", required = false) String lastName,
+            @RequestParam(name = "dateOfBirth", required = false) String dateOfBirth,
+            @RequestParam(name = "sex") boolean sex,
+            @RequestParam(name = "address", required = false) String address,
             ModelMap model
     ) {
-        if (result.hasErrors()) {
+        String imageUrl = null;
+        if (file != null && !file.isEmpty()) {
+            try {
+                Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+                imageUrl = (String) uploadResult.get("url");
+            } catch (Exception e) {
+                model.addAttribute("errorMessage", "Lỗi khi tải ảnh lên");
+                model.addAttribute("tab", "information");
+                return "profile/edit";
+            }
+        }
+        if (firstName.isEmpty() || lastName.isEmpty() || dateOfBirth.isEmpty() || address.isEmpty()) {
+            model.addAttribute("errorMessage", "Vui lòng điền đầy đủ thông tin");
             model.addAttribute("tab", "information");
             return "profile/edit";
         }
@@ -72,12 +96,19 @@ public class ProfileController {
         Update user information, generate new access token, then return redirect to /profile/edit,
         If update failed, add error message to model, and return to /profile/edit
         */
-        System.out.println(user);
+        // Remember to parse dateOfBirth to Date
+        System.out.println(
+                "firstName: " + firstName + "\n" +
+                        "lastName: " + lastName + "\n" +
+                        "dateOfBirth: " + dateOfBirth + "\n" +
+                        "sex: " + sex + "\n" +
+                        "address: " + address + "\n" + "imageUrl: " + imageUrl + "\n"
+        );
         return "redirect:/profile/edit";
     }
 
     @PostMapping("/edit/password")
-    public String editProfilePassword (
+    public String editProfilePassword(
             @Valid @ModelAttribute("changePasswordDto") ChangePasswordDto changePasswordDto, BindingResult result,
             ModelMap model
     ) {

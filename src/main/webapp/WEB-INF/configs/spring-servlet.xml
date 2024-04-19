@@ -19,7 +19,7 @@
     <!-- Beans for resources configurations -->
     <mvc:annotation-driven/>
     <context:component-scan
-            base-package="com.ht.controllers, com.ht.services, com.ht.beans, com.ht.dtos, com.ht.configs, com.ht.utils"/>
+            base-package="com.ht.controllers, com.ht.services, com.ht.dtos, com.ht.configs, com.ht.utils"/>
 
     <mvc:resources mapping="/css/**" location="/resources/css/"/>
     <mvc:resources mapping="/images/**" location="/resources/images/"/>
