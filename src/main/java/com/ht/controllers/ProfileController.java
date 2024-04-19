@@ -4,6 +4,9 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.ht.dtos.ChangePasswordDto;
 import com.ht.entities.User;
+import com.ht.enums.FriendStatus;
+import com.ht.services.FriendService;
+import com.ht.services.PostService;
 import com.ht.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +23,15 @@ import java.util.Objects;
 @RequestMapping("/profile")
 public class ProfileController {
     private final UserService userService;
+    private final PostService postService;
+    private final FriendService friendService;
     private final Cloudinary cloudinary;
 
     @Autowired
-    public ProfileController(UserService userService, Cloudinary cloudinary) {
+    public ProfileController(UserService userService, PostService postService, FriendService friendService, Cloudinary cloudinary) {
         this.userService = userService;
+        this.postService = postService;
+        this.friendService = friendService;
         this.cloudinary = cloudinary;
     }
 
@@ -45,10 +52,17 @@ public class ProfileController {
             return "redirect:/home";
         }
 
+        var posts = this.postService.findAllByUserId(targetUser.getId());
+
         if (Objects.equals(authUser.getId(), targetUser.getId())) {
             model.addAttribute("isCurrentUser", true);
+        } else {
+            FriendStatus friendStatus = this.friendService.checkFriendRequest(authUser.getId(), targetUser.getId());
+            model.addAttribute("friendStatus", friendStatus.toString());
         }
+
         model.addAttribute("targetUser", targetUser);
+        model.addAttribute("posts", posts);
 
         return "profile/index";
     }

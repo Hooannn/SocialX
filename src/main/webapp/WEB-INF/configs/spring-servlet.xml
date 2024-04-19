@@ -95,7 +95,7 @@
             <bean class="com.ht.configs.AuthInterceptor"/>
         </mvc:interceptor>
         <mvc:interceptor>
-            <mvc:mapping path="/profile/edit"/>
+            <mvc:mapping path="/profile/**"/>
             <mvc:mapping path="/post/**"/>
             <mvc:mapping path="/home"/>
             <mvc:exclude-mapping path="/css/**"/>
