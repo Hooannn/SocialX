@@ -87,6 +87,8 @@
                                 <i class="ri-home-line"></i>
                             </a>
                         </li>
+
+                        <%-- Friend requests dropdown --%>
                         <li class="nav-item dropdown">
                             <c:if test="${not empty friendRequests}">
                                 <div class="position-absolute translate-middle text-white bg-danger rounded-circle text-center"
@@ -148,6 +150,8 @@
                                 </div>
                             </div>
                         </li>
+
+                        <%-- Notifications dropdown --%>
                         <li class="nav-item dropdown">
                             <c:if test="${not empty notifications}">
                                 <div class="position-absolute translate-middle text-white bg-danger rounded-circle text-center"
@@ -201,6 +205,8 @@
                                 </div>
                             </div>
                         </li>
+
+                        <%-- Peronal navigation dropdown --%>
                         <li class="nav-item dropdown">
                             <a href="#" class="   d-flex align-items-center dropdown-toggle" id="drop-down-arrow"
                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -237,15 +243,17 @@
                                                 </div>
                                                 <div class="ms-3">
                                                     <h6 class="mb-0 ">Chỉnh sửa hồ sơ</h6>
-                                                    <p class="mb-0 font-size-12">Chỉnh sửa thông tin cá nhân của
-                                                        bạn.</p>
+                                                    <p class="mb-0 font-size-12">
+                                                        Chỉnh sửa thông tin cá nhân của bạn.
+                                                    </p>
                                                 </div>
                                             </div>
                                         </a>
 
                                         <div class="d-inline-block w-100 text-center p-3">
-                                            <a class="btn btn-danger iq-sign-btn" href="auth/sign-out" role="button">Đăng
-                                                xuất<i class="ri-login-box-line ms-2"></i></a>
+                                            <a class="btn btn-danger iq-sign-btn" href="auth/sign-out" role="button">
+                                                Đăng xuất<i class="ri-login-box-line ms-2"></i>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -284,22 +292,28 @@
                                 <div class="profile-info p-3 d-flex align-items-center justify-content-between position-relative">
                                     <div class="social-links">
                                         <c:if test="${isCurrentUser != true}">
-                                            <button class="btn btn-primary add-friend-btn">
-                                                <c:choose>
-                                                    <c:when test="${friendStatus == 'NOT_FRIENDS'}">
-                                                        <a>Kết bạn</a>
-                                                    </c:when>
-                                                    <c:when test="${friendStatus == 'ARE_FRIENDS'}">
-                                                        <a>Hủy kết bạn</a>
-                                                    </c:when>
-                                                    <c:when test="${friendStatus == 'PENDING_SENT_REQUEST'}">
-                                                        <a>Hủy yêu cầu</a>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <a>Đồng ý</a>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </button>
+                                            <c:choose>
+                                                <c:when test="${friendStatus == 'NOT_FRIENDS'}">
+                                                    <a href="friend/send-request/${targetUser.id}?redirect=/profile/${targetUser.id}">
+                                                        <button class="btn btn-primary add-friend-btn">Kết bạn</button>
+                                                    </a>
+                                                </c:when>
+                                                <c:when test="${friendStatus == 'ARE_FRIENDS'}">
+                                                    <a href="friend/unfriend/${targetUser.id}?redirect=/profile/${targetUser.id}">
+                                                        <button class="btn btn-primary add-friend-btn">Hủy kết bạn</button>
+                                                    </a>
+                                                </c:when>
+                                                <c:when test="${friendStatus == 'PENDING_SENT_REQUEST'}">
+                                                    <a href="friend/cancel-request/${targetUser.id}?redirect=/profile/${targetUser.id}">
+                                                        <button class="btn btn-primary add-friend-btn">Hủy yêu cầu</button>
+                                                    </a>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <a href="friend/accept/${targetUser.id}?redirect=/profile/${targetUser.id}">
+                                                        <button class="btn btn-primary add-friend-btn">Đồng ý</button>
+                                                    </a>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </c:if>
                                     </div>
                                     <div class="social-info">

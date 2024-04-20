@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -78,6 +79,54 @@ public class FriendService {
             // CASE 4: chưa là bạn và auth nhận request (hện nút accept request)
             return FriendStatus.PENDING_RECEIVED_REQUEST;
         }
+    }
+
+    public void sendNewRequest(Long authUserId, Long toUserId) throws Exception {
+        Session session = sessionFactory.getCurrentSession();
+
+        var fromUser = new User();
+        var toUser = new User();
+        fromUser.setId(authUserId);
+        toUser.setId(toUserId);
+
+        Friend newFriendRequest = new Friend(fromUser, toUser, false, new Date());
+        session.save(newFriendRequest);
+
+        CompletableFuture.runAsync(() -> {
+            try {
+                // TODO: send request received notification
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public void cancelFriendRequest(Long authUserId, Long toUserId) throws Exception {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("from Friend where fromUser.id = :fromUserId and toUser.id = :toUserId and status = 0");
+        query.setParameter("fromUserId", authUserId);
+        query.setParameter("toUserId", toUserId);
+        Friend friend = (Friend) query.uniqueResult();
+        if (friend == null) {
+            throw new Exception("Không tìm thấy yêu cầu kết bạn");
+        }
+        session.delete(friend);
+    }
+
+    public void unfriend(Long authUserId, Long toUserId) throws Exception {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("""
+            from Friend 
+            where fromUser.id = :fromUserId and toUser.id = :toUserId 
+            or fromUser.id = :toUserId and toUser.id = :fromUserId
+        """);
+        query.setParameter("fromUserId", toUserId);
+        query.setParameter("toUserId", authUserId);
+        Friend friend = (Friend) query.uniqueResult();
+        if (friend == null) {
+            throw new Exception("Không tìm thấy bạn bè");
+        }
+        session.delete(friend);
     }
 
     public void acceptRequest(Long authUserId, Long toUserId) throws Exception {
