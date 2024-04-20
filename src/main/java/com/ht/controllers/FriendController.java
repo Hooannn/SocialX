@@ -17,12 +17,61 @@ public class FriendController {
         this.friendService = friendService;
     }
 
+    @GetMapping("/send-request/{userId}")
+    public String sendNewRequest(
+            ModelMap model,
+            @RequestAttribute("user") User authUser,
+            @PathVariable("userId") Long userId,
+            @RequestParam(value = "redirect", required = false) String redirect
+    ) {
+        try {
+            friendService.sendNewRequest(authUser.getId(), userId);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+        }
+        String redirectUrl = redirect != null ? redirect : "/";
+        return "redirect:" + redirectUrl;
+    }
+
+    @GetMapping("/cancel-request/{userId}")
+    public String cancelFriendRequest(
+            ModelMap model,
+            @RequestAttribute("user") User authUser,
+            @PathVariable("userId") Long userId,
+            @RequestParam(value = "redirect", required = false) String redirect
+    ) {
+        try {
+            friendService.cancelFriendRequest(authUser.getId(), userId);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+        }
+        String redirectUrl = redirect != null ? redirect : "/";
+        return "redirect:" + redirectUrl;
+    }
+
+    @GetMapping("/unfriend/{userId}")
+    public String unfriend(
+            ModelMap model,
+            @RequestAttribute("user") User authUser,
+            @PathVariable("userId") Long userId,
+            @RequestParam(value = "redirect", required = false) String redirect
+    ) {
+        try {
+            friendService.unfriend(authUser.getId(), userId);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+        }
+        String redirectUrl = redirect != null ? redirect : "/";
+        return "redirect:" + redirectUrl;
+    }
+
     @GetMapping("/accept/{userId}")
     public String acceptRequest(
             ModelMap model,
             @RequestAttribute("user") User authUser,
             @PathVariable("userId") Long userId,
-            @RequestParam(value = "redirect", required = false) String redirect) {
+            @RequestParam(value = "redirect", required = false) String redirect
+    ) {
         try {
             friendService.acceptRequest(authUser.getId(), userId);
         } catch (Exception e) {
@@ -37,7 +86,8 @@ public class FriendController {
             ModelMap model,
             @RequestAttribute("user") User authUser,
             @PathVariable("userId") Long userId,
-            @RequestParam(value = "redirect", required = false) String redirect) {
+            @RequestParam(value = "redirect", required = false) String redirect
+    ) {
         try {
             friendService.declineRequest(authUser.getId(), userId);
         } catch (Exception e) {
