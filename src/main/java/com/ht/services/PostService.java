@@ -1,5 +1,6 @@
 package com.ht.services;
 
+import com.ht.entities.Comment;
 import com.ht.entities.Like;
 import com.ht.entities.Post;
 import com.ht.entities.User;
@@ -12,23 +13,26 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @Transactional
 public class PostService {
     private final SessionFactory sessionFactory;
+    private final NotificationService notificationService;
 
     @Autowired
-    public PostService(SessionFactory sessionFactory) {
+    public PostService(SessionFactory sessionFactory, NotificationService notificationService) {
         this.sessionFactory = sessionFactory;
+        this.notificationService = notificationService;
     }
 
     public List<Post> findAllByUserFriends(Long userId) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("""
-            from Post where user.id in (select toUser.id from Friend where fromUser.id = :userId and status = 1)
-            or user.id in (select fromUser.id from Friend where toUser.id = :userId and status = 1)
-        """);
+                    from Post where user.id in (select toUser.id from Friend where fromUser.id = :userId and status = 1)
+                    or user.id in (select fromUser.id from Friend where toUser.id = :userId and status = 1)
+                """);
         query.setParameter("userId", userId);
         return query.list();
     }
@@ -36,8 +40,8 @@ public class PostService {
     public List<Post> findAllByUserId(Long userId) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("""
-            from Post where user.id = :userId
-        """);
+                    from Post where user.id = :userId
+                """);
         query.setParameter("userId", userId);
         return query.list();
     }
@@ -46,8 +50,8 @@ public class PostService {
         Session session = sessionFactory.getCurrentSession();
 
         Query checkLikedQuery = session.createQuery("""
-            select count(*) from Like where user.id = :userId and post.id = :postId
-        """);
+                    select count(*) from Like where user.id = :userId and post.id = :postId
+                """);
         checkLikedQuery.setParameter("userId", userId);
         checkLikedQuery.setParameter("postId", postId);
         Long count = (Long) checkLikedQuery.uniqueResult();
@@ -71,8 +75,8 @@ public class PostService {
     public void unlike(Long userId, Long postId) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("""
-            delete from Like where user.id = :userId and post.id = :postId
-        """);
+                    delete from Like where user.id = :userId and post.id = :postId
+                """);
         query.setParameter("userId", userId);
         query.setParameter("postId", postId);
         query.executeUpdate();
@@ -81,5 +85,27 @@ public class PostService {
     public Post getPost(Long id) {
         Session session = sessionFactory.getCurrentSession();
         return (Post) session.get(Post.class, id);
+    }
+
+    public Comment createComment(User user, Long postId, String content, Long authorId) {
+        Session session = sessionFactory.getCurrentSession();
+        var comment = new Comment();
+        var post = new Post();
+        post.setId(postId);
+        comment.setUser(user);
+        comment.setPost(post);
+        comment.setContent(content);
+        comment.setCreatedAt(new Date());
+        session.save(comment);
+
+        CompletableFuture.runAsync(() -> {
+            try {
+                notificationService.createCommentCreatedNotification(comment, authorId);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        return comment;
     }
 }
