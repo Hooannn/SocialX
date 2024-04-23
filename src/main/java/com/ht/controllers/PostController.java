@@ -106,4 +106,23 @@ public class PostController {
         }
         return "redirect:/post/" + 1; //replace with created post id;
     }
+
+    @PostMapping("{id}/comment")
+    public String createComment(@RequestAttribute("user") User authUser,
+                                @PathVariable("id") Long id,
+                                @RequestParam(name = "content", required = false) String content,
+                                @RequestParam(name = "authorId", required = false) Long authorId,
+                                ModelMap model) {
+        if (content == null || content.isEmpty()) {
+            model.addAttribute("errorMessage", "Vui lòng nhập nội dung bình luận");
+            return "post/detail";
+        }
+        try {
+            postService.createComment(authUser, id, content, authorId);
+            return "redirect:/post/" + id;
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "post/detail";
+        }
+    }
 }

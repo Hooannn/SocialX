@@ -170,8 +170,9 @@
                                             <c:when test="${not empty notifications}">
                                                 <c:forEach var="notification" items="${notifications}">
                                                     <c:if test="${not empty notification}">
-                                                        <a href="${notification.actionUrl}" class="iq-sub-card">
-                                                            <div class="d-flex align-items-center">
+                                                        <a href="notification/${notification.id}/read"
+                                                           class="iq-sub-card">
+                                                            <div class="d-flex align-items-center gap-md-1">
                                                                 <div class="">
                                                                     <img class="avatar-40 rounded"
                                                                          src="${notification.imageUrl}" alt="">
@@ -183,6 +184,11 @@
                                                                         <small class="float-right font-size-12 created-at">${notification.createdAt}</small>
                                                                     </div>
                                                                 </div>
+                                                                <c:if test="${!notification.status}">
+                                                                    <div class="rounded-circle bg-danger"
+                                                                         style="aspect-ratio: 1/1; width: 10px"
+                                                                    ></div>
+                                                                </c:if>
                                                             </div>
                                                         </a>
                                                     </c:if>
@@ -389,10 +395,16 @@
                                 </c:if>
                             </c:forEach>
                         </ul>
-                        <form class="comment-text d-flex align-items-center mt-3">
+                        <form class="comment-text d-flex align-items-center mt-3 gap-2" action="post/${post.id}/comment"
+                              method="post">
+                            <input type="hidden" name="authorId" value="${post.user.id}">
                             <input type="text"
                                    class="form-control rounded"
+                                   name="content"
                                    placeholder="Bình luận về bài viết này...">
+                            <button class="btn btn-primary h-100">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
                         </form>
                     </div>
                 </div>
