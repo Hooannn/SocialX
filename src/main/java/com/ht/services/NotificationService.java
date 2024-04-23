@@ -38,7 +38,7 @@ public class NotificationService {
         notification.setStatus(false);
         notification.setTitle("Bạn mới");
         notification.setImageUrl(friend.getToUser().getAvatar());
-        notification.setActionUrl("/profile/" + friend.getToUser().getId());
+        notification.setActionUrl("profile/" + friend.getToUser().getId());
 
         session.save(notification);
     }

@@ -117,11 +117,12 @@
                                                             <div class="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between">
                                                                 <a href="/profile/${user.id}">
                                                                     <div class="d-flex align-items-center">
-                                                                        <img class="avatar-40 rounded" src="${user.avatar}"
+                                                                        <img class="avatar-40 rounded"
+                                                                             src="${user.avatar}"
                                                                              alt="">
                                                                         <div class="ms-3">
                                                                             <h6 class="mb-0 ">${user.firstName} ${user.lastName}</h6>
-                                                                            <p class="mb-0">${user.createdAt}</p>
+                                                                            <p class="mb-0 created-at">${user.createdAt}</p>
                                                                         </div>
                                                                     </div>
                                                                 </a>
@@ -153,10 +154,10 @@
 
                         <%-- Notifications dropdown --%>
                         <li class="nav-item dropdown">
-                            <c:if test="${not empty notifications}">
+                            <c:if test="${unreadNotifications > 0}">
                                 <div class="position-absolute translate-middle text-white bg-danger rounded-circle text-center"
                                      style="top: 60%; left: 20%; width: 20px; height: 20px; line-height: normal !important;">
-                                    <small>${fn:length(notifications)}</small>
+                                    <small>${unreadNotifications}</small>
                                 </div>
                             </c:if>
                             <a href="#" class="search-toggle   dropdown-toggle" id="notification-drop"
@@ -169,7 +170,7 @@
                                         <div class="header-title bg-primary">
                                             <h5 class="mb-0 text-white">Thông báo</h5>
                                         </div>
-                                        <small class="badge  bg-light text-dark">${fn:length(notifications)}</small>
+                                        <small class="badge  bg-light text-dark">${unreadNotifications}</small>
                                     </div>
                                     <div class="card-body p-0">
                                         <c:choose>
@@ -184,9 +185,9 @@
                                                                 </div>
                                                                 <div class="ms-3 w-100">
                                                                     <h6 class="mb-0 ">${notification.title}</h6>
-                                                                    <div class="d-flex justify-content-between align-items-center">
+                                                                    <div class="d-flex flex-column">
                                                                         <p class="mb-0">${notification.content}</p>
-                                                                        <small class="float-right font-size-12">${notification.createdAt}</small>
+                                                                        <small class="float-right font-size-12 created-at">${notification.createdAt}</small>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -300,12 +301,14 @@
                                                 </c:when>
                                                 <c:when test="${friendStatus == 'ARE_FRIENDS'}">
                                                     <a href="friend/unfriend/${targetUser.id}?redirect=/profile/${targetUser.id}">
-                                                        <button class="btn btn-primary add-friend-btn">Hủy kết bạn</button>
+                                                        <button class="btn btn-primary add-friend-btn">Hủy kết bạn
+                                                        </button>
                                                     </a>
                                                 </c:when>
                                                 <c:when test="${friendStatus == 'PENDING_SENT_REQUEST'}">
                                                     <a href="friend/cancel-request/${targetUser.id}?redirect=/profile/${targetUser.id}">
-                                                        <button class="btn btn-primary add-friend-btn">Hủy yêu cầu</button>
+                                                        <button class="btn btn-primary add-friend-btn">Hủy yêu cầu
+                                                        </button>
                                                     </a>
                                                 </c:when>
                                                 <c:otherwise>
@@ -541,15 +544,18 @@
                                                                  class="avatar-60 rounded-circle">
                                                         </div>
                                                         <form class="post-text ms-3 w-100 " action="post/create">
-                                                            <input id="postInput" type="text" class="form-control rounded"
-                                                                   placeholder="Bạn đang nghĩ gì..." style="border:none;">
+                                                            <input id="postInput" type="text"
+                                                                   class="form-control rounded"
+                                                                   placeholder="Bạn đang nghĩ gì..."
+                                                                   style="border:none;">
                                                         </form>
                                                     </div>
                                                     <hr>
                                                     <ul class=" post-opt-block d-flex list-inline m-0 p-0 flex-wrap">
                                                         <li class="me-3 mb-md-0 mb-2">
                                                             <a href="post/create" class="btn btn-soft-primary">
-                                                                <img src="images/small/07.png" alt="icon" class="img-fluid me-2"> Ảnh/Video
+                                                                <img src="images/small/07.png" alt="icon"
+                                                                     class="img-fluid me-2"> Ảnh/Video
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -564,7 +570,7 @@
                                                     <c:if test="${not empty post}">
                                                         <div class="card">
                                                             <div class="card-body">
-                                                                <%-- User data, timestamp --%>
+                                                                    <%-- User data, timestamp --%>
                                                                 <div class="user-post-data">
                                                                     <div class="d-flex justify-content-between">
                                                                         <div class="me-3">
@@ -579,7 +585,7 @@
                                                                                            href="profile/${post.user.id}">${post.user.firstName} ${post.user.lastName}</a>
                                                                                     </h5>
                                                                                     <span class="mb-0 d-inline-block"></span>
-                                                                                    <p class="mb-0 text-primary">${post.createdAt}</p>
+                                                                                    <p class="mb-0 text-primary created-at">${post.createdAt}</p>
                                                                                 </div>
                                                                                 <div class="card-post-toolbar">
                                                                                 </div>
@@ -588,13 +594,13 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <%-- Title and text content --%>
+                                                                    <%-- Title and text content --%>
                                                                 <div>
                                                                     <h5 class="my-2">${post.title}</h5>
                                                                     <p>${post.content}</p>
                                                                 </div>
 
-                                                                <%-- Images --%>
+                                                                    <%-- Images --%>
                                                                 <div class="user-post">
                                                                     <!--
                                                                     <div class="d-grid grid-rows-2 grid-flow-col gap-3">
@@ -611,7 +617,7 @@
                                                                     -->
                                                                 </div>
 
-                                                                <%-- Likes and comment box --%>
+                                                                    <%-- Likes and comment box --%>
                                                                 <div class="comment-area mt-3">
                                                                     <div class="d-flex justify-content-between align-items-center flex-wrap">
                                                                         <div class="like-block position-relative d-flex align-items-center">
@@ -619,7 +625,8 @@
                                                                                 <div class="like-data">
                                                                                     <c:choose>
                                                                                         <c:when test="${not empty post.likes}">
-                                                                                            <c:forEach var="like" items="${post.likes}">
+                                                                                            <c:forEach var="like"
+                                                                                                       items="${post.likes}">
                                                                                                 <c:if test="${like.user.id eq requestScope['user']['id']}">
                                                                                                     <div class="like-button">
                                                                                                         <a href="post/${post.id}/unlike?redirect=/home">
@@ -647,16 +654,21 @@
                                                                                 <div class="total-like-block ms-1 me-3">
                                                                                     <div class="dropdown">
                                                                                         <span
-                                                                                                class="dropdown-toggle" data-bs-toggle="dropdown"
-                                                                                                aria-haspopup="true" aria-expanded="false" role="button"
+                                                                                                class="dropdown-toggle"
+                                                                                                data-bs-toggle="dropdown"
+                                                                                                aria-haspopup="true"
+                                                                                                aria-expanded="false"
+                                                                                                role="button"
                                                                                         >
                                                                                             ${fn:length(post.likes)} lượt thích
                                                                                         </span>
                                                                                         <c:if test="${not empty post.likes}">
                                                                                             <div class="dropdown-menu">
-                                                                                                <c:forEach var="like" items="${post.likes}">
+                                                                                                <c:forEach var="like"
+                                                                                                           items="${post.likes}">
                                                                                                     <c:if test="${not empty like}">
-                                                                                                        <a class="dropdown-item" href="profile/${like.user.id}">
+                                                                                                        <a class="dropdown-item"
+                                                                                                           href="profile/${like.user.id}">
                                                                                                                 ${like.user.firstName} ${like.user.lastName}
                                                                                                         </a>
                                                                                                     </c:if>
@@ -667,13 +679,18 @@
                                                                                 </div>
                                                                             </div>
                                                                             <div class="total-comment-block">
-                                                                                <a href="post/${post.id}" class="w-100 text-black-50">
-                                                                                        ${fn:length(post.comments)} lượt bình luận
+                                                                                <a href="post/${post.id}"
+                                                                                   class="w-100 text-black-50">
+                                                                                        ${fn:length(post.comments)} lượt
+                                                                                    bình luận
                                                                                 </a>
                                                                             </div>
                                                                         </div>
                                                                         <div class="share-block d-flex align-items-center feather-icon mt-2 mt-md-0">
-                                                                            <a href="javascript:void();" data-bs-toggle="offcanvas" data-bs-target="#share-btn" aria-controls="share-btn">
+                                                                            <a href="javascript:void();"
+                                                                               data-bs-toggle="offcanvas"
+                                                                               data-bs-target="#share-btn"
+                                                                               aria-controls="share-btn">
                                                                                 <i class="ri-share-line"></i>
                                                                                 <span class="ms-1">Chia sẻ</span>
                                                                             </a>
@@ -681,7 +698,8 @@
                                                                     </div>
                                                                     <hr>
                                                                     <ul class="post-comments list-inline p-0 m-0">
-                                                                        <c:forEach var="comment" items="${post.comments}">
+                                                                        <c:forEach var="comment"
+                                                                                   items="${post.comments}">
                                                                             <c:if test="${not empty comment}">
                                                                                 <li class="mb-2">
                                                                                     <div class="d-flex">
@@ -694,7 +712,7 @@
                                                                                             <div class="d-flex gap-md-1">
                                                                                                 <div class="fw-bold">${comment.user.firstName} ${comment.user.lastName}</div>
                                                                                                 <div class="d-flex flex-wrap align-items-center comment-activity fs-6">
-                                                                                                    <small>${comment.createdAt}</small>
+                                                                                                    <small class="created-at">${comment.createdAt}</small>
                                                                                                 </div>
                                                                                             </div>
                                                                                             <p class="mb-0">${comment.content}</p>
@@ -725,7 +743,8 @@
                                                 </c:if>
                                                 <c:if test="${!isCurrentUser}">
                                                     <div class="text-sm-center mx-auto">
-                                                        Trang cá nhân của ${targetUser.fullName} hiện tại không có bài đăng nào.
+                                                        Trang cá nhân của ${targetUser.fullName} hiện tại không có bài
+                                                        đăng nào.
                                                     </div>
                                                 </c:if>
                                             </c:otherwise>
@@ -4579,6 +4598,10 @@
 <script src="scripts/app.js"></script>
 <script src="vendor/vanillajs-datepicker/dist/js/datepicker.min.js"></script>
 <script src="scripts/lottie.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/relativeTime.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/locale/vi.js"></script>
+<script src="scripts/dateFormat.js"></script>
 <script>
     document.getElementById("postInput").addEventListener("click", function () {
         window.location.href = "post/create";

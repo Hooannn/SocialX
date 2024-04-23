@@ -118,7 +118,7 @@
                                                                          alt="">
                                                                     <div class="ms-3">
                                                                         <h6 class="mb-0 ">${user.firstName} ${user.lastName}</h6>
-                                                                        <p class="mb-0">${user.createdAt}</p>
+                                                                        <p class="mb-0 created-at">${user.createdAt}</p>
                                                                     </div>
                                                                 </div>
                                                                 <div class="d-flex align-items-center">
@@ -147,10 +147,10 @@
                             </div>
                         </li>
                         <li class="nav-item dropdown">
-                            <c:if test="${not empty notifications}">
+                            <c:if test="${unreadNotifications > 0}">
                                 <div class="position-absolute translate-middle text-white bg-danger rounded-circle text-center"
                                      style="top: 60%; left: 20%; width: 20px; height: 20px; line-height: normal !important;">
-                                    <small>${fn:length(notifications)}</small>
+                                    <small>${unreadNotifications}</small>
                                 </div>
                             </c:if>
                             <a href="#" class="search-toggle   dropdown-toggle" id="notification-drop"
@@ -163,7 +163,7 @@
                                         <div class="header-title bg-primary">
                                             <h5 class="mb-0 text-white">Thông báo</h5>
                                         </div>
-                                        <small class="badge  bg-light text-dark">${fn:length(notifications)}</small>
+                                        <small class="badge  bg-light text-dark">${unreadNotifications}</small>
                                     </div>
                                     <div class="card-body p-0">
                                         <c:choose>
@@ -178,9 +178,9 @@
                                                                 </div>
                                                                 <div class="ms-3 w-100">
                                                                     <h6 class="mb-0 ">${notification.title}</h6>
-                                                                    <div class="d-flex justify-content-between align-items-center">
+                                                                    <div class="d-flex flex-column">
                                                                         <p class="mb-0">${notification.content}</p>
-                                                                        <small class="float-right font-size-12">${notification.createdAt}</small>
+                                                                        <small class="float-right font-size-12 created-at">${notification.createdAt}</small>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -309,7 +309,7 @@
                                                                            href="profile/${post.user.id}">${post.user.firstName} ${post.user.lastName}</a>
                                                                     </h5>
                                                                     <span class="mb-0 d-inline-block"></span>
-                                                                    <p class="mb-0 text-primary">${post.createdAt}</p>
+                                                                    <p class="mb-0 text-primary created-at">${post.createdAt}</p>
                                                                 </div>
                                                                 <div class="card-post-toolbar">
                                                                 </div>
@@ -417,7 +417,7 @@
                                                                             <div class="d-flex gap-md-1">
                                                                                 <div class="fw-bold">${comment.user.firstName} ${comment.user.lastName}</div>
                                                                                 <div class="d-flex flex-wrap align-items-center comment-activity fs-6">
-                                                                                    <small>${comment.createdAt}</small>
+                                                                                    <small class="created-at">${comment.createdAt}</small>
                                                                                 </div>
                                                                             </div>
                                                                             <p class="mb-0">${comment.content}</p>
@@ -522,6 +522,10 @@
 <script src="scripts/app.js"></script>
 <script src="vendor/vanillajs-datepicker/dist/scripts/datepicker.min.js"></script>
 <script src="scripts/lottie.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/relativeTime.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/locale/vi.js"></script>
+<script src="scripts/dateFormat.js"></script>
 <script>
     document.getElementById("postInput").addEventListener("click", function () {
         window.location.href = "post/create";
