@@ -6,6 +6,17 @@
     color: #fff;
 }
 
+.add-friend-btn.danger {
+    color: #fff;
+    background-color: #e54a4a;
+    border-color: #e54a4a;
+}
+
+.add-friend-btn.danger:hover {
+    background-color: #e76464;
+    border-color: #e76464;
+}
+
 .profile-img img {
     min-width: 130px;
     background-color: #50b5ff;
@@ -18,4 +29,8 @@ div.iq-top-navbar {
 
 nav.navbar {
     padding: 0 .938rem !important;
+}
+
+.mh-300 {
+    min-height: 300px;
 }
