@@ -103,12 +103,14 @@ public class FriendService {
 
     public void cancelFriendRequest(Long authUserId, Long toUserId) throws Exception {
         Session session = sessionFactory.getCurrentSession();
-        Query query = session.createQuery("from Friend where fromUser.id = :fromUserId and toUser.id = :toUserId and status = 0");
+        Query query = session.createQuery("from Friend where fromUser.id = :fromUserId and toUser.id = :toUserId");
         query.setParameter("fromUserId", authUserId);
         query.setParameter("toUserId", toUserId);
         Friend friend = (Friend) query.uniqueResult();
         if (friend == null) {
             throw new Exception("Không tìm thấy yêu cầu kết bạn");
+        } else if (friend.isStatus() == true) {
+            throw new Exception("Yêu cầu không thể hủy vì đã được chấp nhận");
         }
         session.delete(friend);
     }
@@ -124,7 +126,7 @@ public class FriendService {
         query.setParameter("toUserId", authUserId);
         Friend friend = (Friend) query.uniqueResult();
         if (friend == null) {
-            throw new Exception("Không tìm thấy bạn bè");
+            throw new Exception("Không tìm thấy bạn bè hoặc đã bị hủy từ trước");
         }
         session.delete(friend);
     }

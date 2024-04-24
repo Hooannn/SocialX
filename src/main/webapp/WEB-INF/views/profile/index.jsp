@@ -217,7 +217,7 @@
                         <li class="nav-item dropdown">
                             <a href="#" class="   d-flex align-items-center dropdown-toggle" id="drop-down-arrow"
                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="${requestScope["user"]["avatar"]}" class="img-fluid rounded-circle me-3"
+                                <img src="${requestScope["user"]["avatar"]}" class="img-fluid rounded-circle me-1"
                                      alt="user">
                                 <div class="caption">
                                     <h6 class="mb-0 line-height">${requestScope["user"]["firstName"]} ${requestScope["user"]["lastName"]}</h6>
@@ -227,8 +227,9 @@
                                 <div class="card shadow-none m-0">
                                     <div class="card-header  bg-primary">
                                         <div class="header-title">
-                                            <h5 class="mb-0 text-white">Xin
-                                                chào ${requestScope["user"]["firstName"]} ${requestScope["user"]["lastName"]}</h5>
+                                            <h5 class="mb-0 text-white">
+                                                Xin chào ${requestScope["user"]["firstName"]} ${requestScope["user"]["lastName"]}
+                                            </h5>
                                         </div>
                                     </div>
                                     <div class="card-body p-0 ">
@@ -238,7 +239,7 @@
                                                     <i class="ri-file-user-line"></i>
                                                 </div>
                                                 <div class="ms-3">
-                                                    <h6 class="mb-0 ">Hồ sơ</h6>
+                                                    <h6 class="mb-0 ">Trang cá nhân</h6>
                                                     <p class="mb-0 font-size-12">Xem thông tin cá nhân của bạn.</p>
                                                 </div>
                                             </div>
@@ -297,7 +298,7 @@
                                     </div>
                                 </div>
                                 <div class="profile-info p-3 d-flex align-items-center justify-content-between position-relative">
-                                    <div class="social-links">
+                                    <div class="add-friend-btn-wrapper">
                                         <c:if test="${isCurrentUser != true}">
                                             <c:choose>
                                                 <c:when test="${friendStatus == 'NOT_FRIENDS'}">
@@ -307,13 +308,13 @@
                                                 </c:when>
                                                 <c:when test="${friendStatus == 'ARE_FRIENDS'}">
                                                     <a href="friend/unfriend/${targetUser.id}?redirect=/profile/${targetUser.id}">
-                                                        <button class="btn btn-primary add-friend-btn">Hủy kết bạn
+                                                        <button class="btn add-friend-btn danger">Hủy kết bạn
                                                         </button>
                                                     </a>
                                                 </c:when>
                                                 <c:when test="${friendStatus == 'PENDING_SENT_REQUEST'}">
                                                     <a href="friend/cancel-request/${targetUser.id}?redirect=/profile/${targetUser.id}">
-                                                        <button class="btn btn-primary add-friend-btn">Hủy yêu cầu
+                                                        <button class="btn add-friend-btn danger">Hủy yêu cầu
                                                         </button>
                                                     </a>
                                                 </c:when>
@@ -328,16 +329,16 @@
                                     <div class="social-info">
                                         <ul class="social-data-block d-flex align-items-center justify-content-between list-inline p-0 m-0">
                                             <li class="text-center ps-3">
-                                                <h6>Posts</h6>
-                                                <p class="mb-0">690</p>
+                                                <h6>Bài viết</h6>
+                                                <p class="mb-0">${not empty posts ? fn:length(posts): 0}</p>
                                             </li>
                                             <li class="text-center ps-3">
-                                                <h6>Followers</h6>
-                                                <p class="mb-0">206</p>
+                                                <h6>Bạn bè</h6>
+                                                <p class="mb-0">${not empty friends ? fn:length(friends): 0}</p>
                                             </li>
                                             <li class="text-center ps-3">
-                                                <h6>Following</h6>
-                                                <p class="mb-0">100</p>
+                                                <h6>Ảnh</h6>
+                                                <p class="mb-0">${not empty photos ? fn:length(photos): 0}</p>
                                             </li>
                                         </ul>
                                     </div>
@@ -351,19 +352,19 @@
                                 <ul class="nav nav-pills d-flex align-items-center justify-content-center profile-feed-items p-0 m-0">
                                     <li class="nav-item col-12 col-sm-3 p-0">
                                         <a class="nav-link active" href="#pills-timeline-tab" data-bs-toggle="pill"
-                                           data-bs-target="#timeline" role="button">Timeline</a>
+                                           data-bs-target="#timeline" role="button">Dòng thời gian</a>
                                     </li>
                                     <li class="nav-item col-12 col-sm-3 p-0">
                                         <a class="nav-link" href="#pills-about-tab" data-bs-toggle="pill"
-                                           data-bs-target="#about" role="button">About</a>
+                                           data-bs-target="#about" role="button">Giới thiệu</a>
                                     </li>
                                     <li class="nav-item col-12 col-sm-3 p-0">
                                         <a class="nav-link" href="#pills-friends-tab" data-bs-toggle="pill"
-                                           data-bs-target="#friends" role="button">Friends</a>
+                                           data-bs-target="#friends" role="button">Bàn bè</a>
                                     </li>
                                     <li class="nav-item col-12 col-sm-3 p-0">
                                         <a class="nav-link" href="#pills-photos-tab" data-bs-toggle="pill"
-                                           data-bs-target="#photos" role="button">Photos</a>
+                                           data-bs-target="#photos" role="button">Ảnh</a>
                                     </li>
                                 </ul>
                             </div>
@@ -762,7 +763,7 @@
 
                         <%-- About tab pane --%>
                         <div class="tab-pane fade" id="about" role="tabpanel">
-                            <div class="card">
+                            <div class="card mh-300">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-3">
@@ -770,27 +771,12 @@
                                                 <li>
                                                     <a class="nav-link active" href="#v-pills-basicinfo-tab"
                                                        data-bs-toggle="pill" data-bs-target="#v-pills-basicinfo-tab"
-                                                       role="button">Contact and Basic Info</a>
-                                                </li>
-                                                <li>
-                                                    <a class="nav-link" href="#v-pills-family-tab" data-bs-toggle="pill"
-                                                       data-bs-target="#v-pills-family" role="button">Family and
-                                                        Relationship</a>
-                                                </li>
-                                                <li>
-                                                    <a class="nav-link" href="#v-pills-work-tab" data-bs-toggle="pill"
-                                                       data-bs-target="#v-pills-work-tab" role="button">Work and
-                                                        Education</a>
-                                                </li>
-                                                <li>
-                                                    <a class="nav-link" href="#v-pills-lived-tab" data-bs-toggle="pill"
-                                                       data-bs-target="#v-pills-lived-tab" role="button">Places You've
-                                                        Lived</a>
+                                                       role="button">Thông tin cá nhân</a>
                                                 </li>
                                                 <li>
                                                     <a class="nav-link" href="#v-pills-details-tab"
-                                                       data-bs-toggle="pill" data-bs-target="#v-pills-details-tab"
-                                                       role="button">Details About You</a>
+                                                       data-bs-toggle="pill" data-bs-target="#v-pills-contact-tab"
+                                                       role="button">Thông tin liên hệ</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -798,296 +784,69 @@
                                             <div class="tab-content">
                                                 <div class="tab-pane fade active show" id="v-pills-basicinfo-tab"
                                                      role="tabpanel" aria-labelledby="v-pills-basicinfo-tab">
-                                                    <h4>Contact Information</h4>
+                                                    <h4>Thông tin cá nhân</h4>
+                                                    <hr>
+                                                    <div class="row">
+                                                        <div class="col-3">
+                                                            <h6>Họ</h6>
+                                                        </div>
+                                                        <div class="col-9">
+                                                            <p class="mb-0">
+                                                                ${targetUser.lastName}
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <h6>Tên</h6>
+                                                        </div>
+                                                        <div class="col-9">
+                                                            <p class="mb-0">
+                                                                ${targetUser.firstName}
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <h6>Ngày sinh</h6>
+                                                        </div>
+                                                        <div class="col-9">
+                                                            <p class="mb-0">
+                                                                ${not empty targetUser.dateOfBirth ? targetUser.formattedBirthday : "Chưa được cập nhật"}
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <h6>Giới tính</h6>
+                                                        </div>
+                                                        <div class="col-9">
+                                                            <p class="mb-0">${targetUser.sex ? "Nữ": "Nam"}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="v-pills-contact-tab" role="tabpanel"
+                                                     aria-labelledby="v-pills-details-tab">
+                                                    <h4>Thông tin liên hệ</h4>
                                                     <hr>
                                                     <div class="row">
                                                         <div class="col-3">
                                                             <h6>Email</h6>
                                                         </div>
                                                         <div class="col-9">
-                                                            <p class="mb-0">Bnijohn@gmail.com</p>
+                                                            <p class="mb-0">${targetUser.email}</p>
                                                         </div>
                                                         <div class="col-3">
-                                                            <h6>Mobile</h6>
+                                                            <h6>Địa chỉ</h6>
                                                         </div>
                                                         <div class="col-9">
-                                                            <p class="mb-0">(001) 4544 565 456</p>
+                                                            <p class="mb-0">
+                                                                ${not empty targetUser.address ? targetUser.address : "Chưa được cập nhật"}
+                                                            </p>
                                                         </div>
                                                         <div class="col-3">
-                                                            <h6>Address</h6>
+                                                            <h6>Ngày tạo</h6>
                                                         </div>
                                                         <div class="col-9">
-                                                            <p class="mb-0">United States of America</p>
+                                                            <p class="mb-0">
+                                                                ${targetUser.formattedCreatedAt}
+                                                            </p>
                                                         </div>
                                                     </div>
-                                                    <h4 class="mt-3">Websites and Social Links</h4>
-                                                    <hr>
-                                                    <div class="row">
-                                                        <div class="col-3">
-                                                            <h6>Website</h6>
-                                                        </div>
-                                                        <div class="col-9">
-                                                            <p class="mb-0">www.bootstrap.com</p>
-                                                        </div>
-                                                        <div class="col-3">
-                                                            <h6>Social Link</h6>
-                                                        </div>
-                                                        <div class="col-9">
-                                                            <p class="mb-0">www.bootstrap.com</p>
-                                                        </div>
-                                                    </div>
-                                                    <h4 class="mt-3">Basic Information</h4>
-                                                    <hr>
-                                                    <div class="row">
-                                                        <div class="col-3">
-                                                            <h6>Birth Date</h6>
-                                                        </div>
-                                                        <div class="col-9">
-                                                            <p class="mb-0">24 January</p>
-                                                        </div>
-                                                        <div class="col-3">
-                                                            <h6>Birth Year</h6>
-                                                        </div>
-                                                        <div class="col-9">
-                                                            <p class="mb-0">1994</p>
-                                                        </div>
-                                                        <div class="col-3">
-                                                            <h6>Gender</h6>
-                                                        </div>
-                                                        <div class="col-9">
-                                                            <p class="mb-0">Female</p>
-                                                        </div>
-                                                        <div class="col-3">
-                                                            <h6>interested in</h6>
-                                                        </div>
-                                                        <div class="col-9">
-                                                            <p class="mb-0">Designing</p>
-                                                        </div>
-                                                        <div class="col-3">
-                                                            <h6>language</h6>
-                                                        </div>
-                                                        <div class="col-9">
-                                                            <p class="mb-0">English, French</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="tab-pane fade" id="v-pills-family" role="tabpanel">
-                                                    <h4 class="mb-3">Relationship</h4>
-                                                    <ul class="suggestions-lists m-0 p-0">
-                                                        <li class="d-flex mb-4 align-items-center">
-                                                            <div class="user-img img-fluid"><i class="ri-add-fill"></i>
-                                                            </div>
-                                                            <div class="media-support-info ms-3">
-                                                                <h6>Add Your Relationship Status</h6>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                    <h4 class="mt-3 mb-3">Family Members</h4>
-                                                    <ul class="suggestions-lists m-0 p-0">
-                                                        <li class="d-flex mb-4 align-items-center">
-                                                            <div class="user-img img-fluid"><i class="ri-add-fill"></i>
-                                                            </div>
-                                                            <div class="media-support-info ms-3">
-                                                                <h6>Add Family Members</h6>
-                                                            </div>
-                                                        </li>
-                                                        <li class="d-flex mb-4 align-items-center justify-content-between">
-                                                            <div class="user-img img-fluid"><img
-                                                                    src="images/user/01.jpg" alt="story-img"
-                                                                    class="rounded-circle avatar-40"></div>
-                                                            <div class="w-100">
-                                                                <div class="d-flex justify-content-between">
-                                                                    <div class="ms-3">
-                                                                        <h6>Paul Molive</h6>
-                                                                        <p class="mb-0">Brothe</p>
-                                                                    </div>
-                                                                    <div class="edit-relation"><a href="#"><i
-                                                                            class="ri-edit-line me-2"></i>Edit</a></div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="d-flex justify-content-between mb-4  align-items-center">
-                                                            <div class="user-img img-fluid"><img
-                                                                    src="images/user/02.jpg" alt="story-img"
-                                                                    class="rounded-circle avatar-40"></div>
-                                                            <div class="w-100">
-                                                                <div class="d-flex flex-wrap justify-content-between">
-                                                                    <div class=" ms-3">
-                                                                        <h6>Anna Mull</h6>
-                                                                        <p class="mb-0">Sister</p>
-                                                                    </div>
-                                                                    <div class="edit-relation"><a href="#"><i
-                                                                            class="ri-edit-line me-2"></i>Edit</a></div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="d-flex mb-4 align-items-center justify-content-between">
-                                                            <div class="user-img img-fluid"><img
-                                                                    src="images/user/03.jpg" alt="story-img"
-                                                                    class="rounded-circle avatar-40"></div>
-                                                            <div class="w-100">
-                                                                <div class="d-flex justify-content-between">
-                                                                    <div class="ms-3">
-                                                                        <h6>Paige Turner</h6>
-                                                                        <p class="mb-0">Cousin</p>
-                                                                    </div>
-                                                                    <div class="edit-relation"><a href="#"><i
-                                                                            class="ri-edit-line me-2"></i>Edit</a></div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="tab-pane fade" id="v-pills-work-tab" role="tabpanel"
-                                                     aria-labelledby="v-pills-work-tab">
-                                                    <h4 class="mb-3">Work</h4>
-                                                    <ul class="suggestions-lists m-0 p-0">
-                                                        <li class="d-flex justify-content-between mb-4  align-items-center">
-                                                            <div class="user-img img-fluid"><i class="ri-add-fill"></i>
-                                                            </div>
-                                                            <div class="ms-3">
-                                                                <h6>Add Work Place</h6>
-                                                            </div>
-                                                        </li>
-                                                        <li class="d-flex mb-4 align-items-center justify-content-between">
-                                                            <div class="user-img img-fluid"><img
-                                                                    src="images/user/01.jpg" alt="story-img"
-                                                                    class="rounded-circle avatar-40"></div>
-                                                            <div class="w-100">
-                                                                <div class="d-flex justify-content-between">
-                                                                    <div class="ms-3">
-                                                                        <h6>Themeforest</h6>
-                                                                        <p class="mb-0">Web Designer</p>
-                                                                    </div>
-                                                                    <div class="edit-relation"><a href="#"><i
-                                                                            class="ri-edit-line me-2"></i>Edit</a></div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="d-flex mb-4 align-items-center justify-content-between">
-                                                            <div class="user-img img-fluid"><img
-                                                                    src="images/user/02.jpg" alt="story-img"
-                                                                    class="rounded-circle avatar-40"></div>
-                                                            <div class="w-100">
-                                                                <div class="d-flex flex-wrap justify-content-between">
-                                                                    <div class="ms-3">
-                                                                        <h6>iqonicdesign</h6>
-                                                                        <p class="mb-0">Web Developer</p>
-                                                                    </div>
-                                                                    <div class="edit-relation"><a href="#"><i
-                                                                            class="ri-edit-line me-2"></i>Edit</a></div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="d-flex mb-4 align-items-center justify-content-between">
-                                                            <div class="user-img img-fluid"><img
-                                                                    src="images/user/03.jpg" alt="story-img"
-                                                                    class="rounded-circle avatar-40"></div>
-                                                            <div class="w-100">
-                                                                <div class="d-flex flex-wrap justify-content-between">
-                                                                    <div class="ms-3">
-                                                                        <h6>W3school</h6>
-                                                                        <p class="mb-0">Designer</p>
-                                                                    </div>
-                                                                    <div class="edit-relation"><a href="#"><i
-                                                                            class="ri-edit-line me-2"></i>Edit</a></div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                    <h4 class="mb-3">Professional Skills</h4>
-                                                    <ul class="suggestions-lists m-0 p-0">
-                                                        <li class="d-flex mb-4 align-items-center">
-                                                            <div class="user-img img-fluid"><i class="ri-add-fill"></i>
-                                                            </div>
-                                                            <div class="ms-3">
-                                                                <h6>Add Professional Skills</h6>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                    <h4 class="mt-3 mb-3">College</h4>
-                                                    <ul class="suggestions-lists m-0 p-0">
-                                                        <li class="d-flex mb-4 align-items-center">
-                                                            <div class="user-img img-fluid"><i class="ri-add-fill"></i>
-                                                            </div>
-                                                            <div class="ms-3">
-                                                                <h6>Add College</h6>
-                                                            </div>
-                                                        </li>
-                                                        <li class="d-flex mb-4 align-items-center">
-                                                            <div class="user-img img-fluid"><img
-                                                                    src="images/user/01.jpg" alt="story-img"
-                                                                    class="rounded-circle avatar-40"></div>
-                                                            <div class="w-100">
-                                                                <div class="d-flex flex-wrap justify-content-between">
-                                                                    <div class="ms-3">
-                                                                        <h6>Lorem ipsum</h6>
-                                                                        <p class="mb-0">USA</p>
-                                                                    </div>
-                                                                    <div class="edit-relation"><a href="#"><i
-                                                                            class="ri-edit-line me-2"></i>Edit</a></div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="tab-pane fade" id="v-pills-lived-tab" role="tabpanel"
-                                                     aria-labelledby="v-pills-lived-tab">
-                                                    <h4 class="mb-3">Current City and Hometown</h4>
-                                                    <ul class="suggestions-lists m-0 p-0">
-                                                        <li class="d-flex mb-4 align-items-center justify-content-between">
-                                                            <div class="user-img img-fluid"><img
-                                                                    src="images/user/01.jpg" alt="story-img"
-                                                                    class="rounded-circle avatar-40"></div>
-                                                            <div class="w-100">
-                                                                <div class="d-flex flex-wrap justify-content-between">
-                                                                    <div class="ms-3">
-                                                                        <h6>Georgia</h6>
-                                                                        <p class="mb-0">Georgia State</p>
-                                                                    </div>
-                                                                    <div class="edit-relation"><a href="#"><i
-                                                                            class="ri-edit-line me-2"></i>Edit</a></div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                        <li class="d-flex mb-4 align-items-center justify-content-between">
-                                                            <div class="user-img img-fluid"><img
-                                                                    src="images/user/02.jpg" alt="story-img"
-                                                                    class="rounded-circle avatar-40"></div>
-                                                            <div class="w-100">
-                                                                <div class="d-flex flex-wrap justify-content-between">
-                                                                    <div class="ms-3">
-                                                                        <h6>Atlanta</h6>
-                                                                        <p class="mb-0">Atlanta City</p>
-                                                                    </div>
-                                                                    <div class="edit-relation"><a href="#"><i
-                                                                            class="ri-edit-line me-2"></i>Edit</a></div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                    <h4 class="mt-3 mb-3">Other Places Lived</h4>
-                                                    <ul class="suggestions-lists m-0 p-0">
-                                                        <li class="d-flex mb-4 align-items-center">
-                                                            <div class="user-img img-fluid"><i class="ri-add-fill"></i>
-                                                            </div>
-                                                            <div class="ms-3">
-                                                                <h6>Add Place</h6>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="tab-pane fade" id="v-pills-details-tab" role="tabpanel"
-                                                     aria-labelledby="v-pills-details-tab">
-                                                    <h4 class="mb-3">About You</h4>
-                                                    <p>Hi, I’m Bni, I’m 26 and I work as a Web Designer for the
-                                                        iqonicdesign.</p>
-                                                    <h4 class="mt-3 mb-3">Other Name</h4>
-                                                    <p>Bini Rock</p>
-                                                    <h4 class="mt-3 mb-3">Favorite Quotes</h4>
-                                                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting
-                                                        industry. Lorem Ipsum has been the industry's standard dummy
-                                                        text ever since the 1500s</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -4565,9 +4324,9 @@
                 </div>
 
                 <%-- Loading spinner --%>
-                <div class="col-sm-12 text-center">
-                    <img src="images/page-img/page-load-loader.gif" alt="loader" style="height: 100px;">
-                </div>
+<%--                <div class="col-sm-12 text-center">--%>
+<%--                    <img src="images/page-img/page-load-loader.gif" alt="loader" style="height: 100px;">--%>
+<%--                </div>--%>
             </div>
         </div>
     </div>

@@ -6,7 +6,10 @@ import org.hibernate.annotations.Index;
 import org.hibernate.annotations.GenerationTime;
 
 import javax.persistence.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 @Entity
@@ -178,6 +181,16 @@ public class User {
 
     public String getFullName() {
         return lastName + " " + firstName;
+    }
+
+    public String getFormattedBirthday() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM, yyyy", new Locale("vi", "VN"));
+        return sdf.format(dateOfBirth);
+    }
+
+    public String getFormattedCreatedAt() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM, yyyy", new Locale("vi", "VN"));
+        return sdf.format(createdAt);
     }
 
     @PrePersist
