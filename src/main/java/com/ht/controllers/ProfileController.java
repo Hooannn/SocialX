@@ -19,6 +19,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Map;
 import java.util.Objects;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Controller
 @RequestMapping("/profile")
 public class ProfileController {
@@ -26,13 +31,15 @@ public class ProfileController {
     private final PostService postService;
     private final FriendService friendService;
     private final Cloudinary cloudinary;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public ProfileController(UserService userService, PostService postService, FriendService friendService, Cloudinary cloudinary) {
+    public ProfileController(UserService userService, PostService postService, FriendService friendService, Cloudinary cloudinary, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.postService = postService;
         this.friendService = friendService;
         this.cloudinary = cloudinary;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping()
@@ -87,7 +94,8 @@ public class ProfileController {
             @RequestParam(name = "dateOfBirth", required = false) String dateOfBirth,
             @RequestParam(name = "sex") boolean sex,
             @RequestParam(name = "address", required = false) String address,
-            ModelMap model
+            ModelMap model,
+            @RequestAttribute("user") User authUser
     ) {
         String imageUrl = null;
         if (file != null && !file.isEmpty()) {
@@ -111,6 +119,31 @@ public class ProfileController {
         If update failed, add error message to model, and return to /profile/edit
         */
         // Remember to parse dateOfBirth to Date
+        // Parse chuỗi dateOfBirth thành đối tượng Date
+        Date parsedDateOfBirth;
+        try {
+            parsedDateOfBirth = new SimpleDateFormat("yyyy-MM-dd").parse(dateOfBirth);
+        } catch (ParseException e) {
+            model.addAttribute("errorMessage", "Định dạng ngày không hợp lệ");
+            model.addAttribute("tab", "information");
+            return "profile/edit";
+        }
+
+        // Cập nhật thông tin cá nhân của người dùng
+        authUser.setFirstName(firstName);
+        authUser.setLastName(lastName);
+        authUser.setDateOfBirth(parsedDateOfBirth);
+        authUser.setSex(sex);
+        authUser.setAddress(address);
+        if (imageUrl != null) {
+            authUser.setAvatar(imageUrl);
+        }
+
+        // Lưu vào cơ sở dữ liệu
+        userService.saveOrUpdateUser(authUser);
+
+
+
         System.out.println(
                 "firstName: " + firstName + "\n" +
                         "lastName: " + lastName + "\n" +
@@ -124,7 +157,8 @@ public class ProfileController {
     @PostMapping("/edit/password")
     public String editProfilePassword(
             @Valid @ModelAttribute("changePasswordDto") ChangePasswordDto changePasswordDto, BindingResult result,
-            ModelMap model
+            ModelMap model,
+            @RequestAttribute("user") User authUser
     ) {
         if (result.hasErrors()) {
             model.addAttribute("tab", "password");
@@ -137,6 +171,12 @@ public class ProfileController {
         }
 
         /* TODO: Update user password, then return redirect to /profile/edit */
+        // Mã hóa mật khẩu mới
+        String encodedPassword = passwordEncoder.encode(changePasswordDto.getNewPassword());
+        // Cập nhật mật khẩu mới cho người dùng
+        authUser.setPassword(encodedPassword);
+        // Lưu vào cơ sở dữ liệu
+        userService.saveOrUpdateUser(authUser);
         System.out.println(changePasswordDto);
         return "redirect:/profile/edit";
     }

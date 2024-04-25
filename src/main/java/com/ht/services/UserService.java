@@ -25,4 +25,20 @@ public class UserService {
 
         return (User) getUserQuery.uniqueResult();
     }
+
+    public void saveOrUpdateUser (User authUser) {
+        Session session = sessionFactory.getCurrentSession();
+        Query getUserQuery = session.createQuery("UPDATE User u SET first_name = :first_name, last_name = :last_name, " +
+                "date_of_birth = :date_of_birth, sex = :sex, address = :address, " +
+                "avatar = :avatar, password = :password WHERE id = :userId");
+        getUserQuery.setParameter("first_name", authUser.getFirstName())
+                .setParameter("last_name", authUser.getLastName())
+                .setParameter("date_of_birth", authUser.getDateOfBirth())
+                .setParameter("sex", authUser.isSex())
+                .setParameter("address", authUser.getAddress())
+                .setParameter("avatar", authUser.getAvatar())
+                .setParameter("userId", authUser.getId())
+                .setParameter("password", authUser.getPassword())
+                .executeUpdate();
+    }
 }
