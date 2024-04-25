@@ -16,7 +16,7 @@
     <base href="${pageContext.request.contextPath}/"/>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>SocialX | Tạo bài đăng</title>
+    <title>SocialX | Cập nhật bài đăng</title>
 
     <link rel="shortcut icon" href="images/favicon.ico"/>
     <link rel="stylesheet" href="css/libs.min.css">
@@ -27,6 +27,42 @@
     <link rel="stylesheet" href="vendor/font-awesome-line-awesome/css/all.min.css">
     <link rel="stylesheet" href="vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
 
+    <style>
+        #files-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .file-preview-item {
+            margin-right: 10px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .file-preview-item img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 4px;
+        }
+
+        .file-preview-item button {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: grey;
+            color: whitesmoke !important;
+            width: 12px;
+            height: 12px;
+            opacity: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: xx-small;
+        }
+    </style>
 </head>
 <body class="  ">
 <!-- loader Start -->
@@ -262,211 +298,43 @@
     </div>
 
     <div class="container">
-        <div class="col-sm-12 my-4">
-            <div class="card card-block card-stretch card-height">
-                <div class="card-body">
-                    <c:if test="${not empty errorMessage}">
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <span>${errorMessage}</span>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                        </div>
-                    </c:if>
-                    <div class="user-post-data">
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                             aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Xoá bài viết</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Thao tác này không thể hoàn tác. Bạn có chắc chắn muốn xoá bài viết này không?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn" data-bs-dismiss="modal">Huỷ
-                                        </button>
-                                        <button type="button" class="btn btn-danger">Xác nhận</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <div class="me-3">
-                                <img class="rounded-circle avatar-50 object-fit-cover ratio-1x1"
-                                     style="object-fit: cover"
-                                     src=${post.user.avatar} alt="">
-                            </div>
-                            <div class="w-100">
-                                <div class="d-flex justify-content-between">
-                                    <div class="">
-                                        <h5 class="mb-0 d-inline-block">
-                                            <a class="text-black-50"
-                                               href="profile/${post.user.id}">${post.user.firstName} ${post.user.lastName}</a>
-                                        </h5>
-                                        <span class="mb-0 d-inline-block"></span>
-                                        <p class="mb-0 text-primary created-at">${post.createdAt}</p>
-                                    </div>
-                                    <c:if test="${post.user.id == user.id}">
-                                        <div class="card-post-toolbar">
-                                            <div class="dropdown">
-                                                <span class="dropdown-toggle" data-bs-toggle="dropdown"
-                                                      aria-haspopup="true"
-                                                      aria-expanded="false" role="button">
-                                                    <i class="ri-more-fill"></i>
-                                                </span>
-                                                <div class="dropdown-menu m-0 p-0">
-                                                    <a class="dropdown-item p-3" href="post/${post.id}/edit">
-                                                        <div class="d-flex align-items-top">
-                                                            <div class="h4">
-                                                                <i class="ri-save-line"></i>
-                                                            </div>
-                                                            <div class="data ms-2">
-                                                                <h6>Chỉnh sửa</h6>
-                                                                <p class="mb-0">Chỉnh sửa nội dung bài viết</p>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                    <a class="dropdown-item p-3" type="button" data-bs-toggle="modal"
-                                                       data-bs-target="#exampleModal">
-                                                        <div class="d-flex align-items-top">
-                                                            <i class="ri-close-circle-line h4"></i>
-                                                            <div class="data ms-2">
-                                                                <h6>Xoá</h6>
-                                                                <p class="mb-0">Xoá bài viết khỏi hệ thống</p>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </c:if>
-                                </div>
-                            </div>
-                        </div>
+        <div class="bg-white p-4 my-4">
+            <div>
+                <h5 class="modal-title mb-2" id="post-modalLabel">Chỉnh sửa bài đăng</h5>
+            </div>
+            <div>
+                <c:if test="${not empty errorMessage}">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <span>${errorMessage}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="Close"></button>
                     </div>
-                    <div>
-                        <h5 class="my-2">${post.title}</h5>
-                        <p>${post.content}</p>
+                </c:if>
+                <div class="d-flex align-items-start">
+                    <div class="user-img">
+                        <img src="${requestScope["user"]["avatar"]}" alt="userimg" class="avatar-60 rounded-circle">
                     </div>
-                    <div class="user-post">
-                        <!--
-                        <div class="d-grid grid-rows-2 grid-flow-col gap-3">
-                            <div class="row-span-2 row-span-md-1">
-                                <img src="images/page-img/p2.jpg" alt="post-image" class="img-fluid rounded w-100">
-                            </div>
-                            <div class="row-span-1">
-                                <img src="images/page-img/p1.jpg" alt="post-image" class="img-fluid rounded w-100">
-                            </div>
-                            <div class="row-span-1 ">
-                                <img src="images/page-img/p3.jpg" alt="post-image" class="img-fluid rounded w-100">
-                            </div>
-                        </div>
-                        -->
-                    </div>
-                    <div class="comment-area mt-3">
-                        <div class="d-flex justify-content-between align-items-center flex-wrap">
-                            <div class="like-block position-relative d-flex align-items-center">
-                                <div class="d-flex align-items-center">
-                                    <div class="like-data">
-                                        <c:choose>
-                                            <c:when test="${not empty post.likes}">
-                                                <c:forEach var="like" items="${post.likes}">
-                                                    <c:if test="${like.user.id eq requestScope['user']['id']}">
-                                                        <div class="like-button">
-                                                            <a href="post/${post.id}/unlike?redirect=/post/${post.id}">
-                                                                <button type="button"
-                                                                        class="btn btn-link text-primary">
-                                                                    <i class="far fa-thumbs-up"></i>
-                                                                </button>
-                                                            </a>
-                                                        </div>
-                                                    </c:if>
-                                                </c:forEach>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <div class="like-button">
-                                                    <a href="post/${post.id}/like?redirect=/post/${post.id}">
-                                                        <button type="button"
-                                                                class="btn btn-link text-secondary">
-                                                            <i class="far fa-thumbs-up"></i>
-                                                        </button>
-                                                    </a>
-                                                </div>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </div>
-                                    <div class="total-like-block ms-1 me-3">
-                                        <div class="dropdown">
-                                                                    <span class="dropdown-toggle"
-                                                                          data-bs-toggle="dropdown" aria-haspopup="true"
-                                                                          aria-expanded="false" role="button">
-                                                                    ${fn:length(post.likes)} lượt thích
-                                                                    </span>
-                                            <c:if test="${not empty post.likes}">
-                                                <div class="dropdown-menu">
-                                                    <c:forEach var="like"
-                                                               items="${post.likes}">
-                                                        <c:if test="${not empty like}">
-                                                            <a class="dropdown-item"
-                                                               href="profile/${like.user.id}">${like.user.firstName} ${like.user.lastName}</a>
-                                                        </c:if>
-                                                    </c:forEach>
-                                                </div>
-                                            </c:if>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="total-comment-block">
-                                    ${fn:length(post.comments)} lượt bình luận
-                                </div>
-                            </div>
-                            <div class="share-block d-flex align-items-center feather-icon mt-2 mt-md-0">
-                                <a href="javascript:void();" data-bs-toggle="offcanvas"
-                                   data-bs-target="#share-btn" aria-controls="share-btn"><i
-                                        class="ri-share-line"></i>
-                                    <span class="ms-1">Chia sẻ</span></a>
-                            </div>
+                    <form id="uploadForm" class="post-text ms-3 w-100" action="post/create"
+                          enctype="multipart/form-data"
+                          method="post">
+                        <div class="d-flex flex-column gap-2">
+                            <input name="title" type="text" class="form-control rounded py-2" id="title"
+                                   value="${post.title}"
+                                   placeholder="Nhập tiêu đề bài viết..."/>
+                            <textarea name="content" type="text" class="form-control rounded"
+                                      rows="5" id="content"
+                                      placeholder="Nhập nội dung bài viết...">${post.content}</textarea>
+                            <input type="file" id="fileInput" name="files" multiple
+                                   style="visibility: hidden; position: absolute"
+                                   accept="image/*,video/*">
+                            <div id="files-container"></div>
+                            <span href="post/create" class="btn btn-soft-primary w-25" id="uploadButton">
+                                    <img src="images/small/07.png" alt="icon" class="img-fluid me-2"> Ảnh/Video
+                            </span>
                         </div>
                         <hr>
-                        <ul class="post-comments list-inline p-0 m-0">
-                            <c:forEach var="comment" items="${post.comments}">
-                                <c:if test="${not empty comment}">
-                                    <li class="mb-2">
-                                        <div class="d-flex">
-                                            <div class="user-img">
-                                                <img src="${comment.user.avatar}"
-                                                     alt="userimg"
-                                                     class="avatar-35 rounded-circle img-fluid">
-                                            </div>
-                                            <div class="comment-data-block ms-3">
-                                                <div class="d-flex gap-md-1">
-                                                    <div class="fw-bold">${comment.user.firstName} ${comment.user.lastName}</div>
-                                                    <div class="d-flex flex-wrap align-items-center comment-activity fs-6">
-                                                        <small class="created-at">${comment.createdAt}</small>
-                                                    </div>
-                                                </div>
-                                                <p class="mb-0">${comment.content}</p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </c:if>
-                            </c:forEach>
-                        </ul>
-                        <form class="comment-text d-flex align-items-center mt-3 gap-2" action="post/${post.id}/comment"
-                              method="post">
-                            <input type="hidden" name="authorId" value="${post.user.id}">
-                            <input type="text"
-                                   class="form-control rounded"
-                                   name="content"
-                                   placeholder="Bình luận về bài viết này...">
-                            <button class="btn btn-primary h-100">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </form>
-                    </div>
+                        <button type="submit" class="btn btn-primary py-2 d-block w-25 ms-auto">Cập nhật</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -507,6 +375,61 @@
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1/locale/vi.js"></script>
 <script src="scripts/dateFormat.js"></script>
 <script>
+    var uploadedFiles = [];
+    document.addEventListener('DOMContentLoaded', function () {
+        var fileInput = document.getElementById('fileInput');
+        var preview = document.getElementById('files-container');
+
+        fileInput.addEventListener('change', function (e) {
+            var files = e.target.files;
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                uploadedFiles.push(file); // Add the file to the array of uploaded files
+
+                var reader = new FileReader();
+
+                reader.onload = function (event) {
+                    var filePreview = document.createElement("div");
+                    filePreview.classList.add("file-preview-item");
+
+                    var img = document.createElement("img");
+                    img.src = event.target.result;
+
+                    var button = document.createElement("button");
+                    button.classList.add("btn-close");
+                    button.onclick = function () {
+                        // Remove the file from the array of uploaded files and the file preview when the delete button is clicked
+                        var index = uploadedFiles.indexOf(file);
+                        if (index !== -1) {
+                            uploadedFiles.splice(index, 1);
+                        }
+                        filePreview.remove();
+                        updateCurrentFiles(fileInput);
+                    };
+
+                    filePreview.appendChild(img);
+                    filePreview.appendChild(button);
+                    preview.appendChild(filePreview);
+                };
+
+                reader.readAsDataURL(file);
+            }
+            updateCurrentFiles(fileInput);
+        });
+
+        var uploadButton = document.getElementById('uploadButton');
+        uploadButton.addEventListener('click', function () {
+            fileInput.click();
+        });
+    });
+
+    function updateCurrentFiles(fileInput) {
+        let list = new DataTransfer();
+        uploadedFiles.forEach(file => {
+            list.items.add(file);
+        });
+        fileInput.files = list.files;
+    }
 </script>
 <div class="offcanvas offcanvas-bottom share-offcanvas" tabindex="-1" id="share-btn" aria-labelledby="shareBottomLabel">
     <div class="offcanvas-header">

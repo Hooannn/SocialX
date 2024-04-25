@@ -68,6 +68,17 @@ public class PostController {
         return "post/detail";
     }
 
+    @GetMapping("{id}/edit")
+    public String editPost(ModelMap model, @PathVariable("id") Long id, @RequestAttribute("user") User authUser) {
+        var post = postService.getPost(id);
+        model.addAttribute("post", postService.getPost(id));
+        if (!post.getUser().getId().equals(authUser.getId())) {
+            model.addAttribute("errorMessage", "Bạn không có quyền chỉnh sửa bài viết này");
+            return "post/detail";
+        }
+        return "post/edit";
+    }
+
     @PostMapping("create")
     public String createPost(@RequestAttribute("user") User authUser,
                              @RequestParam(name = "files", required = false) MultipartFile[] files,

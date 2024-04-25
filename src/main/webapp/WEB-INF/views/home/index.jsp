@@ -302,9 +302,37 @@
                                         <div class="card card-block card-stretch card-height">
                                             <div class="card-body">
                                                 <div class="user-post-data">
+                                                    <div class="modal fade" id="exampleModal" tabindex="-1"
+                                                         aria-labelledby="exampleModalLabel"
+                                                         aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                                        Xoá bài viết</h1>
+                                                                    <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal"
+                                                                            aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    Thao tác này không thể hoàn tác. Bạn có chắc chắn
+                                                                    muốn xoá bài viết này không?
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn"
+                                                                            data-bs-dismiss="modal">Huỷ
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-danger">Xác
+                                                                        nhận
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <div class="d-flex justify-content-between">
                                                         <div class="me-3">
-                                                            <img class="rounded-circle img-fluid"
+                                                            <img class="rounded-circle avatar-50 object-fit-cover ratio-1x1"
+                                                                 style="object-fit: cover"
                                                                  src=${post.user.avatar} alt="">
                                                         </div>
                                                         <div class="w-100">
@@ -317,8 +345,45 @@
                                                                     <span class="mb-0 d-inline-block"></span>
                                                                     <p class="mb-0 text-primary created-at">${post.createdAt}</p>
                                                                 </div>
-                                                                <div class="card-post-toolbar">
-                                                                </div>
+                                                                <c:if test="${post.user.id == user.id}">
+                                                                    <div class="card-post-toolbar">
+                                                                        <div class="dropdown">
+                                                                            <span class="dropdown-toggle"
+                                                                                  data-bs-toggle="dropdown"
+                                                                                  aria-haspopup="true"
+                                                                                  aria-expanded="false" role="button">
+                                                                                <i class="ri-more-fill"></i>
+                                                                            </span>
+                                                                            <div class="dropdown-menu m-0 p-0">
+                                                                                <a class="dropdown-item p-3"
+                                                                                   href="post/${post.id}/edit">
+                                                                                    <div class="d-flex align-items-top">
+                                                                                        <div class="h4">
+                                                                                            <i class="ri-save-line"></i>
+                                                                                        </div>
+                                                                                        <div class="data ms-2">
+                                                                                            <h6>Chỉnh sửa</h6>
+                                                                                            <p class="mb-0">Chỉnh sửa
+                                                                                                nội dung bài viết</p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </a>
+                                                                                <a class="dropdown-item p-3"
+                                                                                   type="button" data-bs-toggle="modal"
+                                                                                   data-bs-target="#exampleModal">
+                                                                                    <div class="d-flex align-items-top">
+                                                                                        <i class="ri-close-circle-line h4"></i>
+                                                                                        <div class="data ms-2">
+                                                                                            <h6>Xoá</h6>
+                                                                                            <p class="mb-0">Xoá bài viết
+                                                                                                khỏi hệ thống</p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </c:if>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -1,12 +1,8 @@
 package com.ht.entities;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "posts")
@@ -35,15 +31,11 @@ public class Post {
     private Set<PostFile> files;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @org.hibernate.annotations.OrderBy(clause = "created_at DESC")
     private Set<Comment> comments;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Like> likes;
-
-    @PrePersist
-    public void prePersist() {
-        if (createdAt == null) createdAt = new Date();
-    }
 
     public Post() {
     }
@@ -58,6 +50,11 @@ public class Post {
         this.files = files;
         this.comments = comments;
         this.likes = likes;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (createdAt == null) createdAt = new Date();
     }
 
     public Long getId() {
