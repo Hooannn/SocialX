@@ -384,6 +384,13 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
+                                    <c:if test="${not empty passwordErrorMessage}">
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            <span>${passwordErrorMessage}</span>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                    </c:if>
                                     <form:form modelAttribute="changePasswordDto" action="profile/edit/password"
                                                method="post">
                                         <div class="form-group">
