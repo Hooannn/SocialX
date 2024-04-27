@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="vendor/vanillajs-datepicker/dist/css/datepicker.min.css">
     <link rel="stylesheet" href="vendor/font-awesome-line-awesome/css/all.min.css">
     <link rel="stylesheet" href="vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
 </head>
 <body class=" ">
@@ -78,13 +79,6 @@
                         <h1 class="mb-0">Đăng ký</h1>
                         <p>Tạo tài khoản mới để có thể truy cập vào SocialX</p>
                         <form:form class="mt-4" modelAttribute="signUpDto" action="auth/sign-up" method="post">
-                            <c:if test="${not empty errorMessage}">
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    <strong>Lỗi!</strong> <span>${errorMessage}</span>
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                            aria-label="Close"></button>
-                                </div>
-                            </c:if>
                             <div class="d-flex gap-md-1">
                                 <div class="form-group col-6">
                                     <label class="form-label" for="lastNameInput">Họ</label>
@@ -119,7 +113,8 @@
                             </div>
                             <div class="d-inline-block w-100">
                                 <div class="form-check d-inline-block mt-2 pt-1">
-                                    <input type="checkbox" class="form-check-input" id="agreeCheckbox" onchange="toggleSubmit()">
+                                    <input type="checkbox" class="form-check-input" id="agreeCheckbox"
+                                           onchange="toggleSubmit()">
                                     <label class="form-check-label" for="agreeCheckbox">Tôi đồng ý <a href="#">Điều
                                         khoản và điều kiện sử dụng</a></label>
                                 </div>
@@ -159,6 +154,14 @@
 <script src="scripts/app.js"></script>
 <script src="vendor/vanillajs-datepicker/distscripts/datepicker.min.js"></script>
 <script src="scripts/lottie.js"></script>
+<!-- Toast handle script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script>
+    var errorMessage = '<%= request.getAttribute("errorMessage") %>';
+    var successMessage = '<%= request.getAttribute("successMessage") %>';
+</script>
+<script src="scripts/toastHandler.js"></script>
+<!-- -->
 <%-- disable sign up btn if not accept terms --%>
 <script>
     function toggleSubmit() {

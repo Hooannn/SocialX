@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="vendor/vanillajs-datepicker/dist/css/datepicker.min.css">
     <link rel="stylesheet" href="vendor/font-awesome-line-awesome/css/all.min.css">
     <link rel="stylesheet" href="vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
 </head>
 <body class="  ">
@@ -597,6 +598,14 @@
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/relativeTime.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1/locale/vi.js"></script>
 <script src="scripts/dateFormat.js"></script>
+<!-- Toast handle script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script>
+    var errorMessage = '<%= request.getAttribute("errorMessage") %>';
+    var successMessage = '<%= request.getAttribute("successMessage") %>';
+</script>
+<script src="scripts/toastHandler.js"></script>
+<!-- -->
 <script>
     document.getElementById("postInput").addEventListener("click", function () {
         window.location.href = "post/create";

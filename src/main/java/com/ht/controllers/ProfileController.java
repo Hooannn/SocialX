@@ -18,6 +18,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,11 +53,12 @@ public class ProfileController {
     public String userProfilePage(
             ModelMap model,
             @RequestAttribute("user") User authUser,
-            @PathVariable("userId") Long userId
+            @PathVariable("userId") Long userId,
+            RedirectAttributes redirectAttributes
     ) {
         User targetUser = userService.getUserById(userId);
         if (targetUser == null) {
-            // TODO: show error message USER NOT FOUND
+            redirectAttributes.addFlashAttribute("errorMessage", "Người dùng không tồn tại");
             return "redirect:/home";
         }
 
@@ -97,7 +99,8 @@ public class ProfileController {
             @RequestParam(name = "address", required = false) String address,
             ModelMap model,
             @RequestAttribute("user") User authUser,
-            HttpServletResponse response
+            HttpServletResponse response,
+            RedirectAttributes redirectAttributes
     ) {
         String imageUrl = null;
         if (file != null && !file.isEmpty()) {
@@ -137,13 +140,15 @@ public class ProfileController {
 
         // Lưu vào cơ sở dữ liệu
         userService.saveOrUpdateUser(authUser);
-        
+
         // Cập nhật lại access token
         String accessToken = jwtService.generateAccessToken(authUser);
         Cookie cookie = new Cookie("access_token", accessToken);
         cookie.setPath("/");
         cookie.setMaxAge(60 * 60 * 24 * 30);
         response.addCookie(cookie);
+
+        redirectAttributes.addFlashAttribute("successMessage", "Đổi mật khẩu thành công");
 
         return "redirect:/profile/edit";
     }
@@ -152,7 +157,7 @@ public class ProfileController {
     public String editProfilePassword(
             @Valid @ModelAttribute("changePasswordDto") ChangePasswordDto changePasswordDto, BindingResult result,
             ModelMap model,
-            @RequestAttribute("user") User authUser
+            @RequestAttribute("user") User authUser, RedirectAttributes redirectAttributes
     ) {
         if (result.hasErrors()) {
             model.addAttribute("tab", "password");
@@ -167,10 +172,12 @@ public class ProfileController {
         try {
             userService.changePassword(authUser.getId(), changePasswordDto);
         } catch (Exception e) {
-            model.addAttribute("passwordErrorMessage", e.getMessage());
+            model.addAttribute("errorMessage", e.getMessage());
             model.addAttribute("tab", "password");
             return "profile/edit";
         }
+
+        redirectAttributes.addFlashAttribute("successMessage", "Đổi mật khẩu thành công");
 
         return "redirect:/profile/edit";
     }
