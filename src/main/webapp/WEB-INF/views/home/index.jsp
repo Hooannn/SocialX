@@ -18,6 +18,7 @@
 
     <link rel="shortcut icon" href="images/favicon.ico"/>
     <link rel="stylesheet" href="css/libs.min.css">
+    <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/socialv.css?v=4.0.0">
     <link rel="stylesheet" href="vendor/@fortawesome/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="vendor/remixicon/fonts/remixicon.css">
@@ -393,21 +394,36 @@
                                                     <h5 class="my-2">${post.title}</h5>
                                                     <p>${post.content}</p>
                                                 </div>
-                                                <div class="user-post">
-                                                    <!--
-                                                    <div class="d-grid grid-rows-2 grid-flow-col gap-3">
-                                                        <div class="row-span-2 row-span-md-1">
-                                                            <img src="images/page-img/p2.jpg" alt="post-image" class="img-fluid rounded w-100">
-                                                        </div>
-                                                        <div class="row-span-1">
-                                                            <img src="images/page-img/p1.jpg" alt="post-image" class="img-fluid rounded w-100">
-                                                        </div>
-                                                        <div class="row-span-1 ">
-                                                            <img src="images/page-img/p3.jpg" alt="post-image" class="img-fluid rounded w-100">
-                                                        </div>
+                                                <c:if test="${not empty post.files}">
+                                                    <div class="grid">
+                                                        <div class="grid-sizer"></div>
+                                                        <c:forEach var="file" items="${post.files}">
+                                                            <c:if test="${not empty file}">
+                                                                <c:choose>
+                                                                    <c:when test="${fn:contains(file.mimeType, 'mp4') or fn:contains(file.mimeType, 'mp3')}">
+                                                                        <div class="grid-item">
+                                                                            <video controls class="rounded">
+                                                                                <source src="${file.fileUrl}"
+                                                                                        type="video/mp4">
+                                                                                Your browser does not support the video
+                                                                                tag.
+                                                                            </video>
+                                                                        </div>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <div class="grid-item">
+                                                                            <a href="${file.fileUrl}" target="_blank">
+                                                                                <img src="${file.fileUrl}"
+                                                                                     alt="post-image"
+                                                                                     class="rounded">
+                                                                            </a>
+                                                                        </div>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </c:if>
+                                                        </c:forEach>
                                                     </div>
-                                                    -->
-                                                </div>
+                                                </c:if>
                                                 <div class="comment-area mt-3">
                                                     <div class="d-flex justify-content-between align-items-center flex-wrap">
                                                         <div class="like-block position-relative d-flex align-items-center">
@@ -605,6 +621,21 @@
     var successMessage = '<%= request.getAttribute("successMessage") %>';
 </script>
 <script src="scripts/toastHandler.js"></script>
+<!-- -->
+<!-- Masonry Script -->
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+<script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+<script>
+    var grid = document.querySelector('.grid');
+    var msnry = new Masonry(grid, {
+        itemSelector: '.grid-item',
+        columnWidth: '.grid-sizer',
+        percentPosition: true
+    });
+    imagesLoaded(grid).on('progress', function () {
+        msnry.layout();
+    });
+</script>
 <!-- -->
 <script>
     document.getElementById("postInput").addEventListener("click", function () {

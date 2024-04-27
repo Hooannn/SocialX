@@ -28,6 +28,7 @@ public class Post {
     private Date createdAt;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @org.hibernate.annotations.OrderBy(clause = "id DESC mime_type DESC")
     private Set<PostFile> files;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
