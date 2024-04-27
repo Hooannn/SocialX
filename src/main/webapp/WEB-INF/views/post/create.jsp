@@ -40,7 +40,7 @@
             position: relative;
         }
 
-        .file-preview-item img {
+        .file-preview-item img, .file-preview-item video {
             max-width: 200px;
             max-height: 200px;
             border-radius: 4px;
@@ -392,8 +392,17 @@
                     var filePreview = document.createElement("div");
                     filePreview.classList.add("file-preview-item");
 
-                    var img = document.createElement("img");
-                    img.src = event.target.result;
+                    var element = null;
+                    if (file.type.includes("video")) {
+                        var video = document.createElement("video");
+                        video.src = event.target.result;
+                        video.controls = true;
+                        element = video;
+                    } else {
+                        var img = document.createElement("img");
+                        img.src = event.target.result;
+                        element = img;
+                    }
 
                     var button = document.createElement("button");
                     button.classList.add("btn-close");
@@ -407,7 +416,7 @@
                         updateCurrentFiles(fileInput);
                     };
 
-                    filePreview.appendChild(img);
+                    filePreview.appendChild(element);
                     filePreview.appendChild(button);
                     preview.appendChild(filePreview);
                 };

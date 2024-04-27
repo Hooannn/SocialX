@@ -40,7 +40,7 @@
             position: relative;
         }
 
-        .file-preview-item img {
+        .file-preview-item img, .file-preview-item video {
             max-width: 200px;
             max-height: 200px;
             border-radius: 4px;
@@ -394,8 +394,17 @@
                     var filePreview = document.createElement("div");
                     filePreview.classList.add("file-preview-item");
 
-                    var img = document.createElement("img");
-                    img.src = event.target.result;
+                    var element = null;
+                    if (file.type.includes("video")) {
+                        var video = document.createElement("video");
+                        video.src = event.target.result;
+                        video.controls = true;
+                        element = video;
+                    } else {
+                        var img = document.createElement("img");
+                        img.src = event.target.result;
+                        element = img;
+                    }
 
                     var button = document.createElement("button");
                     button.classList.add("btn-close");
@@ -409,7 +418,7 @@
                         updateCurrentFiles(fileInput);
                     };
 
-                    filePreview.appendChild(img);
+                    filePreview.appendChild(element);
                     filePreview.appendChild(button);
                     preview.appendChild(filePreview);
                 };
@@ -432,6 +441,54 @@
         });
         fileInput.files = list.files;
     }
+
+    <c:forEach items="${post.files}" var="file">
+    var url = '${file.fileUrl}';
+    fetch(url)
+        .then(response => response.blob())
+        .then(blob => {
+            var fileInput = document.getElementById('fileInput');
+            var preview = document.getElementById('files-container');
+            var file = new File([blob], '${file.fileName}', {type: blob.type});
+            uploadedFiles.push(file);
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                var filePreview = document.createElement("div");
+                filePreview.classList.add("file-preview-item");
+
+                var element = null;
+                if (file.type.includes("video")) {
+                    var video = document.createElement("video");
+                    video.src = event.target.result;
+                    video.controls = true;
+                    element = video;
+                } else {
+                    var img = document.createElement("img");
+                    img.src = event.target.result;
+                    element = img;
+                }
+
+                var button = document.createElement("button");
+                button.classList.add("btn-close");
+                button.onclick = function () {
+                    // Remove the file from the array of uploaded files and the file preview when the delete button is clicked
+                    var index = uploadedFiles.indexOf(file);
+                    if (index !== -1) {
+                        uploadedFiles.splice(index, 1);
+                    }
+                    filePreview.remove();
+                    updateCurrentFiles(fileInput);
+                };
+
+                filePreview.appendChild(element);
+                filePreview.appendChild(button);
+                preview.appendChild(filePreview);
+            };
+            reader.readAsDataURL(file);
+            updateCurrentFiles(fileInput);
+        })
+        .catch(error => console.error('Error fetching file:', error));
+    </c:forEach>
 </script>
 <div class="offcanvas offcanvas-bottom share-offcanvas" tabindex="-1" id="share-btn" aria-labelledby="shareBottomLabel">
     <div class="offcanvas-header">

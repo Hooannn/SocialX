@@ -98,6 +98,10 @@ public class PostService {
         comment.setCreatedAt(new Date());
         session.save(comment);
 
+        if (authorId.equals(user.getId())) {
+            return comment;
+        }
+        
         CompletableFuture.runAsync(() -> {
             try {
                 notificationService.createCommentCreatedNotification(comment, authorId);
@@ -107,5 +111,15 @@ public class PostService {
         });
 
         return comment;
+    }
+
+    public void deletePost(User authUser, Long id) throws Exception {
+        Session session = sessionFactory.getCurrentSession();
+        var post = (Post) session.get(Post.class, id);
+        if (post.getUser().getId().equals(authUser.getId())) {
+            session.delete(post);
+        } else {
+            throw new Exception("Bạn không có quyền xóa bài viết này");
+        }
     }
 }

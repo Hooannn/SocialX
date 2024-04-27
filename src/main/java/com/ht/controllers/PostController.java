@@ -96,13 +96,18 @@ public class PostController {
         if (files != null) {
             for (MultipartFile file : files) {
                 try {
-                    Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-                    String imageUrl = (String) uploadResult.get("url"); // PostFile.fileUrl
+                    boolean isVideo = file.getContentType().contains("video");
+                    Map videoParams = ObjectUtils.asMap(
+                            "folder", "",
+                            "resource_type", "video"
+                    );
+                    Map uploadResult = cloudinary.uploader().upload(file.getBytes(), isVideo ? videoParams : ObjectUtils.emptyMap());
+                    String fileUrl = (String) uploadResult.get("url"); // PostFile.fileUrl
                     String signature = (String) uploadResult.get("signature"); // PostFile.id
                     String resourceType = (String) uploadResult.get("resource_type"); // PostFile.mimeType
                     String originalFilename = (String) uploadResult.get("original_filename"); // PostFile.fileName
                     int fileSize = (int) uploadResult.get("bytes"); // PostFile.fileSize
-                    PostFile postFile = new PostFile(signature, originalFilename, resourceType, fileSize, imageUrl, null);
+                    PostFile postFile = new PostFile(signature, originalFilename, resourceType, fileSize, fileUrl, null);
                     postFiles.add(postFile);
                 } catch (Exception e) {
                     model.addAttribute("errorMessage", "Lỗi khi tải ảnh lên: " + e.getMessage());
@@ -135,6 +140,21 @@ public class PostController {
         try {
             postService.createComment(authUser, id, content, authorId);
             return "redirect:/post/" + id;
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "post/detail";
+        }
+    }
+
+    @PostMapping("{id}/delete")
+    public String deletePost(@RequestAttribute("user") User authUser,
+                             @PathVariable("id") Long id,
+                             ModelMap model,
+                             RedirectAttributes redirectAttributes) {
+        try {
+            postService.deletePost(authUser, id);
+            redirectAttributes.addFlashAttribute("successMessage", "Xóa bài viết thành công");
+            return "redirect:/home";
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "post/detail";

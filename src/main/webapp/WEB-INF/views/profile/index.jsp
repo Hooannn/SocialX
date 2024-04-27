@@ -582,7 +582,8 @@
                                                             <div class="card-body">
                                                                     <%-- User data, timestamp --%>
                                                                 <div class="user-post-data">
-                                                                    <div class="modal fade" id="exampleModal"
+                                                                    <div class="modal fade"
+                                                                         id="deletePostModal_${post.id}"
                                                                          tabindex="-1"
                                                                          aria-labelledby="exampleModalLabel"
                                                                          aria-hidden="true">
@@ -606,10 +607,13 @@
                                                                                     <button type="button" class="btn"
                                                                                             data-bs-dismiss="modal">Huỷ
                                                                                     </button>
-                                                                                    <button type="button"
-                                                                                            class="btn btn-danger">Xác
-                                                                                        nhận
-                                                                                    </button>
+                                                                                    <form method="post"
+                                                                                          action="post/${post.id}/delete">
+                                                                                        <button type="submit"
+                                                                                                class="btn btn-danger">
+                                                                                            Xác nhận
+                                                                                        </button>
+                                                                                    </form>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -662,7 +666,7 @@
                                                                                                 <a class="dropdown-item p-3"
                                                                                                    type="button"
                                                                                                    data-bs-toggle="modal"
-                                                                                                   data-bs-target="#exampleModal">
+                                                                                                   data-bs-target="#deletePostModal_${post.id}">
                                                                                                     <div class="d-flex align-items-top">
                                                                                                         <i class="ri-close-circle-line h4"></i>
                                                                                                         <div class="data ms-2">
@@ -697,7 +701,7 @@
                                                                         <c:forEach var="file" items="${post.files}">
                                                                             <c:if test="${not empty file}">
                                                                                 <c:choose>
-                                                                                    <c:when test="${fn:contains(file.mimeType, 'mp4') or fn:contains(file.mimeType, 'mp3')}">
+                                                                                    <c:when test="${fn:contains(file.mimeType, 'video')}">
                                                                                         <div class="grid-item">
                                                                                             <video controls
                                                                                                    class="rounded">
