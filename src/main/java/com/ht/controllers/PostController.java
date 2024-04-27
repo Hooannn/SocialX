@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +70,7 @@ public class PostController {
     }
 
     @GetMapping("{id}/edit")
-    public String editPost(ModelMap model, @PathVariable("id") Long id, @RequestAttribute("user") User authUser) {
+    public String editPost(ModelMap model, @PathVariable("id") Long id, @RequestAttribute("user") User authUser, RedirectAttributes redirectAttributes) {
         var post = postService.getPost(id);
         model.addAttribute("post", postService.getPost(id));
         if (!post.getUser().getId().equals(authUser.getId())) {
@@ -84,7 +85,8 @@ public class PostController {
                              @RequestParam(name = "files", required = false) MultipartFile[] files,
                              @RequestParam(name = "title", required = false) String title,
                              @RequestParam(name = "content", required = false) String content,
-                             ModelMap model) {
+                             ModelMap model,
+                             RedirectAttributes redirectAttributes) {
         if (title == null || title.isEmpty() || content == null || content.isEmpty()) {
             model.addAttribute("errorMessage", "Vui lòng nhập đủ thông tin bài viết");
             return "post/create";
@@ -115,6 +117,8 @@ public class PostController {
         for (PostFile postFile : postFiles) {
             System.out.println(postFile);
         }
+
+        redirectAttributes.addFlashAttribute("successMessage", "Đăng bài viết thành công");
         return "redirect:/post/" + 1; //replace with created post id;
     }
 

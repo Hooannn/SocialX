@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="vendor/vanillajs-datepicker/dist/css/datepicker.min.css">
     <link rel="stylesheet" href="vendor/font-awesome-line-awesome/css/all.min.css">
     <link rel="stylesheet" href="vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
 </head>
 <body class="  ">
@@ -265,13 +266,6 @@
         <div class="col-sm-12 my-4">
             <div class="card card-block card-stretch card-height">
                 <div class="card-body">
-                    <c:if test="${not empty errorMessage}">
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <span>${errorMessage}</span>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                        </div>
-                    </c:if>
                     <div class="user-post-data">
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                              aria-hidden="true">
@@ -506,6 +500,14 @@
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/relativeTime.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dayjs@1/locale/vi.js"></script>
 <script src="scripts/dateFormat.js"></script>
+<!-- Toast handle script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script>
+    var errorMessage = '<%= request.getAttribute("errorMessage") %>';
+    var successMessage = '<%= request.getAttribute("successMessage") %>';
+</script>
+<script src="scripts/toastHandler.js"></script>
+<!-- -->
 <script>
 </script>
 <div class="offcanvas offcanvas-bottom share-offcanvas" tabindex="-1" id="share-btn" aria-labelledby="shareBottomLabel">
