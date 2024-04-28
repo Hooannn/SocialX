@@ -1,14 +1,17 @@
 package com.ht.controllers;
 
+import com.ht.beans.GoogleUserData;
 import com.ht.dtos.ForgotPasswordDto;
 import com.ht.dtos.ResetPasswordDto;
 import com.ht.dtos.SignInDto;
 import com.ht.dtos.SignUpDto;
 import com.ht.services.AuthService;
+import com.ht.services.GoogleAuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.apache.http.client.ClientProtocolException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,14 +19,18 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
+    private final GoogleAuthService googleAuthService;
 
     @Autowired
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, GoogleAuthService googleAuthService) {
         this.authService = authService;
+        this.googleAuthService = googleAuthService;
     }
 
     // GET Method
@@ -63,6 +70,29 @@ public class AuthController {
         cookie.setMaxAge(0);
         response.addCookie(cookie);
         return "redirect:/auth/sign-in";
+    }
+
+    @GetMapping("/google-auth")
+    public String googleAuthentication(HttpServletRequest request, ModelMap model, HttpServletResponse response, RedirectAttributes redirectAttributes) throws ClientProtocolException, IOException {
+        String code = request.getParameter("code");
+        if (code == null || code.isEmpty()) {
+            return "auth/sign-in";
+        }
+
+        try {
+            String googleAccessToken = googleAuthService.getAccessToken(code);
+            GoogleUserData googleUserData = googleAuthService.getUserInfo(googleAccessToken);
+
+            String accessToken = authService.authenticateByGoogle(googleUserData);
+            Cookie cookie = saveAccessToken(accessToken);
+            response.addCookie(cookie);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage() == null ? e.toString() : e.getMessage());
+            return "auth/sign-in";
+        }
+
+        redirectAttributes.addFlashAttribute("successMessage", "Xác thực với Google thành công");
+        return "redirect:/home";
     }
 
     // POST Method
