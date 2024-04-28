@@ -1,5 +1,6 @@
 package com.ht.services;
 
+import com.ht.beans.GoogleUserData;
 import com.ht.dtos.ForgotPasswordDto;
 import com.ht.dtos.ResetPasswordDto;
 import com.ht.dtos.SignInDto;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URL;
+import java.time.Instant;
 import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 
@@ -28,6 +30,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final MailService mailService;
+
     @Autowired
     public AuthService(PasswordEncoder passwordEncoder, SessionFactory sessionFactory, JwtService jwtService, MailService mailService) {
         this.passwordEncoder = passwordEncoder;
@@ -35,6 +38,7 @@ public class AuthService {
         this.mailService = mailService;
         this.jwtService = jwtService;
     }
+
     public String signUp(SignUpDto signUpDto) throws Exception {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("SELECT COUNT(*) FROM User WHERE email = :email");
@@ -104,7 +108,7 @@ public class AuthService {
             try {
                 String contextPath = request.getContextPath();
                 URL url = new URL(request.getRequestURL().toString());
-                String host  = url.getHost();
+                String host = url.getHost();
                 String protocol = url.getProtocol();
                 int port = url.getPort();
                 String resetPasswordUrl = protocol + "://" + host + ":" + port + contextPath + "/auth/reset-password?token=" + token;
@@ -127,5 +131,38 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(resetPasswordDto.getPassword()));
         user.setResetPasswordToken(null);
         session.update(user);
+    }
+
+    public String authenticateByGoogle(GoogleUserData userData) throws Exception {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("FROM User WHERE email = :email");
+        query.setParameter("email", userData.getEmail());
+        User user = (User) query.uniqueResult();
+
+        // Generate new user if doesn't exist
+        if (user == null) {
+            String autoPassword = userData.getId() + Instant.now().toEpochMilli();
+
+            User newUser = new User();
+            newUser.setEmail(userData.getEmail());
+            newUser.setPassword(passwordEncoder.encode(autoPassword));
+            newUser.setFirstName(userData.getGivenName());
+            newUser.setLastName(userData.getFamilyName());
+            newUser.setDisabled(false);
+            newUser.setSex(false);
+            newUser.setRole(UserRole.USER);
+            newUser.setAvatar(userData.getPicture());
+            newUser.setCreatedAt(new Date());
+
+            session.save(newUser);
+            return jwtService.generateAccessToken(newUser);
+        }
+
+        if (user.isDisabled()) {
+            throw new Exception("Tài khoản đã bị khóa");
+        }
+
+        // Login the existed user
+        return jwtService.generateAccessToken(user);
     }
 }

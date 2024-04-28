@@ -105,6 +105,15 @@
                                 </ul>
                             </div>
                         </form:form>
+                        <a class="google-auth-btn-wrapper"
+                           href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8081/SocialX/auth/google-auth&response_type=code&client_id=942381609422-p0eidu7hma345q9irleotbgogub4i9pl.apps.googleusercontent.com&approval_prompt=force">
+                            <button type="button" class="btn google-auth-btn">
+                                <div class="logo-wrapper">
+                                    <img src="images/google-logo.png">
+                                </div>
+                                <span>Đăng nhập với Google</span>
+                            </button>
+                        </a>
                     </div>
                 </div>
             </div>
