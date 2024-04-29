@@ -101,7 +101,7 @@ public class PostService {
         if (authorId.equals(user.getId())) {
             return comment;
         }
-        
+
         CompletableFuture.runAsync(() -> {
             try {
                 notificationService.createCommentCreatedNotification(comment, authorId);
@@ -120,6 +120,24 @@ public class PostService {
             session.delete(post);
         } else {
             throw new Exception("Bạn không có quyền xóa bài viết này");
+        }
+    }
+
+    public void deleteComment(Long id) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("delete from Comment where id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
+    }
+
+    public void editComment(User authUser, Long commentId, String content) throws Exception {
+        Session session = sessionFactory.getCurrentSession();
+        Comment comment = (Comment) session.get(Comment.class, commentId);
+        if (comment.getUser().getId().equals(authUser.getId())) {
+            comment.setContent(content);
+            session.update(comment);
+        } else {
+            throw new Exception("Bạn không có quyền chỉnh sửa bình luận này");
         }
     }
 }
