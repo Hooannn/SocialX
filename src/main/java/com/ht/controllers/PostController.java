@@ -87,7 +87,7 @@ public class PostController {
                              @RequestParam(name = "content", required = false) String content,
                              ModelMap model,
                              RedirectAttributes redirectAttributes) {
-        if (title == null || title.isEmpty() || content == null || content.isEmpty()) {
+        if (title == null || title.isEmpty() || content == null || content.isEmpty() || content.isBlank() || title.isBlank()) {
             model.addAttribute("errorMessage", "Vui lòng nhập đủ thông tin bài viết");
             return "post/create";
         }
@@ -132,17 +132,49 @@ public class PostController {
                                 @PathVariable("id") Long id,
                                 @RequestParam(name = "content", required = false) String content,
                                 @RequestParam(name = "authorId", required = false) Long authorId,
+                                RedirectAttributes redirectAttributes,
                                 ModelMap model) {
-        if (content == null || content.isEmpty()) {
-            model.addAttribute("errorMessage", "Vui lòng nhập nội dung bình luận");
-            return "post/detail";
+        if (content == null || content.isEmpty() || content.isBlank()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Vui lòng nhập nội dung bình luận");
+            return "redirect:/post/" + id;
         }
         try {
             postService.createComment(authUser, id, content, authorId);
             return "redirect:/post/" + id;
         } catch (Exception e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            return "post/detail";
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/post/" + id;
+        }
+    }
+
+    @PostMapping("{postId}/comment/{commentId}/delete")
+    public String deleteComment(@RequestAttribute("user") User authUser,
+                                @PathVariable("commentId") Long commentId,
+                                @PathVariable("postId") Long postId,
+                                ModelMap model,
+                                RedirectAttributes redirectAttributes) {
+        postService.deleteComment(commentId);
+        redirectAttributes.addFlashAttribute("successMessage", "Xóa bình luận thành công");
+        return "redirect:/post/" + postId;
+    }
+
+    @PostMapping("{postId}/comment/{commentId}/edit")
+    public String editComment(@RequestAttribute("user") User authUser,
+                              @PathVariable("commentId") Long commentId,
+                              @PathVariable("postId") Long postId,
+                              @RequestParam(name = "content", required = false) String content,
+                              RedirectAttributes redirectAttributes) {
+        if (content == null || content.isEmpty() || content.isBlank()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Vui lòng nhập nội dung bình luận");
+            return "redirect:/post/" + postId;
+        }
+        try {
+            postService.editComment(authUser, commentId, content);
+            redirectAttributes.addFlashAttribute("successMessage", "Chỉnh sửa bình luận thành công");
+            return "redirect:/post/" + postId;
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/post/" + postId;
         }
     }
 

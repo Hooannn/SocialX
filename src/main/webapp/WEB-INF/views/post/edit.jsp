@@ -175,10 +175,6 @@
                                                 </div>
                                             </c:otherwise>
                                         </c:choose>
-
-                                        <div class="text-center">
-                                            <a href="#" class=" btn text-primary">Xem tất cả</a>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

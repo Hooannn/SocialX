@@ -140,10 +140,6 @@
                                                 </div>
                                             </c:otherwise>
                                         </c:choose>
-
-                                        <div class="text-center">
-                                            <a href="#" class=" btn text-primary">Xem tất cả</a>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -497,7 +493,83 @@
                                                     <ul class="post-comments list-inline p-0 m-0">
                                                         <c:forEach var="comment" items="${post.comments}">
                                                             <c:if test="${not empty comment}">
-                                                                <li class="mb-2">
+                                                                <li class="mb-2 d-flex align-items-start justify-content-between">
+                                                                    <div class="modal fade"
+                                                                         id="deleteCommentModal_${comment.id}"
+                                                                         tabindex="-1"
+                                                                         aria-labelledby="exampleModalLabel"
+                                                                         aria-hidden="true">
+                                                                        <div class="modal-dialog">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h1 class="modal-title fs-5"
+                                                                                        id="exampleModalLabel1">Xoá bình
+                                                                                        luận</h1>
+                                                                                    <button type="button"
+                                                                                            class="btn-close"
+                                                                                            data-bs-dismiss="modal"
+                                                                                            aria-label="Close"></button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    Thao tác này không thể hoàn tác. Bạn
+                                                                                    có chắc chắn muốn xoá bình
+                                                                                    luận này không?
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn"
+                                                                                            data-bs-dismiss="modal">Huỷ
+                                                                                    </button>
+                                                                                    <form method="post"
+                                                                                          action="post/${post.id}/comment/${comment.id}/delete">
+                                                                                        <button type="submit"
+                                                                                                class="btn btn-danger">
+                                                                                            Xác nhận
+                                                                                        </button>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal fade"
+                                                                         id="editCommentModal_${comment.id}"
+                                                                         tabindex="-1"
+                                                                         aria-labelledby="exampleModalLabel"
+                                                                         aria-hidden="true">
+                                                                        <div class="modal-dialog">
+                                                                            <div class="modal-content">
+                                                                                <form action="post/${post.id}/comment/${comment.id}/edit"
+                                                                                      method="post">
+                                                                                    <div class="modal-header">
+                                                                                        <h1 class="modal-title fs-5"
+                                                                                            id="exampleModalLabel2">
+                                                                                            Chỉnh
+                                                                                            sửa
+                                                                                            bình
+                                                                                            luận</h1>
+                                                                                        <button type="reset"
+                                                                                                class="btn-close"
+                                                                                                data-bs-dismiss="modal"
+                                                                                                aria-label="Close"></button>
+                                                                                    </div>
+                                                                                    <div class="modal-body">
+                                                                                        <textarea class="form-control"
+                                                                                                  name="content"
+                                                                                                  rows="3">${comment.content}</textarea>
+                                                                                    </div>
+                                                                                    <div class="modal-footer">
+                                                                                        <button type="reset" class="btn"
+                                                                                                data-bs-dismiss="modal">
+                                                                                            Huỷ
+                                                                                        </button>
+                                                                                        <button type="submit"
+                                                                                                class="btn btn-primary">
+                                                                                            Xác nhận
+                                                                                        </button>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                     <div class="d-flex">
                                                                         <div class="user-img">
                                                                             <img src="${comment.user.avatar}"
@@ -514,6 +586,54 @@
                                                                             <p class="mb-0">${comment.content}</p>
                                                                         </div>
                                                                     </div>
+                                                                    <c:if test="${comment.user.id == user.id || post.user.id == user.id}">
+                                                                        <div class="card-post-toolbar">
+                                                                            <div class="dropdown">
+                                                                                <span class="dropdown-toggle"
+                                                                                      data-bs-toggle="dropdown"
+                                                                                      aria-haspopup="true"
+                                                                                      aria-expanded="false"
+                                                                                      role="button">
+                                                                                    <i class="ri-more-fill"></i>
+                                                                                </span>
+                                                                                <div class="dropdown-menu m-0 p-0">
+                                                                                    <c:if test="${comment.user.id == user.id}">
+                                                                                        <a class="dropdown-item p-3"
+                                                                                           type="button"
+                                                                                           data-bs-toggle="modal"
+                                                                                           data-bs-target="#editCommentModal_${comment.id}">
+                                                                                            <div class="d-flex align-items-top">
+                                                                                                <div class="h4">
+                                                                                                    <i class="ri-save-line"></i>
+                                                                                                </div>
+                                                                                                <div class="data ms-2">
+                                                                                                    <h6>Chỉnh sửa</h6>
+                                                                                                    <p class="mb-0">
+                                                                                                        Chỉnh sửa nội
+                                                                                                        dung bình
+                                                                                                        luận</p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </a>
+                                                                                    </c:if>
+                                                                                    <a class="dropdown-item p-3"
+                                                                                       type="button"
+                                                                                       data-bs-toggle="modal"
+                                                                                       data-bs-target="#deleteCommentModal_${comment.id}">
+                                                                                        <div class="d-flex align-items-top">
+                                                                                            <i class="ri-close-circle-line h4"></i>
+                                                                                            <div class="data ms-2">
+                                                                                                <h6>Xoá</h6>
+                                                                                                <p class="mb-0">Xoá bình
+                                                                                                    luận khỏi hệ
+                                                                                                    thống</p>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </c:if>
                                                                 </li>
                                                             </c:if>
                                                         </c:forEach>
