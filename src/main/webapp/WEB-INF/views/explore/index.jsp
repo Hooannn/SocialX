@@ -6,7 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jstl/fmt_rt" prefix="f" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -17,7 +16,7 @@
     <base href="${pageContext.request.contextPath}/"/>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>SocialX | Chỉnh sửa hồ sơ</title>
+    <title>SocialX | Tìm kiếm mọi người</title>
 
     <link rel="shortcut icon" href="images/favicon.ico"/>
     <link rel="stylesheet" href="css/libs.min.css">
@@ -28,6 +27,18 @@
     <link rel="stylesheet" href="vendor/font-awesome-line-awesome/css/all.min.css">
     <link rel="stylesheet" href="vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <style>
+        .user-card {
+            transition: all 0.15s;
+            cursor: pointer;
+        }
+
+        .user-card:hover {
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+            background: #e9f3f6;
+        }
+    </style>
 </head>
 <body class="  ">
 <!-- loader Start -->
@@ -262,158 +273,95 @@
         </div>
     </div>
 
-    <div class="container">
-        <div class="row mt-3">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-body p-0">
-                        <div class="iq-edit-list">
-                            <ul class="iq-edit-profile row nav nav-pills">
-                                <li class="col-md-6 p-0">
-                                    <a class="nav-link ${tab == "password" ? '' : 'active'}" data-bs-toggle="pill"
-                                       href="#personal-information">
-                                        Thông tin cá nhân
-                                    </a>
-                                </li>
-                                <li class="col-md-6 p-0">
-                                    <a class="nav-link ${tab == "password" ? 'active' : ''}" data-bs-toggle="pill"
-                                       href="#chang-pwd">
-                                        Đổi mật khẩu
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+    <div class="container pt-4">
+        <div class="card p-2">
+            <div class="fs-4 px-3">
+                Mọi người
             </div>
-            <div class="col-lg-12">
-                <div class="iq-edit-list-data">
-                    <div class="tab-content">
-                        <div class="tab-pane fade ${tab == "password" ? '' : 'active show'}" id="personal-information"
-                             role="tabpanel">
-                            <div class="card">
-                                <div class="card-header d-flex justify-content-between">
-                                    <div class="header-title">
-                                        <h4 class="card-title">Thông tin cá nhân</h4>
-                                    </div>
+            <c:choose>
+                <c:when test="${not empty usersWithFriendStatus}">
+                    <c:forEach var="userWithFriendStatus" items="${usersWithFriendStatus}">
+                        <div class="card-body w-100 user-card"
+                             onclick="redirectToProfilePage(${userWithFriendStatus.user.id})">
+                            <div class="d-flex gap-3 align-items-center justify-content-center w-100">
+                                <div>
+                                    <img src="${userWithFriendStatus.user.avatar}" alt="Profile Picture"
+                                         class="img-fluid rounded-circle"
+                                         style="width: 70px; height: 70px; object-fit: cover">
                                 </div>
-                                <div class="card-body">
-                                    <form action="profile/edit/information"
-                                          enctype="multipart/form-data"
-                                          method="post">
-                                        <div class="form-group row align-items-center">
-                                            <div class="col-md-12">
-                                                <div class="profile-img-edit">
-                                                    <img id="avatar-pic"
-                                                         style="width: 100%;display:block;border-radius:50%;aspect-ratio: 1/1;object-fit: cover"
-                                                         class="e-profile-pic" src="${user.avatar}" alt="profile-pic">
-                                                    <div class="p-image">
-                                                        <i class="ri-pencil-line e-upload-button text-white"></i>
-                                                        <input id="avatar-file-upload" style="visibility: hidden"
-                                                               class="e-file-upload" type="file"
-                                                               accept="image/*"
-                                                               name="file"
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class=" row align-items-center">
-                                            <div class="form-group col-sm-6">
-                                                <label class="form-label" for="fname">Tên:</label>
-                                                <input value="${user.firstName}" name="firstName" type="text"
-                                                       class="form-control"
-                                                       id="fname"/>
-                                                <!-- error message -->
-                                            </div>
-                                            <div class="form-group col-sm-6">
-                                                <label class="form-label" for="lname">Họ:</label>
-                                                <input value="${user.lastName}" name="lastName" type="text"
-                                                       class="form-control"
-                                                       id="lname"/>
-                                                <!-- error message -->
-                                            </div>
-                                            <div class="form-group col-sm-6">
-                                                <label class="form-label d-block">Giới tính:</label>
-                                                <div class="form-check form-check-inline">
-                                                    <input type="radio" id="inlineRadio10" class="form-check-input"
-                                                           name="sex" value="${true}" ${user.sex ? 'checked' : ''}/>
-                                                    <label class="form-check-label" for="inlineRadio10">Nam</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input type="radio" id="inlineRadio11" class="form-check-input"
-                                                           name="sex" value="${false}" ${!user.sex ? 'checked' : ''}/>
-                                                    <label class="form-check-label" for="inlineRadio11">Nữ</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-sm-6">
-                                                <label for="dob" class="form-label">Ngày sinh:</label>
-                                                <fmt:formatDate value="${user.dateOfBirth}" pattern="yyyy-MM-dd"
-                                                                var="formattedDate"/>
-                                                <input value="<c:out value='${formattedDate}' />" name="dateOfBirth"
-                                                       type="date"
-                                                       class="form-control"
-                                                       id="dob"/>
-                                                <!-- error message -->
-                                            </div>
-                                            <div class="form-group col-sm-12">
-                                                <label class="form-label" for="address">Địa chỉ:</label>
-                                                <textarea class="form-control" name="address" id="address"
-                                                          rows="5" style="line-height: 22px;">${user.address}</textarea>
-                                            </div>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary me-2">Cập nhật</button>
-                                        <button type="reset" class="btn bg-soft-danger">Huỷ bỏ thay đổi</button>
-                                    </form>
+                                <div class="w-75">
+                                    <div class="fs-5 fw-bold">${userWithFriendStatus.user.firstName} ${userWithFriendStatus.user.lastName}</div>
+                                    <p class="card-text">Sống tại ${userWithFriendStatus.user.address}</p>
                                 </div>
+                                <c:choose>
+                                    <c:when test="${userWithFriendStatus.friendStatus == 'NOT_FRIENDS'}">
+                                        <div class="d-flex align-items-center justify-content-center ${userWithFriendStatus.user.id == user.id ? 'invisible' : ''}">
+                                            <a href="friend/send-request/${userWithFriendStatus.user.id}">
+                                                <button class="btn btn-primary" style="min-width: 126px">Kết bạn
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </c:when>
+                                    <c:when test="${userWithFriendStatus.friendStatus == 'ARE_FRIENDS'}">
+                                        <div class="d-flex align-items-center justify-content-center ${userWithFriendStatus.user.id == user.id ? 'invisible' : ''}">
+                                            <a href="profile/${userWithFriendStatus.user.id}">
+                                                <button class="btn btn-primary" style="min-width: 126px">Trang cá nhân
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </c:when>
+                                    <c:when test="${userWithFriendStatus.friendStatus == 'PENDING_SENT_REQUEST'}">
+                                        <div class="d-flex align-items-center justify-content-center ${userWithFriendStatus.user.id == user.id ? 'invisible' : ''}">
+                                            <a href="friend/cancel-request/${userWithFriendStatus.user.id}">
+                                                <button class="btn btn-danger" style="min-width: 126px">Hủy yêu cầu
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="d-flex align-items-center justify-content-center ${userWithFriendStatus.user.id == user.id ? 'invisible' : ''}">
+                                            <a href="friend/accept/${userWithFriendStatus.user.id}">
+                                                <button class="btn btn-primary" style="min-width: 126px">Đồng ý
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
-                        <div class="tab-pane fade ${tab == "password" ? 'active show' : ''}" id="chang-pwd"
-                             role="tabpanel">
-                            <div class="card">
-                                <div class="card-header d-flex justify-content-between">
-                                    <div class="iq-header-title">
-                                        <h4 class="card-title">Đổi mật khẩu</h4>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <c:if test="${not empty passwordErrorMessage}">
-                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                            <span>${passwordErrorMessage}</span>
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                                    aria-label="Close"></button>
-                                        </div>
-                                    </c:if>
-                                    <form:form modelAttribute="changePasswordDto" action="profile/edit/password"
-                                               method="post">
-                                        <div class="form-group">
-                                            <label class="form-label" for="cpass">Mật khẩu hiện tại:</label>
-                                            <form:input path="currentPassword" type="password" class="form-control"
-                                                        id="cpass"/>
-                                            <form:errors path="currentPassword" cssClass="text-danger text-sm-center"/>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label" for="npass">Mật khẩu mới:</label>
-                                            <form:input path="newPassword" type="password" class="form-control"
-                                                        id="npass"/>
-                                            <form:errors path="newPassword" cssClass="text-danger text-sm-center"/>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label" for="cfpass">Nhập lại mật khẩu:</label>
-                                            <form:input path="confirmPassword" type="password" class="form-control"
-                                                        id="cfpass"/>
-                                            <form:errors path="confirmPassword" cssClass="text-danger text-sm-center"/>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary me-2">Cập nhật</button>
-                                        <button type="reset" class="btn bg-soft-danger">Huỷ bỏ thay đổi</button>
-                                    </form:form>
-                                </div>
-                            </div>
-                        </div>
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    <div class="text-sm-center mx-auto">
+                        Không có người dùng phù hợp.
                     </div>
-                </div>
-            </div>
+                </c:otherwise>
+            </c:choose>
         </div>
+
+        <c:if test="${totalPages > 0}">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item ${page == 1 ? 'disabled' : ''}">
+                        <a class="page-link" href="explore?size=${size}&page=${page - 1}&query=${query}"
+                           aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <c:forEach var="ePage" begin="1" end="${totalPages}">
+                        <li class="page-item ${page == ePage ? 'active' : ''}">
+                            <a class="page-link" href="explore?size=${size}&page=${ePage}&query=${query}">${ePage}</a>
+                        </li>
+                    </c:forEach>
+                    <li class="page-item ${page == totalPages ? 'disabled' : ''}">
+                        <a class="page-link" href="explore?size=${size}&page=${page + 1}&query=${query}"
+                           aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </c:if>
     </div>
 </div>
 <!-- Wrapper End-->
@@ -459,28 +407,9 @@
 <script src="scripts/toastHandler.js"></script>
 <!-- -->
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var fileInput = document.getElementById('avatar-file-upload');
-        var preview = document.getElementById('avatar-pic');
-
-        fileInput.addEventListener('change', function (event) {
-            var file = fileInput.files[0];
-            var reader = new FileReader();
-
-            reader.onload = function (event) {
-                preview.src = event.target.result;
-            };
-
-            reader.readAsDataURL(file);
-        });
-
-        var uploadButton = document.querySelector('.e-upload-button');
-
-        uploadButton.addEventListener('click', function () {
-            fileInput.click();
-        });
-    });
+    function redirectToProfilePage(userId) {
+        window.location.href = `profile/` + userId;
+    }
 </script>
-
 </body>
 </html>
