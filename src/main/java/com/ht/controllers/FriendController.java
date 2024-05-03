@@ -2,6 +2,7 @@ package com.ht.controllers;
 
 import com.ht.entities.User;
 import com.ht.services.FriendService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,14 +23,15 @@ public class FriendController {
             ModelMap model,
             @RequestAttribute("user") User authUser,
             @PathVariable("userId") Long userId,
-            @RequestParam(value = "redirect", required = false) String redirect
+            @RequestParam(value = "redirect", required = false) String redirect,
+            HttpServletRequest request
     ) {
         try {
             friendService.sendNewRequest(authUser.getId(), userId);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
         }
-        String redirectUrl = redirect != null ? redirect : "/";
+        String redirectUrl = redirect != null ? redirect : request.getHeader("Referer");
         return "redirect:" + redirectUrl;
     }
 
@@ -38,14 +40,15 @@ public class FriendController {
             ModelMap model,
             @RequestAttribute("user") User authUser,
             @PathVariable("userId") Long userId,
-            @RequestParam(value = "redirect", required = false) String redirect
+            @RequestParam(value = "redirect", required = false) String redirect,
+            HttpServletRequest request
     ) {
         try {
             friendService.cancelFriendRequest(authUser.getId(), userId);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
         }
-        String redirectUrl = redirect != null ? redirect : "/";
+        String redirectUrl = redirect != null ? redirect : request.getHeader("Referer");
         return "redirect:" + redirectUrl;
     }
 
@@ -70,14 +73,15 @@ public class FriendController {
             ModelMap model,
             @RequestAttribute("user") User authUser,
             @PathVariable("userId") Long userId,
-            @RequestParam(value = "redirect", required = false) String redirect
+            @RequestParam(value = "redirect", required = false) String redirect,
+            HttpServletRequest request
     ) {
         try {
             friendService.acceptRequest(authUser.getId(), userId);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
         }
-        String redirectUrl = redirect != null ? redirect : "/";
+        String redirectUrl = redirect != null ? redirect : request.getHeader("Referer");
         return "redirect:" + redirectUrl;
     }
 

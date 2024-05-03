@@ -69,9 +69,13 @@
 
                 <%-- Search box --%>
                 <div class="iq-search-bar device-search">
-                    <form action="#" class="searchbox">
-                        <a class="search-link" href="#"><i class="ri-search-line"></i></a>
-                        <input type="text" class="text search-input" placeholder="Search here...">
+                    <form action="explore" method="get" class="searchbox">
+                        <button class="bg-transparent border-0 search-link d-flex align-items-center justify-content-center"
+                                style="width: 25px; height: 25px; top: 50%; transform: translateY(-50%);"
+                                href="#">
+                            <i class="ri-search-line"></i>
+                        </button>
+                        <input name="query" type="text" class="text search-input" placeholder="Tìm kiếm...">
                     </form>
                 </div>
 

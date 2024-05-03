@@ -98,6 +98,7 @@
             <mvc:mapping path="/profile/**"/>
             <mvc:mapping path="/post/**"/>
             <mvc:mapping path="/home"/>
+            <mvc:mapping path="/explore"/>
             <mvc:exclude-mapping path="/css/**"/>
             <mvc:exclude-mapping path="/images/**"/>
             <mvc:exclude-mapping path="/scripts/**"/>
