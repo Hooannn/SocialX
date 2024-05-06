@@ -1,9 +1,6 @@
 package com.ht.services;
 
-import com.ht.entities.Comment;
-import com.ht.entities.Friend;
-import com.ht.entities.Notification;
-import com.ht.entities.User;
+import com.ht.entities.*;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -67,5 +64,21 @@ public class NotificationService {
         notification.setStatus(true);
         session.update(notification);
         return notification;
+    }
+
+    public void createPostCreatedNotification(Post post, List<User> friends) {
+        Session session = sessionFactory.getCurrentSession();
+        for (User friend : friends) {
+            Notification notification = new Notification();
+            notification.setUser(friend);
+            notification.setContent(post.getUser().getFullName() + " đã đăng một bài viết mới");
+            notification.setCreatedAt(new Date());
+            notification.setStatus(false);
+            notification.setTitle("Bài viết mới");
+            notification.setImageUrl(post.getUser().getAvatar());
+            notification.setActionUrl("/post/" + post.getId());
+
+            session.save(notification);
+        }
     }
 }

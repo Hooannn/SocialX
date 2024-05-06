@@ -115,7 +115,7 @@
                                 <div class="form-check d-inline-block mt-2 pt-1">
                                     <input type="checkbox" class="form-check-input" id="agreeCheckbox"
                                            onchange="toggleSubmit()">
-                                    <label class="form-check-label" for="agreeCheckbox">Tôi đồng ý <a href="#">Điều
+                                    <label class="form-check-label" for="agreeCheckbox">Tôi đồng ý <a href="content/privacy-policy">Điều
                                         khoản và điều kiện sử dụng</a></label>
                                 </div>
                                 <button type="submit" id="signUpBtn" class="btn btn-primary float-end" disabled>Đăng
@@ -125,11 +125,13 @@
                             <div class="sign-info">
                                 <span class="dark-color d-inline-block line-height-2">Đã có tài khoản ? <a
                                         href="auth/sign-in">Đăng nhập</a></span>
+                                <!--
                                 <ul class="iq-social-media">
                                     <li><a href="#"><i class="ri-facebook-box-line"></i></a></li>
                                     <li><a href="#"><i class="ri-twitter-line"></i></a></li>
                                     <li><a href="#"><i class="ri-instagram-line"></i></a></li>
                                 </ul>
+                                -->
                             </div>
                         </form:form>
                         <a class="google-auth-btn-wrapper"

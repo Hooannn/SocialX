@@ -1,30 +1,33 @@
 package com.ht.services;
 
-import com.ht.entities.Comment;
-import com.ht.entities.Like;
-import com.ht.entities.Post;
-import com.ht.entities.User;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import com.ht.entities.*;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 @Service
 @Transactional
 public class PostService {
+    private final Cloudinary cloudinary;
     private final SessionFactory sessionFactory;
     private final NotificationService notificationService;
+    private final FriendService friendService;
 
     @Autowired
-    public PostService(SessionFactory sessionFactory, NotificationService notificationService) {
+    public PostService(Cloudinary cloudinary, SessionFactory sessionFactory, NotificationService notificationService, FriendService friendService) {
+        this.cloudinary = cloudinary;
         this.sessionFactory = sessionFactory;
         this.notificationService = notificationService;
+        this.friendService = friendService;
     }
 
     public List<Post> findAllByUserFriends(Long userId) {
@@ -138,6 +141,87 @@ public class PostService {
             session.update(comment);
         } else {
             throw new Exception("Bạn không có quyền chỉnh sửa bình luận này");
+        }
+    }
+
+    public Post createPost(User authUser, String title, String content, List<PostFile> postFiles) {
+        Session session = sessionFactory.getCurrentSession();
+        var post = new Post();
+        post.setUser(authUser);
+        post.setTitle(title);
+        post.setContent(content);
+        post.setStatus(true);
+        post.setCreatedAt(new Date());
+        session.save(post);
+
+        for (PostFile postFile : postFiles) {
+            postFile.setPost(post);
+            session.save(postFile);
+        }
+
+        var friends = friendService.findAllByUserId(authUser.getId());
+        CompletableFuture.runAsync(() -> {
+            try {
+                notificationService.createPostCreatedNotification(post, friends);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        return post;
+    }
+
+    public void editPost(User authUser, Long id, String title, String content, MultipartFile[] files) throws Exception {
+        Post post = getPost(id);
+        if (!post.getUser().getId().equals(authUser.getId())) {
+            throw new Exception("Bạn không có quyền chỉnh sửa bài viết này");
+        }
+
+        List<PostFile> filesToBeDeleted = new ArrayList<>();
+        List<PostFile> newFiles = new ArrayList<>();
+
+        for (PostFile file : post.getFiles()) {
+            if (Arrays.stream(files).noneMatch(f -> Objects.equals(f.getOriginalFilename(), file.getId()))) {
+                filesToBeDeleted.add(file);
+            }
+        }
+
+        for (MultipartFile file : files) {
+            if (post.getFiles().stream().noneMatch(f -> Objects.equals(f.getId(), file.getOriginalFilename())) && !file.isEmpty()) {
+                boolean isVideo = file.getContentType().contains("video");
+                Map videoParams = ObjectUtils.asMap(
+                        "folder", "",
+                        "resource_type", "video"
+                );
+                Map uploadResult = cloudinary.uploader().upload(file.getBytes(), isVideo ? videoParams : ObjectUtils.emptyMap());
+                String fileUrl = (String) uploadResult.get("url"); // PostFile.fileUrl
+                String signature = (String) uploadResult.get("signature"); // PostFile.id
+                String resourceType = (String) uploadResult.get("resource_type"); // PostFile.mimeType
+                String originalFilename = (String) uploadResult.get("public_id"); // PostFile.fileName
+                int fileSize = (int) uploadResult.get("bytes"); // PostFile.fileSize
+                PostFile postFile = new PostFile(signature, originalFilename, resourceType, fileSize, fileUrl, null);
+                newFiles.add(postFile);
+            }
+        }
+
+        Session session = sessionFactory.getCurrentSession();
+        post.setTitle(title);
+        post.setContent(content);
+        session.update(post);
+
+        if (!filesToBeDeleted.isEmpty()) {
+            session.createQuery("delete from PostFile where id in :ids")
+                    .setParameterList("ids", filesToBeDeleted.stream().map(PostFile::getId).toList())
+                    .executeUpdate();
+
+            for (PostFile file : filesToBeDeleted) {
+                cloudinary.api().deleteResources(Arrays.asList(file.getFileName()), ObjectUtils.asMap("type", "upload", "resource_type", file.getMimeType()));
+            }
+        }
+
+        for (PostFile file : newFiles) {
+            file.setPost(post);
+            session.save(file);
         }
     }
 }

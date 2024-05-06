@@ -2,6 +2,7 @@ package com.ht.controllers;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.ht.entities.Post;
 import com.ht.entities.PostFile;
 import com.ht.entities.User;
 import com.ht.services.PostService;
@@ -95,36 +96,39 @@ public class PostController {
         List<PostFile> postFiles = new ArrayList<>();
         if (files != null) {
             for (MultipartFile file : files) {
-                try {
-                    boolean isVideo = file.getContentType().contains("video");
-                    Map videoParams = ObjectUtils.asMap(
-                            "folder", "",
-                            "resource_type", "video"
-                    );
-                    Map uploadResult = cloudinary.uploader().upload(file.getBytes(), isVideo ? videoParams : ObjectUtils.emptyMap());
-                    String fileUrl = (String) uploadResult.get("url"); // PostFile.fileUrl
-                    String signature = (String) uploadResult.get("signature"); // PostFile.id
-                    String resourceType = (String) uploadResult.get("resource_type"); // PostFile.mimeType
-                    String originalFilename = (String) uploadResult.get("original_filename"); // PostFile.fileName
-                    int fileSize = (int) uploadResult.get("bytes"); // PostFile.fileSize
-                    PostFile postFile = new PostFile(signature, originalFilename, resourceType, fileSize, fileUrl, null);
-                    postFiles.add(postFile);
-                } catch (Exception e) {
-                    model.addAttribute("errorMessage", "Lỗi khi tải ảnh lên: " + e.getMessage());
-                    return "post/create";
+                if (!file.isEmpty()) {
+                    try {
+                        boolean isVideo = file.getContentType().contains("video");
+                        Map videoParams = ObjectUtils.asMap(
+                                "folder", "",
+                                "resource_type", "video"
+                        );
+                        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), isVideo ? videoParams : ObjectUtils.emptyMap());
+                        String fileUrl = (String) uploadResult.get("url"); // PostFile.fileUrl
+                        String signature = (String) uploadResult.get("signature"); // PostFile.id
+                        String resourceType = (String) uploadResult.get("resource_type"); // PostFile.mimeType
+                        String originalFilename = (String) uploadResult.get("public_id"); // PostFile.fileName
+                        int fileSize = (int) uploadResult.get("bytes"); // PostFile.fileSize
+                        PostFile postFile = new PostFile(signature, originalFilename, resourceType, fileSize, fileUrl, null);
+                        postFiles.add(postFile);
+                    } catch (Exception e) {
+                        model.addAttribute("errorMessage", "Lỗi khi tải ảnh lên: " + e.getMessage());
+                        return "post/create";
+                    }
                 }
             }
         }
 
-        // TODO: create post, create post_files if present, create notification for friends, then redirect to post detail page
-        System.out.println("Create post: " + title + " - " + content);
-        System.out.println("Files: " + postFiles.size());
-        for (PostFile postFile : postFiles) {
-            System.out.println(postFile);
+        Post post = null;
+        try {
+            post = postService.createPost(authUser, title, content, postFiles);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "post/create";
         }
 
         redirectAttributes.addFlashAttribute("successMessage", "Đăng bài viết thành công");
-        return "redirect:/post/" + 1; //replace with created post id;
+        return "redirect:/post/" + post.getId();
     }
 
     @PostMapping("{id}/comment")
@@ -190,6 +194,30 @@ public class PostController {
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "post/detail";
+        }
+    }
+
+    @PostMapping("{id}/edit")
+    public String editPost(@RequestAttribute("user") User authUser,
+                           @RequestParam(name = "files", required = false) MultipartFile[] files,
+                           @PathVariable("id") Long id,
+                           @RequestParam(name = "title", required = false) String title,
+                           @RequestParam(name = "content", required = false) String content,
+                           ModelMap model,
+                           RedirectAttributes redirectAttributes) {
+        if (title == null || title.isEmpty() || content == null || content.isEmpty() || content.isBlank() || title.isBlank()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Vui lòng nhập đủ thông tin bài viết");
+            return "redirect:/post/" + id + "/edit";
+        }
+
+        try {
+            postService.editPost(authUser, id, title, content, files);
+            redirectAttributes.addFlashAttribute("successMessage", "Chỉnh sửa bài viết thành công");
+            return "redirect:/post/" + id;
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            e.printStackTrace();
+            return "redirect:/post/" + id + "/edit";
         }
     }
 }

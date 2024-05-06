@@ -308,7 +308,7 @@
                     <div class="user-img">
                         <img src="${requestScope["user"]["avatar"]}" alt="userimg" class="avatar-60 rounded-circle">
                     </div>
-                    <form id="uploadForm" class="post-text ms-3 w-100" action="post/create"
+                    <form id="uploadForm" class="post-text ms-3 w-100" action="post/${post.id}/edit"
                           enctype="multipart/form-data"
                           method="post">
                         <div class="d-flex flex-column gap-2">
@@ -449,7 +449,7 @@
         .then(blob => {
             var fileInput = document.getElementById('fileInput');
             var preview = document.getElementById('files-container');
-            var file = new File([blob], '${file.fileName}', {type: blob.type});
+            var file = new File([blob], '${file.id}', {type: blob.type});
             uploadedFiles.push(file);
             var reader = new FileReader();
             reader.onload = function (event) {

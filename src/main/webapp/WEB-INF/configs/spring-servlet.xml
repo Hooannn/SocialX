@@ -92,6 +92,7 @@
             <mvc:exclude-mapping path="/fonts/**"/>
             <mvc:exclude-mapping path="/vendor/**"/>
             <mvc:exclude-mapping path="/auth/**"/>
+            <mvc:exclude-mapping path="/content/**"/>
             <bean class="com.ht.configs.AuthInterceptor"/>
         </mvc:interceptor>
         <mvc:interceptor>

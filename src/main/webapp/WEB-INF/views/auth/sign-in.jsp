@@ -98,11 +98,13 @@
                             <div class="sign-info">
                                 <span class="dark-color d-inline-block line-height-2">Chưa có tài khoản? <a
                                         href="auth/sign-up">Đăng ký</a></span>
+                                <!--
                                 <ul class="iq-social-media">
                                     <li><a href="#"><i class="ri-facebook-box-line"></i></a></li>
                                     <li><a href="#"><i class="ri-twitter-line"></i></a></li>
                                     <li><a href="#"><i class="ri-instagram-line"></i></a></li>
                                 </ul>
+                                -->
                             </div>
                         </form:form>
                         <a class="google-auth-btn-wrapper"
