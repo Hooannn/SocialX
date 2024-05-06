@@ -52,7 +52,7 @@ public class GoogleUserData {
     }
 
     public String getName() {
-        return name != null ? name : "";
+        return name != null ? name : "Unknown";
     }
 
     public void setName(String name) {
@@ -60,7 +60,7 @@ public class GoogleUserData {
     }
 
     public String getGivenName() {
-        return given_name != null ? given_name : "";
+        return given_name != null ? given_name : "Unknown";
     }
 
     public void setGivenName(String given_name) {
@@ -68,7 +68,7 @@ public class GoogleUserData {
     }
 
     public String getFamilyName() {
-        return family_name != null ? family_name : "";
+        return family_name != null ? family_name : "Unknown";
     }
 
     public void setFamilyName(String family_name) {
