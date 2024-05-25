@@ -3,6 +3,8 @@ package com.ht.controllers;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.ht.dtos.ChangePasswordDto;
+import com.ht.entities.Post;
+import com.ht.entities.PostFile;
 import com.ht.entities.User;
 import com.ht.enums.FriendStatus;
 import com.ht.services.FriendService;
@@ -23,8 +25,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/profile")
@@ -62,7 +66,8 @@ public class ProfileController {
             return "redirect:/home";
         }
 
-        var posts = this.postService.findAllByUserId(targetUser.getId());
+        List<Post> posts = this.postService.findAllByUserId(targetUser.getId());
+        var friends = this.friendService.findAllByUserId(targetUser.getId());
 
         if (Objects.equals(authUser.getId(), targetUser.getId())) {
             model.addAttribute("isCurrentUser", true);
@@ -73,6 +78,7 @@ public class ProfileController {
 
         model.addAttribute("targetUser", targetUser);
         model.addAttribute("posts", posts);
+        model.addAttribute("friends", friends);
 
         return "profile/index";
     }

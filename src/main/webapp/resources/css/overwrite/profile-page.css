@@ -17,14 +17,34 @@
     border-color: #e76464;
 }
 
-.profile-img img {
-    min-width: 130px;
+.profile-img img,
+.widget-image {
+    aspect-ratio: 1;
+    object-fit: cover;
     background-color: #50b5ff;
     display: inline-block;
 }
 
+.widget-image {
+    width: 100%;
+    border-radius: 4px;
+}
+
+.profile-img img {
+    min-width: 130px;
+}
+
 div.iq-top-navbar {
     padding: 0;
+}
+
+.truncate-1 {
+    display:-webkit-box;
+    -webkit-line-clamp:1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
 }
 
 nav.navbar {
@@ -33,4 +53,12 @@ nav.navbar {
 
 .mh-300 {
     min-height: 300px;
+}
+
+.grid-3-cols {
+    grid-template-columns: repeat(3, 1fr) !important;
+}
+
+.z-1 {
+    z-index: 1;
 }

@@ -210,10 +210,10 @@
                         <li class="nav-item dropdown">
                             <a href="#" class="   d-flex align-items-center dropdown-toggle" id="drop-down-arrow"
                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="${requestScope["user"]["avatar"]}" class="img-fluid rounded-circle me-3"
+                                <img src="${requestScope["user"]["avatar"]}" class="img-fluid rounded-circle me-1"
                                      alt="user">
                                 <div class="caption">
-                                    <h6 class="mb-0 line-height">${requestScope["user"]["firstName"]} ${requestScope["user"]["lastName"]}</h6>
+                                    <h6 class="mb-0 line-height">${requestScope["user"]["lastName"]} ${requestScope["user"]["firstName"]}</h6>
                                 </div>
                             </a>
                             <div class="sub-drop dropdown-menu caption-menu" aria-labelledby="drop-down-arrow">
@@ -221,7 +221,7 @@
                                     <div class="card-header  bg-primary">
                                         <div class="header-title">
                                             <h5 class="mb-0 text-white">Xin
-                                                chào ${requestScope["user"]["firstName"]} ${requestScope["user"]["lastName"]}</h5>
+                                                chào ${requestScope["user"]["lastName"]} ${requestScope["user"]["firstName"]}</h5>
                                         </div>
                                     </div>
                                     <div class="card-body p-0 ">
@@ -231,7 +231,7 @@
                                                     <i class="ri-file-user-line"></i>
                                                 </div>
                                                 <div class="ms-3">
-                                                    <h6 class="mb-0 ">Hồ sơ</h6>
+                                                    <h6 class="mb-0 ">Trang cá nhân</h6>
                                                     <p class="mb-0 font-size-12">Xem thông tin cá nhân của bạn.</p>
                                                 </div>
                                             </div>
@@ -405,21 +405,25 @@
                                                                 <c:choose>
                                                                     <c:when test="${fn:contains(file.mimeType, 'video')}">
                                                                         <div class="grid-item">
-                                                                            <video controls class="rounded">
-                                                                                <source src="${file.fileUrl}"
-                                                                                        type="video/mp4">
-                                                                                Your browser does not support the video
-                                                                                tag.
-                                                                            </video>
+                                                                            <div class="grid-item-content-wrapper">
+                                                                                <video controls class="rounded">
+                                                                                    <source src="${file.fileUrl}"
+                                                                                            type="video/mp4">
+                                                                                    Your browser does not support the video
+                                                                                    tag.
+                                                                                </video>
+                                                                            </div>
                                                                         </div>
                                                                     </c:when>
                                                                     <c:otherwise>
                                                                         <div class="grid-item">
-                                                                            <a href="${file.fileUrl}" target="_blank">
-                                                                                <img src="${file.fileUrl}"
-                                                                                     alt="post-image"
-                                                                                     class="rounded">
-                                                                            </a>
+                                                                            <div class="grid-item-content-wrapper">
+                                                                                <a href="${file.fileUrl}" target="_blank">
+                                                                                    <img src="${file.fileUrl}"
+                                                                                         alt="post-image"
+                                                                                         class="rounded">
+                                                                                </a>
+                                                                            </div>
                                                                         </div>
                                                                     </c:otherwise>
                                                                 </c:choose>

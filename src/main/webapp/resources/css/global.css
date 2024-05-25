@@ -5,6 +5,10 @@
     clear: both;
 }
 
+.grid {
+    margin: 4px -4px;
+}
+
 /* ---- .grid-item ---- */
 
 .grid-sizer,
@@ -25,4 +29,8 @@
 
 .grid-item img:hover {
     opacity: 0.8;
+}
+
+.grid-item-content-wrapper {
+    padding: 4px;
 }
