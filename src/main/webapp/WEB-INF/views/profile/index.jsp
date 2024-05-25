@@ -90,7 +90,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto navbar-list">
                         <li>
-                            <a href="home" class="  d-flex align-items-center">
+                            <a href="home" class="d-flex align-items-center">
                                 <i class="ri-home-line"></i>
                             </a>
                         </li>
@@ -218,12 +218,12 @@
 
                         <%-- Peronal navigation dropdown --%>
                         <li class="nav-item dropdown">
-                            <a href="#" class="   d-flex align-items-center dropdown-toggle" id="drop-down-arrow"
+                            <a href="#" class="d-flex align-items-center dropdown-toggle" id="drop-down-arrow"
                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="${requestScope["user"]["avatar"]}" class="img-fluid rounded-circle me-1"
                                      alt="user">
                                 <div class="caption">
-                                    <h6 class="mb-0 line-height">${requestScope["user"]["firstName"]} ${requestScope["user"]["lastName"]}</h6>
+                                    <h6 class="mb-0 line-height">${requestScope["user"]["lastName"]} ${requestScope["user"]["firstName"]}</h6>
                                 </div>
                             </a>
                             <div class="sub-drop dropdown-menu caption-menu" aria-labelledby="drop-down-arrow">
@@ -232,7 +232,7 @@
                                         <div class="header-title">
                                             <h5 class="mb-0 text-white">
                                                 Xin
-                                                chào ${requestScope["user"]["firstName"]} ${requestScope["user"]["lastName"]}
+                                                chào ${requestScope["user"]["lastName"]} ${requestScope["user"]["firstName"]}
                                             </h5>
                                         </div>
                                     </div>
@@ -285,12 +285,12 @@
                         <div class="card-body profile-page p-0">
                             <div class="profile-header">
                                 <div class="position-relative">
-                                    <img src="images/page-img/profile-bg1.jpg" alt="profile-bg"
-                                         class="rounded img-fluid">
-                                    <ul class="header-nav list-inline d-flex flex-wrap justify-end p-0 m-0">
-                                        <li><a href="#"><i class="ri-pencil-line"></i></a></li>
-                                        <li><a href="#"><i class="ri-settings-4-line"></i></a></li>
-                                    </ul>
+                                    <img src="images/page-img/profile-bg1.jpg" alt="profile-bg" class="rounded img-fluid">
+                                    <c:if test="${isCurrentUser == true}">
+                                        <ul class="header-nav list-inline d-flex flex-wrap justify-end p-0 m-0 z-1">
+                                            <li><a href="profile/edit"><i class="ri-pencil-line"></i></a></li>
+                                        </ul>
+                                    </c:if>
                                 </div>
                                 <div class="user-detail text-center mb-3">
                                     <div class="profile-img">
@@ -341,7 +341,21 @@
                                             </li>
                                             <li class="text-center ps-3">
                                                 <h6>Ảnh</h6>
-                                                <p class="mb-0">${not empty photos ? fn:length(photos): 0}</p>
+                                                <p class="mb-0">
+                                                    <c:set var="imageCounter" value="0" />
+                                                    <c:if test="${not empty posts}">
+                                                        <c:forEach var="post" items="${posts}">
+                                                            <c:if test="${not empty post.files}">
+                                                                <c:forEach var="file" items="${post.files}">
+                                                                    <c:if test="${not fn:contains(file.mimeType, 'video')}">
+                                                                        <c:set var="imageCounter" value="${imageCounter + 1}" />
+                                                                    </c:if>
+                                                                </c:forEach>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </c:if>
+                                                    ${imageCounter}
+                                                </p>
                                             </li>
                                         </ul>
                                     </div>
@@ -349,6 +363,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="card">
                         <div class="card-body p-0">
                             <div class="user-tabing">
@@ -385,154 +400,52 @@
                                     <%-- Small widgets - left side --%>
                                     <div class="col-lg-4">
                                         <div class="card">
-                                            <div class="card-body">
-                                                <a href="#"><span
-                                                        class="badge badge-pill bg-primary font-weight-normal ms-auto me-1"><i
-                                                        class="ri-star-line"></i></span> 27 Items for yoou</a>
-                                            </div>
-                                        </div>
-                                        <div class="card">
                                             <div class="card-header d-flex justify-content-between">
                                                 <div class="header-title">
-                                                    <h4 class="card-title">Life Event</h4>
-                                                </div>
-                                                <div class="card-header-toolbar d-flex align-items-center">
-                                                    <p class="m-0"><a href="javacsript:void();"> Create </a></p>
+                                                    <h4 class="card-title">Ảnh</h4>
                                                 </div>
                                             </div>
                                             <div class="card-body">
-                                                <div class="row">
-                                                    <div class="col-sm-12">
-                                                        <div class="event-post position-relative">
-                                                            <a href="#"><img src="images/page-img/07.jpg"
-                                                                             alt="gallary-image"
-                                                                             class="img-fluid rounded"></a>
-                                                            <div class="job-icon-position">
-                                                                <div class="job-icon bg-primary p-2 d-inline-block rounded-circle">
-                                                                    <i class="ri-briefcase-line text-white"></i></div>
-                                                            </div>
-                                                            <div class="card-body text-center p-2">
-                                                                <h5>Started New Job at Apple</h5>
-                                                                <p>January 24, 2019</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-12">
-                                                        <div class="event-post position-relative">
-                                                            <a href="#"><img src="images/page-img/06.jpg"
-                                                                             alt="gallary-image"
-                                                                             class="img-fluid rounded"></a>
-                                                            <div class="job-icon-position">
-                                                                <div class="job-icon bg-primary p-2 d-inline-block rounded-circle">
-                                                                    <i class="ri-briefcase-line text-white"></i></div>
-                                                            </div>
-                                                            <div class="card-body text-center p-2">
-                                                                <h5>Freelance Photographer</h5>
-                                                                <p class="mb-0">January 24, 2019</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                            <div class="card-header d-flex justify-content-between">
-                                                <div class="header-title">
-                                                    <h4 class="card-title">Photos</h4>
-                                                </div>
-                                                <div class="card-header-toolbar d-flex align-items-center">
-                                                    <p class="m-0"><a href="javacsript:void();">Add Photo </a></p>
-                                                </div>
-                                            </div>
-                                            <div class="card-body">
-                                                <ul class="profile-img-gallary p-0 m-0 list-unstyled">
-                                                    <li class=""><a href="#"><img src="images/page-img/g1.jpg"
-                                                                                  alt="gallary-image"
-                                                                                  class="img-fluid"/></a></li>
-                                                    <li class=""><a href="#"><img src="images/page-img/g2.jpg"
-                                                                                  alt="gallary-image"
-                                                                                  class="img-fluid"/></a></li>
-                                                    <li class=""><a href="#"><img src="images/page-img/g3.jpg"
-                                                                                  alt="gallary-image"
-                                                                                  class="img-fluid"/></a></li>
-                                                    <li class=""><a href="#"><img src="images/page-img/g4.jpg"
-                                                                                  alt="gallary-image"
-                                                                                  class="img-fluid"/></a></li>
-                                                    <li class=""><a href="#"><img src="images/page-img/g5.jpg"
-                                                                                  alt="gallary-image"
-                                                                                  class="img-fluid"/></a></li>
-                                                    <li class=""><a href="#"><img src="images/page-img/g6.jpg"
-                                                                                  alt="gallary-image"
-                                                                                  class="img-fluid"/></a></li>
-                                                    <li class=""><a href="#"><img src="images/page-img/g7.jpg"
-                                                                                  alt="gallary-image"
-                                                                                  class="img-fluid"/></a></li>
-                                                    <li class=""><a href="#"><img src="images/page-img/g8.jpg"
-                                                                                  alt="gallary-image"
-                                                                                  class="img-fluid"/></a></li>
-                                                    <li class=""><a href="#"><img src="images/page-img/g9.jpg"
-                                                                                  alt="gallary-image"
-                                                                                  class="img-fluid"/></a></li>
+                                                <ul class="profile-img-gallary p-0 m-0 list-unstyled grid-3-cols">
+                                                    <c:set var="counter" value="0" />
+                                                    <c:if test="${not empty posts}">
+                                                        <c:forEach var="post" items="${posts}">
+                                                            <c:if test="${not empty post.files}">
+                                                                <c:forEach var="file" items="${post.files}">
+                                                                    <c:if test="${counter < 9 && not fn:contains(file.mimeType, 'video')}">
+                                                                        <li class="">
+                                                                            <a href="${file.fileUrl}" target="_blank">
+                                                                                <img src="${file.fileUrl}" alt="gallary-image" class="img-fluid widget-image"/>
+                                                                            </a>
+                                                                        </li>
+                                                                        <c:set var="counter" value="${counter + 1}" />
+                                                                    </c:if>
+                                                                </c:forEach>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </c:if>
                                                 </ul>
                                             </div>
                                         </div>
+
                                         <div class="card">
                                             <div class="card-header d-flex justify-content-between">
                                                 <div class="header-title">
-                                                    <h4 class="card-title">Friends</h4>
-                                                </div>
-                                                <div class="card-header-toolbar d-flex align-items-center">
-                                                    <p class="m-0"><a href="javacsript:void();">Add New </a></p>
+                                                    <h4 class="card-title">Bạn bè</h4>
                                                 </div>
                                             </div>
                                             <div class="card-body">
-                                                <ul class="profile-img-gallary p-0 m-0 list-unstyled">
-                                                    <li class="">
-                                                        <a href="#">
-                                                            <img src="images/user/05.jpg" alt="gallary-image"
-                                                                 class="img-fluid"/></a>
-                                                        <h6 class="mt-2 text-center">Anna Rexia</h6>
-                                                    </li>
-                                                    <li class="">
-                                                        <a href="#"><img src="images/user/06.jpg"
-                                                                         alt="gallary-image" class="img-fluid"/></a>
-                                                        <h6 class="mt-2 text-center">Tara Zona</h6>
-                                                    </li>
-                                                    <li class="">
-                                                        <a href="#"><img src="images/user/07.jpg"
-                                                                         alt="gallary-image" class="img-fluid"/></a>
-                                                        <h6 class="mt-2 text-center">Polly Tech</h6>
-                                                    </li>
-                                                    <li class="">
-                                                        <a href="#"><img src="images/user/08.jpg"
-                                                                         alt="gallary-image" class="img-fluid"/></a>
-                                                        <h6 class="mt-2 text-center">Bill Emia</h6>
-                                                    </li>
-                                                    <li class="">
-                                                        <a href="#"><img src="images/user/09.jpg"
-                                                                         alt="gallary-image" class="img-fluid"/></a>
-                                                        <h6 class="mt-2 text-center">Moe Fugga</h6>
-                                                    </li>
-                                                    <li class="">
-                                                        <a href="#"><img src="images/user/10.jpg"
-                                                                         alt="gallary-image" class="img-fluid"/></a>
-                                                        <h6 class="mt-2 text-center">Hal Appeno </h6>
-                                                    </li>
-                                                    <li class="">
-                                                        <a href="#"><img src="images/user/07.jpg"
-                                                                         alt="gallary-image" class="img-fluid"/></a>
-                                                        <h6 class="mt-2 text-center">Zack Lee</h6>
-                                                    </li>
-                                                    <li class="">
-                                                        <a href="#"><img src="images/user/06.jpg"
-                                                                         alt="gallary-image" class="img-fluid"/></a>
-                                                        <h6 class="mt-2 text-center">Terry Aki</h6>
-                                                    </li>
-                                                    <li class="">
-                                                        <a href="#"><img src="images/user/05.jpg"
-                                                                         alt="gallary-image" class="img-fluid"/></a>
-                                                        <h6 class="mt-2 text-center">Greta Life</h6>
-                                                    </li>
+                                                <ul class="profile-img-gallary p-0 m-0 list-unstyled grid-3-cols">
+                                                    <c:if test="${not empty friends}">
+                                                        <c:forEach var="friend" items="${friends}" begin="0" end="8">
+                                                            <li class="">
+                                                                <a href="profile/${friend.id}">
+                                                                    <img src=${friend.avatar} alt="gallary-image" class="img-fluid widget-image"/>
+                                                                </a>
+                                                                <h6 class="mt-2 text-center truncate-1">${friend.lastName} ${friend.firstName}</h6>
+                                                            </li>
+                                                        </c:forEach>
+                                                    </c:if>
                                                 </ul>
                                             </div>
                                         </div>
@@ -703,23 +616,27 @@
                                                                                 <c:choose>
                                                                                     <c:when test="${fn:contains(file.mimeType, 'video')}">
                                                                                         <div class="grid-item">
-                                                                                            <video controls
-                                                                                                   class="rounded">
-                                                                                                <source src="${file.fileUrl}"
-                                                                                                        type="video/mp4">
-                                                                                                Your browser does not
-                                                                                                support the video tag.
-                                                                                            </video>
+                                                                                            <div class="grid-item-content-wrapper">
+                                                                                                <video controls
+                                                                                                       class="rounded">
+                                                                                                    <source src="${file.fileUrl}"
+                                                                                                            type="video/mp4">
+                                                                                                    Your browser does not
+                                                                                                    support the video tag.
+                                                                                                </video>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </c:when>
                                                                                     <c:otherwise>
                                                                                         <div class="grid-item">
-                                                                                            <a href="${file.fileUrl}"
-                                                                                               target="_blank">
-                                                                                                <img src="${file.fileUrl}"
-                                                                                                     alt="post-image"
-                                                                                                     class="rounded">
-                                                                                            </a>
+                                                                                            <div class="grid-item-content-wrapper">
+                                                                                                <a href="${file.fileUrl}"
+                                                                                                   target="_blank">
+                                                                                                    <img src="${file.fileUrl}"
+                                                                                                         alt="post-image"
+                                                                                                         class="rounded">
+                                                                                                </a>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </c:otherwise>
                                                                                 </c:choose>
@@ -740,7 +657,7 @@
                                                                                                        items="${post.likes}">
                                                                                                 <c:if test="${like.user.id eq requestScope['user']['id']}">
                                                                                                     <div class="like-button">
-                                                                                                        <a href="post/${post.id}/unlike?redirect=/home">
+                                                                                                        <a href="post/${post.id}/unlike?redirect=/profile/${targetUser.id}">
                                                                                                             <button type="button"
                                                                                                                     class="btn btn-link text-primary">
                                                                                                                 <i class="far fa-thumbs-up"></i>
@@ -752,7 +669,7 @@
                                                                                         </c:when>
                                                                                         <c:otherwise>
                                                                                             <div class="like-button">
-                                                                                                <a href="post/${post.id}/like?redirect=/home">
+                                                                                                <a href="post/${post.id}/like?redirect=/profile/${targetUser.id}">
                                                                                                     <button type="button"
                                                                                                             class="btn btn-link text-secondary">
                                                                                                         <i class="far fa-thumbs-up"></i>
@@ -4567,11 +4484,6 @@
                         </div>
                     </div>
                 </div>
-
-                <%-- Loading spinner --%>
-                <%--                <div class="col-sm-12 text-center">--%>
-                <%--                    <img src="images/page-img/page-load-loader.gif" alt="loader" style="height: 100px;">--%>
-                <%--                </div>--%>
             </div>
         </div>
     </div>
@@ -4579,16 +4491,10 @@
 <!-- Wrapper End-->
 <footer class="iq-footer bg-white">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-6">
-                <ul class="list-inline mb-0">
-                    <li class="list-inline-item"><a href="privacy-policy">Privacy Policy</a></li>
-                    <li class="list-inline-item"><a href="terms-of-service">Terms of Use</a></li>
-                </ul>
-            </div>
-            <div class="col-lg-6 d-flex justify-content-end">
+        <div class="d-flex justify-content-center gap-1">
+<%--            <div class="col-lg-6 d-flex justify-content-end">--%>
                 Copyright 2024 <a href="#">SocialX</a> All Rights Reserved.
-            </div>
+<%--            </div>--%>
         </div>
     </div>
 </footer>

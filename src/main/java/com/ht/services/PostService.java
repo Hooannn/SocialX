@@ -35,6 +35,7 @@ public class PostService {
         Query query = session.createQuery("""
                     from Post where user.id in (select toUser.id from Friend where fromUser.id = :userId and status = 1)
                     or user.id in (select fromUser.id from Friend where toUser.id = :userId and status = 1)
+                    order by createdAt desc
                 """);
         query.setParameter("userId", userId);
         return query.list();
@@ -44,6 +45,7 @@ public class PostService {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("""
                     from Post where user.id = :userId
+                    order by createdAt desc
                 """);
         query.setParameter("userId", userId);
         return query.list();
