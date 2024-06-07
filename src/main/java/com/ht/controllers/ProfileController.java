@@ -4,7 +4,6 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.ht.dtos.ChangePasswordDto;
 import com.ht.entities.Post;
-import com.ht.entities.PostFile;
 import com.ht.entities.User;
 import com.ht.enums.FriendStatus;
 import com.ht.services.FriendService;
@@ -28,7 +27,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/profile")
@@ -98,6 +96,7 @@ public class ProfileController {
     @PostMapping("/edit/information")
     public String editProfileInformation(
             @RequestParam(name = "file", required = false) MultipartFile file,
+            @RequestParam(name = "coverImage", required = false) MultipartFile coverImage,
             @RequestParam(name = "firstName", required = false) String firstName,
             @RequestParam(name = "lastName", required = false) String lastName,
             @RequestParam(name = "dateOfBirth", required = false) String dateOfBirth,
@@ -108,6 +107,12 @@ public class ProfileController {
             HttpServletResponse response,
             RedirectAttributes redirectAttributes
     ) {
+        if (firstName.isEmpty() || lastName.isEmpty() || dateOfBirth.isEmpty() || address.isEmpty()) {
+            model.addAttribute("errorMessage", "Vui lòng điền đầy đủ thông tin");
+            model.addAttribute("tab", "information");
+            return "profile/edit";
+        }
+
         String imageUrl = null;
         if (file != null && !file.isEmpty()) {
             try {
@@ -119,10 +124,17 @@ public class ProfileController {
                 return "profile/edit";
             }
         }
-        if (firstName.isEmpty() || lastName.isEmpty() || dateOfBirth.isEmpty() || address.isEmpty()) {
-            model.addAttribute("errorMessage", "Vui lòng điền đầy đủ thông tin");
-            model.addAttribute("tab", "information");
-            return "profile/edit";
+
+        String coverImageUrl = null;
+        if (coverImage != null && !coverImage.isEmpty()) {
+            try {
+                Map uploadResult = cloudinary.uploader().upload(coverImage.getBytes(), ObjectUtils.emptyMap());
+                coverImageUrl = (String) uploadResult.get("url");
+            } catch (Exception e) {
+                model.addAttribute("errorMessage", "Lỗi khi tải ảnh lên");
+                model.addAttribute("tab", "information");
+                return "profile/edit";
+            }
         }
 
         Date parsedDateOfBirth;
@@ -143,10 +155,11 @@ public class ProfileController {
         if (imageUrl != null) {
             authUser.setAvatar(imageUrl);
         }
-
+        if (coverImageUrl != null) {
+            authUser.setCoverImage(coverImageUrl);
+        }
         // Lưu vào cơ sở dữ liệu
         userService.saveOrUpdateUser(authUser);
-
         // Cập nhật lại access token
         String accessToken = jwtService.generateAccessToken(authUser);
         Cookie cookie = new Cookie("access_token", accessToken);
