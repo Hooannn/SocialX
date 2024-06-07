@@ -81,4 +81,21 @@ public class NotificationService {
             session.save(notification);
         }
     }
+
+    public void createPostLikedNotification(Post post, User user) {
+        Session session = sessionFactory.getCurrentSession();
+        Notification notification = new Notification();
+        notification.setUser(post.getUser());
+        notification.setContent(user.getFullName() + " đã thích bài viết của bạn");
+        notification.setCreatedAt(new Date());
+        notification.setStatus(false);
+        String notificationTitle = """
+                Bài viết: '%s'
+                """;
+        notification.setTitle(String.format(notificationTitle, post.getTitle()));
+        notification.setImageUrl(user.getAvatar());
+        notification.setActionUrl("/post/" + post.getId());
+
+        session.save(notification);
+    }
 }

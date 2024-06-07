@@ -51,13 +51,13 @@ public class PostService {
         return query.list();
     }
 
-    public void like(Long userId, Long postId) throws Exception {
+    public void like(User authUser, Long postId) throws Exception {
         Session session = sessionFactory.getCurrentSession();
 
         Query checkLikedQuery = session.createQuery("""
                     select count(*) from Like where user.id = :userId and post.id = :postId
                 """);
-        checkLikedQuery.setParameter("userId", userId);
+        checkLikedQuery.setParameter("userId", authUser.getId());
         checkLikedQuery.setParameter("postId", postId);
         Long count = (Long) checkLikedQuery.uniqueResult();
 
@@ -65,16 +65,28 @@ public class PostService {
             throw new Exception("Bạn đã thích bài viết này");
         }
 
+        var post = (Post) session.get(Post.class, postId);
+
+        if (post == null) {
+            throw new Exception("Bài viết không tồn tại");
+        }
+
         Like like = new Like();
-        var user = new User();
-        user.setId(userId);
-        var post = new Post();
-        post.setId(postId);
-        like.setUser(user);
+        like.setUser(authUser);
         like.setPost(post);
         like.setCreatedAt(new Date());
 
         session.save(like);
+
+        if (!authUser.getId().equals(post.getUser().getId())) {
+            CompletableFuture.runAsync(() -> {
+                try {
+                    notificationService.createPostLikedNotification(post, authUser);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
     }
 
     public void unlike(Long userId, Long postId) {

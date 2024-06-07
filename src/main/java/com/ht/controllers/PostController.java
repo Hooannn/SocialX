@@ -51,7 +51,7 @@ public class PostController {
             @RequestParam(value = "redirect", required = false) String redirect,
             @PathVariable("id") Long id) {
         try {
-            postService.like(authUser.getId(), id);
+            postService.like(authUser, id);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
         }
