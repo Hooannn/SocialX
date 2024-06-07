@@ -285,7 +285,8 @@
                         <div class="card-body profile-page p-0">
                             <div class="profile-header">
                                 <div class="position-relative">
-                                    <img src="images/page-img/profile-bg1.jpg" alt="profile-bg" class="rounded img-fluid">
+                                    <img src="${targetUser.coverImage}" alt="profile-bg" class="rounded"
+                                         style="max-height: 250px; width: 100%; object-fit: cover">
                                     <c:if test="${isCurrentUser == true}">
                                         <ul class="header-nav list-inline d-flex flex-wrap justify-end p-0 m-0 z-1">
                                             <li><a href="profile/edit"><i class="ri-pencil-line"></i></a></li>
@@ -342,13 +343,14 @@
                                             <li class="text-center ps-3">
                                                 <h6>Ảnh</h6>
                                                 <p class="mb-0">
-                                                    <c:set var="imageCounter" value="0" />
+                                                    <c:set var="imageCounter" value="0"/>
                                                     <c:if test="${not empty posts}">
                                                         <c:forEach var="post" items="${posts}">
                                                             <c:if test="${not empty post.files}">
                                                                 <c:forEach var="file" items="${post.files}">
                                                                     <c:if test="${not fn:contains(file.mimeType, 'video')}">
-                                                                        <c:set var="imageCounter" value="${imageCounter + 1}" />
+                                                                        <c:set var="imageCounter"
+                                                                               value="${imageCounter + 1}"/>
                                                                     </c:if>
                                                                 </c:forEach>
                                                             </c:if>
@@ -378,7 +380,7 @@
                                     </li>
                                     <li class="nav-item col-12 col-sm-3 p-0">
                                         <a class="nav-link" href="#pills-friends-tab" data-bs-toggle="pill"
-                                           data-bs-target="#friends" role="button">Bàn bè</a>
+                                           data-bs-target="#friends" role="button">Bạn bè</a>
                                     </li>
                                     <li class="nav-item col-12 col-sm-3 p-0">
                                         <a class="nav-link" href="#pills-photos-tab" data-bs-toggle="pill"
@@ -407,7 +409,7 @@
                                             </div>
                                             <div class="card-body">
                                                 <ul class="profile-img-gallary p-0 m-0 list-unstyled grid-3-cols">
-                                                    <c:set var="counter" value="0" />
+                                                    <c:set var="counter" value="0"/>
                                                     <c:if test="${not empty posts}">
                                                         <c:forEach var="post" items="${posts}">
                                                             <c:if test="${not empty post.files}">
@@ -415,10 +417,12 @@
                                                                     <c:if test="${counter < 9 && not fn:contains(file.mimeType, 'video')}">
                                                                         <li class="">
                                                                             <a href="${file.fileUrl}" target="_blank">
-                                                                                <img src="${file.fileUrl}" alt="gallary-image" class="img-fluid widget-image"/>
+                                                                                <img src="${file.fileUrl}"
+                                                                                     alt="gallary-image"
+                                                                                     class="img-fluid widget-image"/>
                                                                             </a>
                                                                         </li>
-                                                                        <c:set var="counter" value="${counter + 1}" />
+                                                                        <c:set var="counter" value="${counter + 1}"/>
                                                                     </c:if>
                                                                 </c:forEach>
                                                             </c:if>
@@ -440,7 +444,8 @@
                                                         <c:forEach var="friend" items="${friends}" begin="0" end="8">
                                                             <li class="">
                                                                 <a href="profile/${friend.id}">
-                                                                    <img src=${friend.avatar} alt="gallary-image" class="img-fluid widget-image"/>
+                                                                    <img src=${friend.avatar} alt="gallary-image"
+                                                                         class="img-fluid widget-image"/>
                                                                 </a>
                                                                 <h6 class="mt-2 text-center truncate-1">${friend.lastName} ${friend.firstName}</h6>
                                                             </li>
@@ -494,7 +499,7 @@
                                                     <c:if test="${not empty post}">
                                                         <div class="card">
                                                             <div class="card-body">
-                                                                <%-- User data, timestamp --%>
+                                                                    <%-- User data, timestamp --%>
                                                                 <div class="user-post-data">
                                                                     <div class="modal fade"
                                                                          id="deletePostModal_${post.id}"
@@ -602,13 +607,13 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <%-- Title and text content --%>
+                                                                    <%-- Title and text content --%>
                                                                 <div>
                                                                     <h5 class="my-2">${post.title}</h5>
                                                                     <p>${post.content}</p>
                                                                 </div>
 
-                                                                <%-- Images and videos --%>
+                                                                    <%-- Images and videos --%>
                                                                 <c:if test="${not empty post.files}">
                                                                     <div class="grid">
                                                                         <div class="grid-sizer"></div>
@@ -622,8 +627,10 @@
                                                                                                        class="rounded">
                                                                                                     <source src="${file.fileUrl}"
                                                                                                             type="video/mp4">
-                                                                                                    Your browser does not
-                                                                                                    support the video tag.
+                                                                                                    Your browser does
+                                                                                                    not
+                                                                                                    support the video
+                                                                                                    tag.
                                                                                                 </video>
                                                                                             </div>
                                                                                         </div>
@@ -646,7 +653,7 @@
                                                                     </div>
                                                                 </c:if>
 
-                                                                <%-- Likes and comment box --%>
+                                                                    <%-- Likes and comment box --%>
                                                                 <div class="comment-area mt-3">
                                                                     <div class="d-flex justify-content-between align-items-center flex-wrap">
                                                                         <div class="like-block position-relative d-flex align-items-center">
@@ -654,7 +661,8 @@
                                                                                 <div class="like-data">
                                                                                     <c:choose>
                                                                                         <c:when test="${not empty post.likes}">
-                                                                                            <c:forEach var="like" items="${post.likes}">
+                                                                                            <c:forEach var="like"
+                                                                                                       items="${post.likes}">
                                                                                                 <c:if test="${like.user.id eq requestScope['user']['id']}">
                                                                                                     <div class="like-button">
                                                                                                         <a href="post/${post.id}/unlike?redirect=/profile/${targetUser.id}">
@@ -692,7 +700,8 @@
                                                                                         </span>
                                                                                         <c:if test="${not empty post.likes}">
                                                                                             <div class="dropdown-menu">
-                                                                                                <c:forEach var="like" items="${post.likes}">
+                                                                                                <c:forEach var="like"
+                                                                                                           items="${post.likes}">
                                                                                                     <c:if test="${not empty like}">
                                                                                                         <a class="dropdown-item"
                                                                                                            href="profile/${like.user.id}">
@@ -725,7 +734,8 @@
                                                                     </div>
                                                                     <hr>
                                                                     <ul class="post-comments list-inline p-0 m-0">
-                                                                        <c:forEach var="comment" items="${post.comments}">
+                                                                        <c:forEach var="comment"
+                                                                                   items="${post.comments}">
                                                                             <c:if test="${not empty comment}">
                                                                                 <li class="mb-2 d-flex align-items-start justify-content-between">
                                                                                     <div class="modal fade"
@@ -1024,7 +1034,8 @@
                                         <ul class="nav nav-pills d-flex align-items-center justify-content-left friend-list-items p-0 mb-2">
                                             <li>
                                                 <a class="nav-link active" data-bs-toggle="pill"
-                                                   href="#pill-all-friends" data-bs-target="#all-feinds">Tất cả bạn bẻ của ${isCurrentUser ? "bạn": targetUser.firstName}</a>
+                                                   href="#pill-all-friends" data-bs-target="#all-feinds">Tất cả bạn bẻ
+                                                    của ${isCurrentUser ? "bạn": targetUser.firstName}</a>
                                             </li>
                                         </ul>
                                         <div class="tab-content">
@@ -1040,7 +1051,8 @@
                                                                                 <a href="#">
                                                                                     <div class="friends-tab-avatar-wrapper">
                                                                                         <img src="${tabFriend.avatar}"
-                                                                                             alt="profile-img" class="img-fluid">
+                                                                                             alt="profile-img"
+                                                                                             class="img-fluid">
                                                                                     </div>
                                                                                 </a>
                                                                                 <div class="friend-info ms-3">
@@ -1049,10 +1061,13 @@
                                                                             </div>
                                                                             <div class="card-header-toolbar d-flex align-items-center">
                                                                                 <a href="profile/${tabFriend.id}">
-                                                                                    <span class="btn btn-secondary me-2" aria-expanded="true" role="button">
+                                                                                    <span class="btn btn-secondary me-2"
+                                                                                          aria-expanded="true"
+                                                                                          role="button">
                                                                                         <i class="ri-check-line me-1 text-white"></i> Xem
                                                                                     </span>
-                                                                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton01"></div>
+                                                                                    <div class="dropdown-menu dropdown-menu-right"
+                                                                                         aria-labelledby="dropdownMenuButton01"></div>
                                                                                 </a>
                                                                             </div>
                                                                         </div>
@@ -1078,11 +1093,13 @@
                                         <ul class="nav nav-pills d-flex align-items-center justify-content-left friend-list-items p-0 mb-2">
                                             <li>
                                                 <a class="nav-link active" data-bs-toggle="pill"
-                                                   href="#pill-photosofyou" data-bs-target="#photosofyou">Ảnh của ${isCurrentUser ? "bạn": targetUser.firstName}</a>
+                                                   href="#pill-photosofyou" data-bs-target="#photosofyou">Ảnh
+                                                    của ${isCurrentUser ? "bạn": targetUser.firstName}</a>
                                             </li>
                                             <li>
                                                 <a class="nav-link" data-bs-toggle="pill" href="#pill-your-photos"
-                                                   data-bs-target="#your-photos">Video của ${isCurrentUser ? "bạn": targetUser.firstName}</a>
+                                                   data-bs-target="#your-photos">Video
+                                                    của ${isCurrentUser ? "bạn": targetUser.firstName}</a>
                                             </li>
                                         </ul>
                                         <div class="tab-content">
@@ -1094,36 +1111,46 @@
                                                                 <c:if test="${not empty post.files}">
                                                                     <c:forEach var="file" items="${post.files}">
                                                                         <c:if test="${not fn:contains(file.mimeType, 'video')}">
-                                                                                <div class="photos-tab-content-wrapper">
-                                                                                    <div class="user-images position-relative overflow-hidden photos-tab-image-wrapper">
-                                                                                        <a href="${file.fileUrl}" target="_blank">
-                                                                                            <div class="photos-tab-image-inner-wrapper rounded overflow-hidden">
-                                                                                                <img src="${file.fileUrl}"
-                                                                                                     class="img-fluid rounded"
-                                                                                                     alt="Responsive image">
-                                                                                            </div>
-                                                                                        </a>
-                                                                                        <div class="image-hover-data">
-                                                                                            <div class="product-elements-icon">
-                                                                                                <ul class="d-flex align-items-center m-0 p-0 list-inline">
-                                                                                                    <li><a href="post/${post.id}" class="pe-3 text-white"> ${fn:length(post.likes)}
-                                                                                                        <i class="ri-thumb-up-line"></i> </a>
-                                                                                                    </li>
-                                                                                                    <li><a href="post/${post.id}" class="pe-3 text-white"> ${fn:length(post.comments)}
-                                                                                                        <i class="ri-chat-3-line"></i> </a>
-                                                                                                    </li>
-                                                                                                </ul>
-                                                                                            </div>
+                                                                            <div class="photos-tab-content-wrapper">
+                                                                                <div class="user-images position-relative overflow-hidden photos-tab-image-wrapper">
+                                                                                    <a href="${file.fileUrl}"
+                                                                                       target="_blank">
+                                                                                        <div class="photos-tab-image-inner-wrapper rounded overflow-hidden">
+                                                                                            <img src="${file.fileUrl}"
+                                                                                                 class="img-fluid rounded"
+                                                                                                 alt="Responsive image">
                                                                                         </div>
-                                                                                        <c:if test="${isCurrentUser}">
-                                                                                            <a href="post/${post.id}/edit" class="image-edit-btn"
-                                                                                               data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                                               title="" data-bs-original-title="Chỉnh sửa bài viết"><i
-                                                                                                    class="ri-edit-2-fill"></i>
-                                                                                            </a>
-                                                                                        </c:if>
+                                                                                    </a>
+                                                                                    <div class="image-hover-data">
+                                                                                        <div class="product-elements-icon">
+                                                                                            <ul class="d-flex align-items-center m-0 p-0 list-inline">
+                                                                                                <li>
+                                                                                                    <a href="post/${post.id}"
+                                                                                                       class="pe-3 text-white"> ${fn:length(post.likes)}
+                                                                                                        <i class="ri-thumb-up-line"></i>
+                                                                                                    </a>
+                                                                                                </li>
+                                                                                                <li>
+                                                                                                    <a href="post/${post.id}"
+                                                                                                       class="pe-3 text-white"> ${fn:length(post.comments)}
+                                                                                                        <i class="ri-chat-3-line"></i>
+                                                                                                    </a>
+                                                                                                </li>
+                                                                                            </ul>
+                                                                                        </div>
                                                                                     </div>
+                                                                                    <c:if test="${isCurrentUser}">
+                                                                                        <a href="post/${post.id}/edit"
+                                                                                           class="image-edit-btn"
+                                                                                           data-bs-toggle="tooltip"
+                                                                                           data-bs-placement="top"
+                                                                                           title=""
+                                                                                           data-bs-original-title="Chỉnh sửa bài viết"><i
+                                                                                                class="ri-edit-2-fill"></i>
+                                                                                        </a>
+                                                                                    </c:if>
                                                                                 </div>
+                                                                            </div>
                                                                         </c:if>
                                                                     </c:forEach>
                                                                 </c:if>
@@ -1153,24 +1180,35 @@
                                                                                     <div class="image-hover-data">
                                                                                         <div class="product-elements-icon">
                                                                                             <ul class="d-flex align-items-center m-0 p-0 list-inline">
-                                                                                                <li><a href="post/${post.id}" class="pe-3 text-white"> ${fn:length(post.likes)}
-                                                                                                    <i class="ri-thumb-up-line"></i> </a>
+                                                                                                <li>
+                                                                                                    <a href="post/${post.id}"
+                                                                                                       class="pe-3 text-white"> ${fn:length(post.likes)}
+                                                                                                        <i class="ri-thumb-up-line"></i>
+                                                                                                    </a>
                                                                                                 </li>
-                                                                                                <li><a href="post/${post.id}" class="pe-3 text-white"> ${fn:length(post.comments)}
-                                                                                                    <i class="ri-chat-3-line"></i> </a>
+                                                                                                <li>
+                                                                                                    <a href="post/${post.id}"
+                                                                                                       class="pe-3 text-white"> ${fn:length(post.comments)}
+                                                                                                        <i class="ri-chat-3-line"></i>
+                                                                                                    </a>
                                                                                                 </li>
                                                                                             </ul>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="photos-tab-play-btn">
-                                                                                        <a href="${file.fileUrl}" target="_blank">
-                                                                                            <img src="images/play-button-icon.png" alt="" />
+                                                                                        <a href="${file.fileUrl}"
+                                                                                           target="_blank">
+                                                                                            <img src="images/play-button-icon.png"
+                                                                                                 alt=""/>
                                                                                         </a>
                                                                                     </div>
                                                                                     <c:if test="${isCurrentUser}">
-                                                                                        <a href="post/${post.id}/edit" class="image-edit-btn"
-                                                                                           data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                                           title="" data-bs-original-title="Chỉnh sửa bài viết"><i
+                                                                                        <a href="post/${post.id}/edit"
+                                                                                           class="image-edit-btn"
+                                                                                           data-bs-toggle="tooltip"
+                                                                                           data-bs-placement="top"
+                                                                                           title=""
+                                                                                           data-bs-original-title="Chỉnh sửa bài viết"><i
                                                                                                 class="ri-edit-2-fill"></i>
                                                                                         </a>
                                                                                     </c:if>
@@ -1199,9 +1237,9 @@
 <footer class="iq-footer bg-white">
     <div class="container-fluid">
         <div class="d-flex justify-content-center gap-1">
-<%--            <div class="col-lg-6 d-flex justify-content-end">--%>
-                Copyright 2024 <a href="#">SocialX</a> All Rights Reserved.
-<%--            </div>--%>
+            <%--            <div class="col-lg-6 d-flex justify-content-end">--%>
+            Copyright 2024 <a href="#">SocialX</a> All Rights Reserved.
+            <%--            </div>--%>
         </div>
     </div>
 </footer>

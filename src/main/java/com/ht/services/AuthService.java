@@ -8,7 +8,6 @@ import com.ht.dtos.SignUpDto;
 import com.ht.entities.User;
 import com.ht.enums.UserRole;
 import com.ht.utils.VerificationTokenResult;
-import io.jsonwebtoken.Jwt;
 import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -58,6 +57,7 @@ public class AuthService {
         user.setSex(false);
         user.setRole(UserRole.USER);
         user.setAvatar("https://cdn-icons-png.flaticon.com/512/6596/6596121.png");
+        user.setCoverImage("https://res.cloudinary.com/dwbwvdguk/image/upload/v1717726216/jw0tg3wl0jicwfp1qqoo.jpg");
         user.setCreatedAt(new Date());
 
         session.save(user);

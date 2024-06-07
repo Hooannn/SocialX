@@ -41,7 +41,7 @@ public class UserService {
         Session session = sessionFactory.getCurrentSession();
         Query getUserQuery = session.createQuery("""
                         UPDATE User u
-                        SET first_name = :first_name, last_name = :last_name, date_of_birth = :date_of_birth, sex = :sex, address = :address, avatar = :avatar
+                        SET first_name = :first_name, last_name = :last_name, date_of_birth = :date_of_birth, sex = :sex, address = :address, avatar = :avatar, cover_image = :coverImage
                         WHERE id = :userId
                 """);
         getUserQuery.setParameter("first_name", authUser.getFirstName())
@@ -51,6 +51,7 @@ public class UserService {
                 .setParameter("address", authUser.getAddress())
                 .setParameter("avatar", authUser.getAvatar())
                 .setParameter("userId", authUser.getId())
+                .setParameter("coverImage", authUser.getCoverImage())
                 .executeUpdate();
     }
 

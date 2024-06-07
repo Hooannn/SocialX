@@ -1,16 +1,11 @@
 package com.ht.entities;
 
 import com.ht.enums.UserRole;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Index;
-import org.hibernate.annotations.GenerationTime;
 
 import javax.persistence.*;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -33,6 +28,9 @@ public class User {
 
     @Column(name = "avatar", nullable = false)
     private String avatar;
+
+    @Column(name = "cover_image")
+    private String coverImage;
 
     @Column(name = "reset_password_token")
     private String resetPasswordToken;
@@ -59,13 +57,14 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String email, String password, String firstName, String lastName, String avatar, String resetPasswordToken, Date createdAt, Date dateOfBirth, boolean sex, String address, boolean disabled, UserRole role) {
+    public User(Long id, String email, String password, String firstName, String lastName, String avatar, String coverImage, String resetPasswordToken, Date createdAt, Date dateOfBirth, boolean sex, String address, boolean disabled, UserRole role) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.avatar = avatar;
+        this.coverImage = coverImage;
         this.resetPasswordToken = resetPasswordToken;
         this.createdAt = createdAt;
         this.dateOfBirth = dateOfBirth;
@@ -179,6 +178,14 @@ public class User {
         this.address = address;
     }
 
+    public String getCoverImage() {
+        return coverImage;
+    }
+
+    public void setCoverImage(String coverImage) {
+        this.coverImage = coverImage;
+    }
+
     public String getFullName() {
         return lastName + " " + firstName;
     }
@@ -209,6 +216,7 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", avatar='" + avatar + '\'' +
+                ", coverImage='" + coverImage + '\'' +
                 ", resetPasswordToken='" + resetPasswordToken + '\'' +
                 ", createdAt=" + createdAt +
                 ", dateOfBirth=" + dateOfBirth +

@@ -45,6 +45,7 @@ public class JwtService {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
+
     private Key getSigningKey(String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
@@ -53,6 +54,7 @@ public class JwtService {
     public String extractSub(String jwt) {
         return extractClaim(jwt, Claims::getSubject);
     }
+
     public String extractRole(String jwt) {
         return extractClaim(jwt, claims -> claims.get("role")).toString();
     }
@@ -66,6 +68,7 @@ public class JwtService {
                 userMap.get("first_name").toString(),
                 userMap.get("last_name").toString(),
                 userMap.get("avatar").toString(),
+                userMap.get("cover_image").toString(),
                 null,
                 new Date((Long) userMap.get("created_at")),
                 userMap.get("date_of_birth") == "" ? null : new Date((Long) userMap.get("date_of_birth")),
@@ -77,19 +80,20 @@ public class JwtService {
     }
 
     public String generateAccessToken(User user) {
-        Map<String, Object> claims = Map.of(
-                "user", Map.of(
-                        "avatar", user.getAvatar(),
-                        "first_name", user.getFirstName(),
-                        "last_name", user.getLastName(),
-                        "id", user.getId(),
-                        "role", user.getRole(),
-                        "address", user.getAddress() == null ? "" : user.getAddress(),
-                        "date_of_birth", user.getDateOfBirth() == null ? "" : user.getDateOfBirth(),
-                        "sex", user.isSex(),
-                        "email", user.getEmail(),
-                        "created_at", user.getCreatedAt()
-                )
+        Map<String, Object> claims = Map.ofEntries(
+                Map.entry("user", Map.ofEntries(
+                        Map.entry("avatar", user.getAvatar()),
+                        Map.entry("first_name", user.getFirstName()),
+                        Map.entry("last_name", user.getLastName()),
+                        Map.entry("id", user.getId()),
+                        Map.entry("role", user.getRole()),
+                        Map.entry("address", user.getAddress() == null ? "" : user.getAddress()),
+                        Map.entry("date_of_birth", user.getDateOfBirth() == null ? "" : user.getDateOfBirth()),
+                        Map.entry("sex", user.isSex()),
+                        Map.entry("email", user.getEmail()),
+                        Map.entry("created_at", user.getCreatedAt()),
+                        Map.entry("cover_image", user.getCoverImage())
+                ))
         );
         return buildToken(claims, user.getId().toString(), appConfig.getJwtExpiration(), appConfig.getAccessSecretKey());
     }
@@ -142,6 +146,7 @@ public class JwtService {
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
+
     private String buildToken(
             Map<String, Object> extraClaims,
             String subject,

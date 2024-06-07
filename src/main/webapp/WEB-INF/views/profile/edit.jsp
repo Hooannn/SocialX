@@ -301,8 +301,29 @@
                                     <form action="profile/edit/information"
                                           enctype="multipart/form-data"
                                           method="post">
-                                        <div class="form-group row align-items-center">
-                                            <div class="col-md-12">
+
+                                        <div class="row align-items-center">
+                                            <div class="form-group col-sm-12">
+                                                <label class="form-label">Ảnh bìa:</label>
+                                                <br>
+                                                <div style="position: relative">
+                                                    <img id="cover-pic"
+                                                         style="width: 100%; max-height: 250px; object-fit: cover"
+                                                         class="e-background-pic rounded" src="${user.coverImage}"
+                                                         alt="background-pic">
+                                                    <div class="p-image">
+                                                        <i class="ri-pencil-line e-upload-button-1 text-white"></i>
+                                                        <input id="cover-file-upload" style="visibility: hidden"
+                                                               class="e-file-upload" type="file"
+                                                               accept="image/*"
+                                                               name="coverImage"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-12">
+                                                <label class="form-label">Ảnh đại diện:</label>
+                                                <br>
                                                 <div class="profile-img-edit">
                                                     <img id="avatar-pic"
                                                          style="width: 100%;display:block;border-radius:50%;aspect-ratio: 1/1;object-fit: cover"
@@ -317,8 +338,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class=" row align-items-center">
                                             <div class="form-group col-sm-6">
                                                 <label class="form-label" for="fname">Tên:</label>
                                                 <input value="${user.firstName}" name="firstName" type="text"
@@ -460,24 +479,42 @@
 <!-- -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        var fileInput = document.getElementById('avatar-file-upload');
-        var preview = document.getElementById('avatar-pic');
+        var avatarFileInput = document.getElementById('avatar-file-upload');
+        var avatarPreview = document.getElementById('avatar-pic');
+        var coverFileInput = document.getElementById('cover-file-upload');
+        var coverPreview = document.getElementById('cover-pic');
 
-        fileInput.addEventListener('change', function (event) {
-            var file = fileInput.files[0];
+        avatarFileInput.addEventListener('change', function (event) {
+            var file = avatarFileInput.files[0];
             var reader = new FileReader();
 
             reader.onload = function (event) {
-                preview.src = event.target.result;
+                avatarPreview.src = event.target.result;
             };
 
             reader.readAsDataURL(file);
         });
 
-        var uploadButton = document.querySelector('.e-upload-button');
+        coverFileInput.addEventListener('change', function (event) {
+            var file = coverFileInput.files[0];
+            var reader = new FileReader();
 
-        uploadButton.addEventListener('click', function () {
-            fileInput.click();
+            reader.onload = function (event) {
+                coverPreview.src = event.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        var fileUploadButton = document.querySelector('.e-upload-button');
+        var coverUploadButton = document.querySelector('.e-upload-button-1');
+
+        fileUploadButton.addEventListener('click', function () {
+            avatarFileInput.click();
+        });
+
+        coverUploadButton.addEventListener('click', function () {
+            coverFileInput.click();
         });
     });
 </script>
