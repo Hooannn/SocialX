@@ -1234,15 +1234,6 @@
     </div>
 </div>
 <!-- Wrapper End-->
-<footer class="iq-footer bg-white">
-    <div class="container-fluid">
-        <div class="d-flex justify-content-center gap-1">
-            <%--            <div class="col-lg-6 d-flex justify-content-end">--%>
-            Copyright 2024 <a href="#">SocialX</a> All Rights Reserved.
-            <%--            </div>--%>
-        </div>
-    </div>
-</footer>
 
 <!-- Backend Bundle JavaScript -->
 <script src="scripts/libs.min.js"></script>
