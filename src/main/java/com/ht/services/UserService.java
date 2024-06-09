@@ -126,11 +126,11 @@ public class UserService {
             user.setLastName((String) rowArray[8]);
 
             FriendStatus status = null;
-            if (rowArray[14] == null) {
+            if (rowArray[15] == null) {
                 status = FriendStatus.NOT_FRIENDS;
             } else {
-                boolean friendStatus = (boolean) rowArray[14];
-                var sendFrom = Long.valueOf(String.valueOf((BigInteger) rowArray[16]));
+                boolean friendStatus = (boolean) rowArray[15];
+                var sendFrom = Long.valueOf(String.valueOf((BigInteger) rowArray[17]));
 
                 if (friendStatus) {
                     status = FriendStatus.ARE_FRIENDS;

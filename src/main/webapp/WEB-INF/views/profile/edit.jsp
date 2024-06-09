@@ -488,6 +488,12 @@
             var file = avatarFileInput.files[0];
             var reader = new FileReader();
 
+            if (file && !file.type.toString().includes('image')) {
+                toastr.error('Chỉ chấp nhận file ảnh.');
+                avatarFileInput.value = '';
+                return;
+            }
+
             reader.onload = function (event) {
                 avatarPreview.src = event.target.result;
             };
@@ -498,6 +504,12 @@
         coverFileInput.addEventListener('change', function (event) {
             var file = coverFileInput.files[0];
             var reader = new FileReader();
+
+            if (file && !file.type.toString().includes('image')) {
+                toastr.error('Chỉ chấp nhận file ảnh.');
+                coverFileInput.value = '';
+                return;
+            }
 
             reader.onload = function (event) {
                 coverPreview.src = event.target.result;

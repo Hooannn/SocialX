@@ -107,10 +107,10 @@ public class ProfileController {
             HttpServletResponse response,
             RedirectAttributes redirectAttributes
     ) {
-        if (firstName.isEmpty() || lastName.isEmpty() || dateOfBirth.isEmpty() || address.isEmpty()) {
-            model.addAttribute("errorMessage", "Vui lòng điền đầy đủ thông tin");
-            model.addAttribute("tab", "information");
-            return "profile/edit";
+        if (firstName.isBlank() || lastName.isBlank() || dateOfBirth.isBlank() || address.isBlank()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Vui lòng điền đầy đủ thông tin");
+            redirectAttributes.addFlashAttribute("tab", "information");
+            return "redirect:/profile/edit";
         }
 
         String imageUrl = null;
@@ -119,9 +119,9 @@ public class ProfileController {
                 Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
                 imageUrl = (String) uploadResult.get("url");
             } catch (Exception e) {
-                model.addAttribute("errorMessage", "Lỗi khi tải ảnh lên");
-                model.addAttribute("tab", "information");
-                return "profile/edit";
+                redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi tải ảnh lên");
+                redirectAttributes.addFlashAttribute("tab", "information");
+                return "redirect:/profile/edit";
             }
         }
 
@@ -131,9 +131,9 @@ public class ProfileController {
                 Map uploadResult = cloudinary.uploader().upload(coverImage.getBytes(), ObjectUtils.emptyMap());
                 coverImageUrl = (String) uploadResult.get("url");
             } catch (Exception e) {
-                model.addAttribute("errorMessage", "Lỗi khi tải ảnh lên");
-                model.addAttribute("tab", "information");
-                return "profile/edit";
+                redirectAttributes.addFlashAttribute("errorMessage", "Lỗi khi tải ảnh lên");
+                redirectAttributes.addFlashAttribute("tab", "information");
+                return "redirect:/profile/edit";
             }
         }
 
@@ -141,8 +141,8 @@ public class ProfileController {
         try {
             parsedDateOfBirth = new SimpleDateFormat("yyyy-MM-dd").parse(dateOfBirth);
         } catch (ParseException e) {
-            model.addAttribute("errorMessage", "Định dạng ngày không hợp lệ");
-            model.addAttribute("tab", "information");
+            redirectAttributes.addFlashAttribute("errorMessage", "Định dạng ngày không hợp lệ");
+            redirectAttributes.addFlashAttribute("tab", "information");
             return "profile/edit";
         }
 
