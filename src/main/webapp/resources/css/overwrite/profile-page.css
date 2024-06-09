@@ -22,8 +22,13 @@
 .friends-tab-avatar-wrapper img {
     aspect-ratio: 1;
     object-fit: cover;
-    background-color: #50b5ff;
+    background-color: #fff;
     display: inline-block;
+    border: 1px solid rgba(0, 0, 0, .2);
+}
+
+.friends-tab-avatar-wrapper img {
+    border-width: 0 1px 0 0;
 }
 
 .widget-image {

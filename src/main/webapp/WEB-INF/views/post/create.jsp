@@ -78,14 +78,14 @@
         <div id="sidebar-scrollbar">
             <nav class="iq-sidebar-menu">
                 <ul id="iq-sidebar-toggle" class="iq-menu">
-                    <li class="active">
+                    <li class="">
                         <a href="home" class=" ">
                             <i class="las la-newspaper"></i><span>Bảng tin</span>
                         </a>
                     </li>
                     <li class="">
                         <a href="profile" class=" ">
-                            <i class="las la-user"></i><span>Hồ sơ</span>
+                            <i class="las la-user"></i><span>Trang cá nhân</span>
                         </a>
                     </li>
                 </ul>
@@ -245,7 +245,7 @@
                         <li class="nav-item dropdown">
                             <a href="#" class="   d-flex align-items-center dropdown-toggle" id="drop-down-arrow"
                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="${requestScope["user"]["avatar"]}" class="img-fluid rounded-circle me-3"
+                                <img src="${requestScope["user"]["avatar"]}" class="img-fluid rounded-circle me-1"
                                      alt="user">
                                 <div class="caption">
                                     <h6 class="mb-0 line-height">${requestScope["user"]["firstName"]} ${requestScope["user"]["lastName"]}</h6>
@@ -266,7 +266,7 @@
                                                     <i class="ri-file-user-line"></i>
                                                 </div>
                                                 <div class="ms-3">
-                                                    <h6 class="mb-0 ">Hồ sơ</h6>
+                                                    <h6 class="mb-0 ">Trang cá nhân</h6>
                                                     <p class="mb-0 font-size-12">Xem thông tin cá nhân của bạn.</p>
                                                 </div>
                                             </div>
@@ -333,21 +333,6 @@
     </div>
 </div>
 <!-- Wrapper End-->
-<footer class="iq-footer bg-white">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-6">
-                <ul class="list-inline mb-0">
-                    <li class="list-inline-item"><a href="content/privacy-policy">Chính sách bảo mật</a></li>
-                    <li class="list-inline-item"><a href="content/terms">Điều khoản sử dụng</a></li>
-                </ul>
-            </div>
-            <div class="col-lg-6 d-flex justify-content-end gap-md-1">
-                Copyright 2024 <a href="#"> SocialX </a> All Rights Reserved.
-            </div>
-        </div>
-    </div>
-</footer>    <!-- Backend Bundle JavaScript -->
 <script src="scripts/libs.min.js"></script>
 <!-- slider JavaScript -->
 <script src="scripts/slider.js"></script>
