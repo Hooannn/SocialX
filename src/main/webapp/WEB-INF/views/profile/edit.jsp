@@ -371,7 +371,7 @@
                                                                 var="formattedDate"/>
                                                 <input value="<c:out value='${formattedDate}' />" name="dateOfBirth"
                                                        type="date"
-                                                       class="form-control"
+                                                       class=" form-control"
                                                        id="dob"/>
                                                 <!-- error message -->
                                             </div>
@@ -479,6 +479,8 @@
 <!-- -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        var dobInput = document.getElementById('dob');
+        dobInput.max = new Date().toISOString().split("T")[0];
         var avatarFileInput = document.getElementById('avatar-file-upload');
         var avatarPreview = document.getElementById('avatar-pic');
         var coverFileInput = document.getElementById('cover-file-upload');
