@@ -20,6 +20,7 @@
 
     <link rel="shortcut icon" href="images/favicon.ico"/>
     <link rel="stylesheet" href="css/libs.min.css">
+    <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/socialv.css?v=4.0.0">
     <link rel="stylesheet" href="vendor/@fortawesome/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="vendor/remixicon/fonts/remixicon.css">
@@ -60,7 +61,7 @@
                     </li>
                     <li class="">
                         <a href="profile" class=" ">
-                            <i class="las la-user"></i><span>Trang cá nhân/span>
+                            <i class="las la-user"></i><span>Trang cá nhân</span>
                         </a>
                     </li>
                 </ul>
@@ -90,7 +91,8 @@
                                 href="#">
                             <i class="ri-search-line"></i>
                         </button>
-                        <input name="query" type="text" class="text search-input" placeholder="Tìm kiếm...">
+                        <input spellcheck="false" name="query" type="text" class="text search-input"
+                               placeholder="Tìm kiếm...">
                     </form>
                 </div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -129,14 +131,17 @@
                                                     <c:if test="${not empty user}">
                                                         <div class="iq-friend-request">
                                                             <div class="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between">
-                                                                <div class="d-flex align-items-center">
-                                                                    <img class="avatar-40 rounded" src="${user.avatar}"
-                                                                         alt="">
-                                                                    <div class="ms-3">
-                                                                        <h6 class="mb-0 ">${user.firstName} ${user.lastName}</h6>
-                                                                        <p class="mb-0 created-at">${user.createdAt}</p>
+                                                                <a href="profile/${user.id}">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <img class="avatar-40 rounded"
+                                                                             src="${user.avatar}"
+                                                                             alt="">
+                                                                        <div class="ms-3">
+                                                                            <h6 class="mb-0 ">${user.firstName} ${user.lastName}</h6>
+                                                                            <p class="mb-0 created-at">${user.createdAt}</p>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
+                                                                </a>
                                                                 <div class="d-flex align-items-center">
                                                                     <a href="friend/accept/${user.id}?redirect=/home"
                                                                        class="me-3 btn btn-primary rounded">Đồng ý</a>

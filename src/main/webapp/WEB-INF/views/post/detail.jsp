@@ -80,7 +80,8 @@
                                 href="#">
                             <i class="ri-search-line"></i>
                         </button>
-                        <input name="query" type="text" class="text search-input" placeholder="Tìm kiếm...">
+                        <input spellcheck="false" name="query" type="text" class="text search-input"
+                               placeholder="Tìm kiếm...">
                     </form>
                 </div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -119,14 +120,17 @@
                                                     <c:if test="${not empty user}">
                                                         <div class="iq-friend-request">
                                                             <div class="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between">
-                                                                <div class="d-flex align-items-center">
-                                                                    <img class="avatar-40 rounded" src="${user.avatar}"
-                                                                         alt="">
-                                                                    <div class="ms-3">
-                                                                        <h6 class="mb-0 ">${user.firstName} ${user.lastName}</h6>
-                                                                        <p class="mb-0 created-at">${user.createdAt}</p>
+                                                                <a href="profile/${user.id}">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <img class="avatar-40 rounded"
+                                                                             src="${user.avatar}"
+                                                                             alt="">
+                                                                        <div class="ms-3">
+                                                                            <h6 class="mb-0 ">${user.firstName} ${user.lastName}</h6>
+                                                                            <p class="mb-0 created-at">${user.createdAt}</p>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
+                                                                </a>
                                                                 <div class="d-flex align-items-center">
                                                                     <a href="friend/accept/${user.id}?redirect=/home"
                                                                        class="me-3 btn btn-primary rounded">Đồng ý</a>
@@ -491,7 +495,8 @@
                                                                     aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <textarea class="form-control" name="content"
+                                                            <textarea spellcheck="false" class="form-control"
+                                                                      name="content"
                                                                       rows="3">${comment.content}</textarea>
                                                         </div>
                                                         <div class="modal-footer">
@@ -567,7 +572,7 @@
                         <form class="comment-text d-flex align-items-center mt-3 gap-2" action="post/${post.id}/comment"
                               method="post">
                             <input type="hidden" name="authorId" value="${post.user.id}">
-                            <input type="text"
+                            <input spellcheck="false" type="text"
                                    class="form-control rounded"
                                    name="content"
                                    placeholder="Bình luận về bài viết này...">

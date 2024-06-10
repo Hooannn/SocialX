@@ -21,6 +21,7 @@
 
     <link rel="shortcut icon" href="images/favicon.ico"/>
     <link rel="stylesheet" href="css/libs.min.css">
+    <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/socialv.css?v=4.0.0">
     <link rel="stylesheet" href="vendor/@fortawesome/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="vendor/remixicon/fonts/remixicon.css">
@@ -79,7 +80,8 @@
                                 href="#">
                             <i class="ri-search-line"></i>
                         </button>
-                        <input name="query" type="text" class="text search-input" placeholder="Tìm kiếm...">
+                        <input spellcheck="false" name="query" type="text" class="text search-input"
+                               placeholder="Tìm kiếm...">
                     </form>
                 </div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -118,14 +120,17 @@
                                                     <c:if test="${not empty user}">
                                                         <div class="iq-friend-request">
                                                             <div class="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between">
-                                                                <div class="d-flex align-items-center">
-                                                                    <img class="avatar-40 rounded" src="${user.avatar}"
-                                                                         alt="">
-                                                                    <div class="ms-3">
-                                                                        <h6 class="mb-0 ">${user.firstName} ${user.lastName}</h6>
-                                                                        <p class="mb-0 created-at">${user.createdAt}</p>
+                                                                <a href="profile/${user.id}">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <img class="avatar-40 rounded"
+                                                                             src="${user.avatar}"
+                                                                             alt="">
+                                                                        <div class="ms-3">
+                                                                            <h6 class="mb-0 ">${user.firstName} ${user.lastName}</h6>
+                                                                            <p class="mb-0 created-at">${user.createdAt}</p>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
+                                                                </a>
                                                                 <div class="d-flex align-items-center">
                                                                     <a href="friend/accept/${user.id}?redirect=/home"
                                                                        class="me-3 btn btn-primary rounded">Đồng ý</a>
@@ -342,6 +347,7 @@
                                                 <label class="form-label" for="fname">Tên:</label>
                                                 <input value="${user.firstName}" name="firstName" type="text"
                                                        class="form-control"
+                                                       spellcheck="false"
                                                        id="fname"/>
                                                 <!-- error message -->
                                             </div>
@@ -349,6 +355,7 @@
                                                 <label class="form-label" for="lname">Họ:</label>
                                                 <input value="${user.lastName}" name="lastName" type="text"
                                                        class="form-control"
+                                                       spellcheck="false"
                                                        id="lname"/>
                                                 <!-- error message -->
                                             </div>
@@ -371,13 +378,14 @@
                                                                 var="formattedDate"/>
                                                 <input value="<c:out value='${formattedDate}' />" name="dateOfBirth"
                                                        type="date"
-                                                       class=" form-control"
+                                                       class="form-control"
                                                        id="dob"/>
                                                 <!-- error message -->
                                             </div>
                                             <div class="form-group col-sm-12">
                                                 <label class="form-label" for="address">Địa chỉ:</label>
-                                                <textarea class="form-control" name="address" id="address"
+                                                <textarea spellcheck="false" class="form-control" name="address"
+                                                          id="address"
                                                           rows="5" style="line-height: 22px;">${user.address}</textarea>
                                             </div>
                                         </div>

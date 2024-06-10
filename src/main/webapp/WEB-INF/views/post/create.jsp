@@ -20,6 +20,7 @@
 
     <link rel="shortcut icon" href="images/favicon.ico"/>
     <link rel="stylesheet" href="css/libs.min.css">
+    <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/socialv.css?v=4.0.0">
     <link rel="stylesheet" href="vendor/@fortawesome/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="vendor/remixicon/fonts/remixicon.css">
@@ -115,7 +116,8 @@
                                 href="#">
                             <i class="ri-search-line"></i>
                         </button>
-                        <input name="query" type="text" class="text search-input" placeholder="Tìm kiếm...">
+                        <input spellcheck="false" name="query" type="text" class="text search-input"
+                               placeholder="Tìm kiếm...">
                     </form>
                 </div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -154,14 +156,17 @@
                                                     <c:if test="${not empty user}">
                                                         <div class="iq-friend-request">
                                                             <div class="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between">
-                                                                <div class="d-flex align-items-center">
-                                                                    <img class="avatar-40 rounded" src="${user.avatar}"
-                                                                         alt="">
-                                                                    <div class="ms-3">
-                                                                        <h6 class="mb-0 ">${user.firstName} ${user.lastName}</h6>
-                                                                        <p class="mb-0 created-at">${user.createdAt}</p>
+                                                                <a href="profile/${user.id}">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <img class="avatar-40 rounded"
+                                                                             src="${user.avatar}"
+                                                                             alt="">
+                                                                        <div class="ms-3">
+                                                                            <h6 class="mb-0 ">${user.firstName} ${user.lastName}</h6>
+                                                                            <p class="mb-0 created-at">${user.createdAt}</p>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
+                                                                </a>
                                                                 <div class="d-flex align-items-center">
                                                                     <a href="friend/accept/${user.id}?redirect=/home"
                                                                        class="me-3 btn btn-primary rounded">Đồng ý</a>
@@ -312,9 +317,11 @@
                           enctype="multipart/form-data"
                           method="post">
                         <div class="d-flex flex-column gap-2">
-                            <input name="title" type="text" class="form-control rounded py-2" id="title"
+                            <input spellcheck="false" name="title" type="text" class="form-control rounded py-2"
+                                   id="title"
                                    placeholder="Nhập tiêu đề bài viết..."/>
-                            <textarea name="content" type="text" class="form-control rounded" rows="5" id="content"
+                            <textarea spellcheck="false" name="content" type="text" class="form-control rounded"
+                                      rows="5" id="content"
                                       placeholder="Nhập nội dung bài viết..."></textarea>
                             <input type="file" id="fileInput" name="files" multiple
                                    style="visibility: hidden; position: absolute"

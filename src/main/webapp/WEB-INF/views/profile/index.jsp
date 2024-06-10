@@ -75,7 +75,8 @@
                                 href="#">
                             <i class="ri-search-line"></i>
                         </button>
-                        <input name="query" type="text" class="text search-input" placeholder="Tìm kiếm...">
+                        <input spellcheck="false" name="query" type="text" class="text search-input"
+                               placeholder="Tìm kiếm...">
                     </form>
                 </div>
 
@@ -122,7 +123,7 @@
                                                     <c:if test="${not empty user}">
                                                         <div class="iq-friend-request">
                                                             <div class="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between">
-                                                                <a href="/profile/${user.id}">
+                                                                <a href="profile/${user.id}">
                                                                     <div class="d-flex align-items-center">
                                                                         <img class="avatar-40 rounded"
                                                                              src="${user.avatar}"
@@ -473,7 +474,7 @@
                                                                  class="avatar-60 rounded-circle">
                                                         </div>
                                                         <form class="post-text ms-3 w-100 " action="post/create">
-                                                            <input id="postInput" type="text"
+                                                            <input spellcheck="false" id="postInput" type="text"
                                                                    class="form-control rounded"
                                                                    placeholder="Bạn đang nghĩ gì..."
                                                                    style="border:none;">
@@ -802,6 +803,7 @@
                                                                                                     </div>
                                                                                                     <div class="modal-body">
                                                                                                         <textarea
+                                                                                                                spellcheck="false"
                                                                                                                 class="form-control"
                                                                                                                 name="content"
                                                                                                                 rows="3">${comment.content}</textarea>
@@ -901,7 +903,7 @@
                                                                     </ul>
                                                                     <form class="comment-text d-flex align-items-center mt-3">
                                                                         <a href="post/${post.id}" class="w-100">
-                                                                            <input type="text"
+                                                                            <input spellcheck="false" type="text"
                                                                                    class="form-control rounded"
                                                                                    placeholder="Bình luận về bài viết này...">
                                                                         </a>

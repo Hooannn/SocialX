@@ -34,3 +34,13 @@
 .grid-item-content-wrapper {
     padding: 4px;
 }
+
+.avatar-5, .avatar-10, .avatar-15, .avatar-20, .avatar-25, .avatar-30, .avatar-35, .avatar-40, .avatar-45, .avatar-50, .avatar-55, .avatar-60,
+.avatar-65, .avatar-70, .avatar-75, .avatar-80, .avatar-85, .avatar-90, .avatar-95, .avatar-100, .avatar-105,
+.avatar-110, .avatar-115, .avatar-120, .avatar-125, .avatar-130 {
+    object-fit: cover;
+}
+
+.img-fluid.me-1 {
+    object-fit: cover;
+}

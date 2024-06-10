@@ -78,7 +78,8 @@
                                 href="#">
                             <i class="ri-search-line"></i>
                         </button>
-                        <input name="query" type="text" class="text search-input" placeholder="Tìm kiếm...">
+                        <input spellcheck="false" name="query" type="text" class="text search-input"
+                               placeholder="Tìm kiếm...">
                     </form>
                 </div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -119,14 +120,17 @@
                                                     <c:if test="${not empty user}">
                                                         <div class="iq-friend-request">
                                                             <div class="iq-sub-card iq-sub-card-big d-flex align-items-center justify-content-between">
-                                                                <div class="d-flex align-items-center">
-                                                                    <img class="avatar-40 rounded" src="${user.avatar}"
-                                                                         alt="">
-                                                                    <div class="ms-3">
-                                                                        <h6 class="mb-0 ">${user.firstName} ${user.lastName}</h6>
-                                                                        <p class="mb-0 created-at">${user.createdAt}</p>
+                                                                <a href="profile/${user.id}">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <img class="avatar-40 rounded"
+                                                                             src="${user.avatar}"
+                                                                             alt="">
+                                                                        <div class="ms-3">
+                                                                            <h6 class="mb-0 ">${user.firstName} ${user.lastName}</h6>
+                                                                            <p class="mb-0 created-at">${user.createdAt}</p>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
+                                                                </a>
                                                                 <div class="d-flex align-items-center">
                                                                     <a href="friend/accept/${user.id}?redirect=/home"
                                                                        class="me-3 btn btn-primary rounded">Đồng ý</a>
@@ -281,7 +285,8 @@
                                              class="avatar-60 rounded-circle">
                                     </div>
                                     <form class="post-text ms-3 w-100 " action="post/create">
-                                        <input id="postInput" type="text" class="form-control rounded"
+                                        <input spellcheck="false" id="postInput" type="text"
+                                               class="form-control rounded"
                                                placeholder="Bạn đang nghĩ gì..." style="border:none;">
                                     </form>
                                 </div>
@@ -409,7 +414,8 @@
                                                                                 <video controls class="rounded">
                                                                                     <source src="${file.fileUrl}"
                                                                                             type="video/mp4">
-                                                                                    Your browser does not support the video
+                                                                                    Your browser does not support the
+                                                                                    video
                                                                                     tag.
                                                                                 </video>
                                                                             </div>
@@ -418,7 +424,8 @@
                                                                     <c:otherwise>
                                                                         <div class="grid-item">
                                                                             <div class="grid-item-content-wrapper">
-                                                                                <a href="${file.fileUrl}" target="_blank">
+                                                                                <a href="${file.fileUrl}"
+                                                                                   target="_blank">
                                                                                     <img src="${file.fileUrl}"
                                                                                          alt="post-image"
                                                                                          class="rounded">
@@ -561,6 +568,7 @@
                                                                                     </div>
                                                                                     <div class="modal-body">
                                                                                         <textarea class="form-control"
+                                                                                                  spellcheck="false"
                                                                                                   name="content"
                                                                                                   rows="3">${comment.content}</textarea>
                                                                                     </div>
@@ -648,7 +656,7 @@
                                                     </ul>
                                                     <form class="comment-text d-flex align-items-center mt-3">
                                                         <a href="post/${post.id}" class="w-100">
-                                                            <input type="text"
+                                                            <input spellcheck="false" type="text"
                                                                    class="form-control rounded"
                                                                    placeholder="Bình luận về bài viết này...">
                                                         </a>
