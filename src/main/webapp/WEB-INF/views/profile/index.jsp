@@ -611,7 +611,9 @@
                                                                     <%-- Title and text content --%>
                                                                 <div>
                                                                     <h5 class="my-2">${post.title}</h5>
-                                                                    <p>${post.content}</p>
+                                                                    <textarea readonly
+                                                                              class="auto-resize p-0 border-0 w-100 overflow-hidden"
+                                                                              style="color: #777d74; resize: none">${post.content}</textarea>
                                                                 </div>
 
                                                                     <%-- Images and videos --%>
@@ -1282,6 +1284,22 @@
 <script>
     document.getElementById("postInput").addEventListener("click", function () {
         window.location.href = "post/create";
+    });
+</script>
+<script>
+    function autoResizeTextarea(textarea) {
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+    }
+
+    const textareas = document.querySelectorAll('textarea.auto-resize');
+
+    textareas.forEach(textarea => {
+        autoResizeTextarea(textarea);
+
+        textarea.addEventListener('input', function () {
+            autoResizeTextarea(this);
+        });
     });
 </script>
 </body>

@@ -351,7 +351,8 @@
                     </div>
                     <div>
                         <h5 class="my-2">${post.title}</h5>
-                        <p>${post.content}</p>
+                        <textarea id="post-textarea" readonly class="p-0 border-0 w-100 overflow-hidden"
+                                  style="color: #777d74; resize: none">${post.content}</textarea>
                     </div>
                     <c:if test="${not empty post.files}">
                         <div class="grid">
@@ -625,6 +626,20 @@
     });
     imagesLoaded(grid).on('progress', function () {
         msnry.layout();
+    });
+</script>
+<script>
+    function autoResizeTextarea(textarea) {
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+    }
+
+    const textarea = document.getElementById('post-textarea');
+
+    autoResizeTextarea(textarea);
+
+    textarea.addEventListener('input', function () {
+        autoResizeTextarea(this);
     });
 </script>
 <!-- -->
