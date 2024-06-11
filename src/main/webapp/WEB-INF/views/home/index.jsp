@@ -693,7 +693,7 @@
                                                 <a href="profile/${friend.id}" class="w-100">
                                                     <li class="d-flex mb-3 align-items-center active">
                                                         <img src="${friend.avatar}" alt="story-img"
-                                                             class="rounded-circle img-fluid">
+                                                             class="rounded-circle avatar-100">
                                                         <div class="stories-data ms-3">
                                                             <h5>${friend.firstName} ${friend.lastName}</h5>
                                                             <p class="mb-0">${friend.sex ? "Nam" : "Nữ"}</p>
