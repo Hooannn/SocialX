@@ -112,7 +112,18 @@ public class AuthService {
                 String protocol = url.getProtocol();
                 int port = url.getPort();
                 String resetPasswordUrl = protocol + "://" + host + ":" + port + contextPath + "/auth/reset-password?token=" + token;
-                mailService.send("noreply@socialx.online", userEmail, "Reset Password", "Click <a href=\"" + resetPasswordUrl + "\">here</a> to reset password");
+
+                String mailContent = """
+                        <html><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SocialX | Đặt lại mật khẩu</title><style>body{position:relative;height:100vh;margin:0;text-align:center}
+                        .container{width:100%;max-width:700px;height:100%;padding:35px;border-radius:5px;background-color:#222831;color:#fff}.card{position:absolute;top:50%;left:50%;width:100%;transform:translate(-50%,-50%)}span{color:#ffbe33}button{padding:1em 6em;border:0;border-radius:5px;
+                        background-color:#ffbe33;transition:all .3s ease-in}button:hover{background-color:#e69c00}.spacing{margin-top:3rem}</style></head><body><div class="container"><div class="card"><h1 style="margin-top:0"><span>Xin chào!</h1><p>Chúng tôi đã nhận được yêu cầu đặt lại mật khẩu cho tài khoản của bạn</p><p>Bạn đã quên mật khẩu?</p>
+                        <div class="spacing"><p>Để đặt lại mật khẩu, hãy ấn vào nút bên dưới 👇🏻</p><p>Liên kết này sẽ hết hiệu lực trong 10 phút và chỉ dùng được 1 lần</p><a href="
+                        """
+                        + resetPasswordUrl +
+                        """
+                                                " target="_blank"><button style="cursor:pointer">Đặt lại mật khẩu</button></a></div></div></div></body></html>
+                                """;
+                mailService.send("noreply@socialx.online", userEmail, "SocialX | Đặt lại mật khẩu", mailContent);
             } catch (Exception e) {
                 e.printStackTrace();
             }
